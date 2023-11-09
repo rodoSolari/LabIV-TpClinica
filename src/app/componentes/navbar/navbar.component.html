@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-md navbar navbar-dark bg-primary">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink=''>Home</a>
+        </li>
+      </ul>
+    </div>
+     <ul class="navbar-nav" *ngIf="this.usuariologeado as usuariologeado; else Login">
+      <div class="dropdown">
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" [routerLink]="'./juegos/ahorcado'">Ahorcado</a></li>
+          <li><a class="dropdown-item" [routerLink]="'./juegos/mayor-o-menor'">Mayor-o-menor</a></li>
+          <li><a class="dropdown-item" [routerLink]="'./juegos/preguntados'">Preguntados</a></li>
+          <li><a class="dropdown-item" [routerLink]="'./juegos/huevo-del-dragon'">Huevo del dragon</a></li>
+        </ul>
+      </div>
+      <button class="btn btn-secondary dropdown-toggle justify-content-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        Juegos
+      </button>
+
+      <a class="nav-link" routerLink="encuesta" role="button">Encuesta</a>
+
+      <li class="nav-item">
+        <h3 style="color: #4d6ba9; padding: 0 15px;">Hola {{this.usuariologeado.displayName}}!</h3>
+      </li>
+     <li class="nav-item">
+        <button class="btn btn-light" (click)="logout()">Log Out</button>
+      </li>
+    </ul>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ng-template #Login>
+        <ul class="navbar-nav mb-12 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="login">Loguearse</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" routerLink="registro">Registrarse</a>
+            </li>
+        </ul>
+      </ng-template>
+    </ul>
+  </div>
+</nav>

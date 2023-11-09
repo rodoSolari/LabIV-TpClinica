@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "tpclinica-8805b": {
+      "hosting": {
+        "tpClinica": [
+          "tpclinica-8805b"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "tpclinica-8805b"
+  }
+}
