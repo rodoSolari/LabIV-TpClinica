@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { sendEmailVerification } from '@angular/fire/auth';
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import {Firestore, addDoc,collection,collectionData} from '@angular/fire/firestore';
+import { Paciente } from '../clases/paciente';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,21 @@ export class AuthService {
     });
   }
 
-  public register(usuario : any, password: string){
-    return this.auth.createUserWithEmailAndPassword(usuario.email, password)
+  traerEspecialidaes(){
+    const col = collection(this.firestore,'Especialidades');
+    const observable = collectionData(col);
+    return observable;
+  }
+
+  agregarEspecialidad(nombreEspecialidad : string){
+    const col = collection(this.firestore,'Especialidades');
+    addDoc(col,{
+      nombre: nombreEspecialidad
+    });
+  }
+
+  public register(email : string, password: string){
+    return this.auth.createUserWithEmailAndPassword(email, password)
 
   }
 
@@ -29,7 +43,22 @@ export class AuthService {
   }
 
   public confirmarMail(userCredential : any){
-    return sendEmailVerification(userCredential.user);
+    return userCredential.sendEmailVerification();
+  }
+
+  public addPaciente(paciente : any){
+    const col = collection(this.firestore,'Usuarios');
+    addDoc(col,{
+      nombre : paciente.nombre,
+      apellido : paciente.apellido,
+      edad : paciente.edad,
+      dni : paciente.dni,
+      email : paciente.email,
+      tipo : 'paciente',
+      estadoAprobado : false,
+      estadoAprobadoPorAdmin : true
+    });
+    console.log("agregado")
   }
 
   //cerrar sesion

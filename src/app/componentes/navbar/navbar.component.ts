@@ -15,6 +15,7 @@ export class NavbarComponent {
   ngOnInit(): void {
     this.service.userLogged().subscribe(usuario => {
       this.usuariologeado = usuario;
+      console.log(this.usuariologeado);
     });
   }
 

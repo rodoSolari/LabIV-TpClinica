@@ -5,6 +5,8 @@ import { Paciente } from 'src/app/clases/paciente';
 import { AuthService } from 'src/app/services/auth.service';
 import { Storage, ref, uploadBytes, listAll, getDownloadURL } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { collectionData } from 'rxfire/firestore';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-registro',
@@ -19,17 +21,22 @@ export class RegistroComponent {
   clave : string = '';
   nombre : string = '';
   apellido : string = '';
-  edad! : number;
-  dni! : number;
+  edad : number = 0;
+  dni : number = 0;
+  estadoAprobado! : boolean;
+  estadoAprobadoPorAdmin! : boolean;
   obraSocial : string = '';
-  especialidad : string = '';
+  especialidades : any[] = [];
   paciente! : Paciente;
-  imagenes: string[];
+  imagenes: any[];
   evento : any;
   formGroup! : FormGroup;
+  check! : boolean;
+  nuevaEspecialidad! : string;
 
   constructor(public service:AuthService,private firestore : Firestore,
-              private router : Router, private storage : Storage,private form : FormBuilder) {
+              private router : Router, private storage : Storage,
+              private form : FormBuilder, usuarioService : UsuarioService) {
     this.mensaje = '';
     this.imagenes = [];
   }
@@ -41,48 +48,43 @@ export class RegistroComponent {
       'nombre':['',[Validators.required]],
       'apellido':['',[Validators.required]],
       'edad': ['', [Validators.required, Validators.min(18),Validators.max(99)]],
-      'dni': ['',[Validators.required,Validators.min(11111111),Validators.max(99999999),Validators.minLength(8),Validators.minLength(8)]],
+      'dni': ['',[Validators.required,Validators.min(11111111),Validators.max(99999999),Validators.minLength(8),Validators.minLength(8)]],/*
       'obraSocial':['',[Validators.required]],
-      'Especialista':['',[Validators.required]],
-      'Password':['',[Validators.required]],
+      'especialista':['',[Validators.required]],*/
+      'password':['',[Validators.required]],
     });
+
+    this.service.traerEspecialidaes().subscribe((respuesta) => {
+      this.especialidades = respuesta;
+      console.log("especialidades " + respuesta);
+    })
+
+
   }
 
   register(){
-    //console.log(this.formGroup.getRawValue());
     const datosForm = this.formGroup.getRawValue();
-
     var date = new Date();
-    this.paciente = new Paciente();
-    this.paciente.nombre = this.nombre;
-    this.paciente.apellido = this.apellido;
-    this.paciente.edad = this.edad;
-    this.paciente.dni = this.dni;
-    this.paciente.email = this.email;
+    console.log(datosForm.email + "  "+datosForm.password);
+    this.service.register(datosForm.email,datosForm.password).then((userCredential) => {
+      this.service.confirmarMail(userCredential.user);
 
-    console.log(this.paciente);
-
-    this.service.register(this.paciente,this.clave).then((userCredential) => {
-      console.log("registrado exitosamente");
-
-      const col = collection(this.firestore,'Usuarios');
-      addDoc(col,{
-        nombre : this.paciente.nombre,
-        apellido : this.paciente.apellido,
-        edad : this.paciente.edad,
-        dni : this.paciente.dni,
-        email : this.paciente.email,
-        tipo : "paciente"
-      });
-      userCredential.user?.updateProfile({displayName: this.nombre})
+      console.log("registrado exitosamente, se envio mail de confirmacion");
+      this.service.subirLog(datosForm.email,date.toLocaleString());
+      setTimeout(() => {
+        const col = collection(this.firestore,'Usuarios');
+        this.service.addPaciente(datosForm);
+      }, 200);
+      userCredential.user?.updateProfile({displayName: datosForm.nombre})
       this.router.navigate(['home']);
-
+      this.service.logout();
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       this.mensaje = error.message.slice(9);
     });
+
   }
 
   showMessage(){
@@ -94,11 +96,19 @@ export class RegistroComponent {
   }
 
   mostrarFormEspecialista(){
-    this.tipo = "Especialista";
+    this.tipo = "especialista";
+  }
+
+  agregarNuevaEspecialidad(){
+    /*if(!this.especialidades.includes(this.nuevaEspecialidad)){
+      this.service.agregarEspecialidad(this.nuevaEspecialidad).subscribe((respuesta : any) =>{
+        console.log(respuesta);
+      });
+    }*/
   }
 
   fillPaciente(){
-    this.email  = 'montreal95@hotmail.es';
+    this.email  = 'meboxef894@jucatyo.com';
     this.clave  = '123123123';
     this.nombre  = 'rodo';
     this.apellido = 'solari';
@@ -111,14 +121,16 @@ export class RegistroComponent {
       edad: 28,
       dni:39252151,
       Password:this.clave ,
-      obraSocial:null,
-      Especialista: null
+      /*obraSocial:null,
+      Especialista: null*/
     });
    // this.formGroup.('nombre').value = this.email;
   }
 
   ObtenerImagen($event: any) {
     this.evento = $event;
+    console.log("Primer imagen: " + this.evento.target.files[0] + " "  + " Segunda imagen:" + this.evento.target.files[0]);
+
     /*console.log("Subiendo imagen");
     const file = $event.target.files[0];
     //const file = $event.target.files;
@@ -142,6 +154,7 @@ export class RegistroComponent {
     console.log(file);
 
     const imgRef = ref(this.storage, `imagenes/${file.name}`);
+
 
     uploadBytes(imgRef, file)
       .then(response => {

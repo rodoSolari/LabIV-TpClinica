@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -13,7 +14,7 @@ export class LoginComponent {
   clave : string = '';
   mensaje : string = ''
 
-  constructor(public service : AuthService, private router : Router) {}
+  constructor(public service : AuthService, private router : Router, private auth : AngularFireAuth) {}
 
   ngOnInit(): void {
 
@@ -21,6 +22,9 @@ export class LoginComponent {
 
   login(){
     this.service.login(this.email,this.clave).then((userCredential) => {
+     /* this.auth.authState.subscribe((usuario : any) =>{
+       if(usuario. usuario.tipo = 'paciente')
+      })*/
       const date : Date = new Date();
       this.service.subirLog(this.email,date.toLocaleString());
       console.log("usuario logueado correctamente");

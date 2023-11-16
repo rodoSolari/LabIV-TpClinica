@@ -17,39 +17,58 @@
             <div class="colm-form" style="color: black;">
                 <div class="form-container">
                   <form class="needs-validation" [formGroup]='this.formGroup' novalidate (ngSubmit)="register()">
-                    <!--<input type="text" placeholder="email" [(ngModel)]="this.email" [ngModelOptions]="{standalone: true}">-->
-                    <input name="email"  placeholder="email" type="text" class="form-control" id="email" formControlName="email">
-                    <small class="invalid" style="color: red;" *ngIf="formGroup.get('email')?.errors?.['required'] && formGroup.get('email')?.touched">Email requerido</small>
 
-                    <!--<input type="text" placeholder="Nombre" [(ngModel)]="this.nombre" [ngModelOptions]="{standalone: true}">-->
                     <input name="nombre"  placeholder="Nombre" type="text" class="form-control" id="nombre" formControlName="nombre">
                     <small class="invalid" style="color: red;" *ngIf="formGroup.get('nombre')?.errors?.['required'] && formGroup.get('nombre')?.touched">Nombre requerido</small>
 
                     <input name="apellido"  placeholder="apellido" type="text" class="form-control" id="apellido" formControlName="apellido">
                     <small class="invalid" style="color: red;" *ngIf="formGroup.get('apellido')?.errors?.['required']  && formGroup.get('apellido')?.touched">Apellido requerido</small>
 
+
+                    <input name="email"  placeholder="email" type="text" class="form-control" id="email" formControlName="email">
+                    <small class="invalid" style="color: red;" *ngIf="formGroup.get('email')?.errors?.['required'] && formGroup.get('email')?.touched">Email requerido</small>
+
                     <input name="edad" placeholder="edad" type="number" class="form-control" id="edad" formControlName="edad">
                     <small class="invalid" style="color: red;" *ngIf="formGroup.get('edad')?.errors?.['required']  && formGroup.get('edad')?.touched">Edad requerida</small>
                     <small class="invalid" style="color: red;" *ngIf="formGroup.get('edad')?.errors?.['min']  || formGroup.get('edad')?.errors?.['max']  && formGroup.get('edad')?.touched">Edad entre 18 y 99 años</small>
 
+
                     <input name="dni" placeholder="dni" type="number" class="form-control" id="dni" formControlName="dni">
                     <small class="invalid" *ngIf="formGroup.get('dni')?.errors?.['min'] || formGroup.get('dni')?.errors?.['max'] && formGroup.get('dni')?.touched">Dni incorrecto</small>
                     <small class="invalid" *ngIf="formGroup.get('dni')?.errors?.['minLength'] || formGroup.get('dni')?.errors?.['maxLength'] && formGroup.get('dni')?.touched">Dni incorrecto</small>
-
+<!--
                     <div *ngIf="this.tipo == 'Paciente'">
                       <input name="obraSocial"  placeholder="obraSocial" type="text" class="form-control" id="obraSocial" formControlName="obraSocial">
                       <small class="invalid" style="color: red;" *ngIf="formGroup.get('obraSocial')?.errors?.['required']  && formGroup.get('obraSocial')?.touched">Obra Social requerida</small>
                     </div>
 
+
                     <div *ngIf="this.tipo == 'Especialista'">
-                      <input name="Especialista"  placeholder="Especialista" type="text" class="form-control" id="Especialista" formControlName="Especialista">
-                      <small class="invalid" style="color: red;" *ngIf="formGroup.get('Especialista')?.errors?.['required']  && formGroup.get('Especialista')?.touched">Especialista requerido</small>
+
+                        <label class="custom-control-label" for="especialidad{{especialidad.nombre}}">{{especialidad.nombre}}</label>
+                        <input type="checkbox" name="checkboxEspecialidad">
+                      <label>Especialidad: </label>
+                        <select name="esp" id="esp">
+                          <option value="">Seleccione su especialidad</option>
+                          <option *ngFor="let especialidad of this.especialidades" [value]='especialidad.nombre'>{{especialidad.nombre}}</option>
+                        </select>
+                      <label class="custom-control-label" for="descripcion">Otra especialidad</label>
+                      <input type="checkbox" style="height: 50%; width: 50%;"  name="checkboxEspecialidad" (change)="true" #checkBox>
+
+                      <div *ngIf="checkBox.checked">
+                        <input name="Especialista"  placeholder="Especialidad" type="text" class="form-control" id="Especialista" formControlName="Especialista">
+                        <small class="invalid" style="color: red;" *ngIf="formGroup.get('Especialista')?.errors?.['required']  && formGroup.get('Especialista')?.touched">Especialista requerido</small>
+                      </div>
                     </div>
-                    <input type="password" placeholder="Password" class="form-control" id="Password" formControlName="Password">
-                    <small class="invalid" style="color: red;" *ngIf="formGroup.get('Password')?.errors?.['required']  && formGroup.get('Password')?.touched">Password requerido</small>
-                    <input type="file" id="archivo" (change)="ObtenerImagen($event)">
+                  -->
+                    <input type="password" placeholder="password" class="form-control" id="password" formControlName="password">
+                    <small class="invalid" style="color: red;" *ngIf="formGroup.get('password')?.errors?.['required']  && formGroup.get('password')?.touched">Password requerido</small>
+                    <input type="file" id="imagen1" (change)="ObtenerImagen($event)" accept="image/*" required>
+                    <div *ngIf="this.tipo == 'paciente'">
+                      <input type="file" id="imagen2" (change)="ObtenerImagen($event)" accept="image/*" required>
+                    </div>
                     <!--<button class="btn-new" (click)="Subir()">Subir imagen</button>-->
-                    <button class="btn-new" (click)="register()">Registrarse</button>
+                    <!--<button class="btn-new" (click)="register()">Registrarse</button>-->
 
                     <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="formGroup.invalid">Registrarse</button>
                   </form>
