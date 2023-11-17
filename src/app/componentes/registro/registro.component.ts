@@ -7,6 +7,7 @@ import { Storage, ref, uploadBytes, listAll, getDownloadURL } from '@angular/fir
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { collectionData } from 'rxfire/firestore';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import {BotonesDirective} from '../../directivas/botones.directive'
 
 @Component({
   selector: 'app-registro',

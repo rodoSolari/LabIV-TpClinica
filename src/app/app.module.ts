@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { HomeComponent } from './componentes/home/home.component';
 import { provideStorage,getStorage } from '@angular/fire/storage';
+import { BotonesDirective } from './directivas/botones.directive';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
     LoginComponent,
     RegistroComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    BotonesDirective
   ],
   imports: [
     BrowserModule,

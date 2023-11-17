@@ -8,9 +8,10 @@
 </head>
 <body>
 <div class="botones">
-  <button type="button" class="btn btn-primary" (click)="mostrarFormPaciente()">Paciente</button>
-  <button type="button" class="btn btn-primary" style="margin-left: 10px; margin-right: 10px;" (click)="mostrarFormEspecialista()">Especialista</button>
-  <button type="button" class="btn btn-primary">Administrador</button>
+
+  <button appBotones class="btn btn-primary"><img src="../../../assets/pacienteForm.png" width="50px" (click)="mostrarFormPaciente()">Paciente</button>
+  <button appBotones class="btn btn-primary" (click)="mostrarFormEspecialista()"><img src="../../../assets/MedicoForm.png" width="50px">Medico</button>
+
 </div>
     <main>
         <div class="row">
