@@ -5,7 +5,6 @@ import { Paciente } from 'src/app/clases/paciente';
 import { AuthService } from 'src/app/services/auth.service';
 import { Storage, ref, uploadBytes, listAll, getDownloadURL } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { collectionData } from 'rxfire/firestore';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import {BotonesDirective} from '../../directivas/botones.directive'
 
@@ -29,7 +28,9 @@ export class RegistroComponent {
   obraSocial : string = '';
   especialidades : any[] = [];
   paciente! : Paciente;
-  imagenes: any[];
+  imagenes : any[];
+  imagen1: any;
+  imagen2: any;
   evento : any;
   formGroup! : FormGroup;
   check! : boolean;
@@ -43,6 +44,7 @@ export class RegistroComponent {
   }
 
   ngOnInit(): void {
+    console.log("tipo =" +this.tipo);
     this.obtenerImagenes();
     this.formGroup = this.form.group({
       'email':['',[Validators.required]],
@@ -53,11 +55,13 @@ export class RegistroComponent {
       'obraSocial':['',[Validators.required]],
       'especialista':['',[Validators.required]],*/
       'password':['',[Validators.required]],
+      /*'imagen1':['',[Validators.required]],
+      'imagen2':['',[Validators.required]]*/
     });
 
     this.service.traerEspecialidaes().subscribe((respuesta) => {
       this.especialidades = respuesta;
-      console.log("especialidades " + respuesta);
+     // console.log("especialidades " + respuesta);
     })
 
 
@@ -76,6 +80,7 @@ export class RegistroComponent {
         const col = collection(this.firestore,'Usuarios');
         this.service.addPaciente(datosForm);
       }, 200);
+      this.Subir();
       userCredential.user?.updateProfile({displayName: datosForm.nombre})
       this.router.navigate(['home']);
       this.service.logout();
@@ -108,61 +113,38 @@ export class RegistroComponent {
     }*/
   }
 
-  fillPaciente(){
-    this.email  = 'meboxef894@jucatyo.com';
-    this.clave  = '123123123';
-    this.nombre  = 'rodo';
-    this.apellido = 'solari';
-    this.edad = 28;
-    this.dni= 39252151;
-    this.formGroup.setValue({
-      email: this.email,
-      nombre: this.nombre,
-      apellido: this.apellido,
-      edad: 28,
-      dni:39252151,
-      Password:this.clave ,
-      /*obraSocial:null,
-      Especialista: null*/
-    });
-   // this.formGroup.('nombre').value = this.email;
+
+  cargarImagen1(event: any) {
+    this.imagen1 = event.target.files[0];
+    console.log("Primera imagen: " + this.imagen1);
   }
 
-  ObtenerImagen($event: any) {
-    this.evento = $event;
-    console.log("Primer imagen: " + this.evento.target.files[0] + " "  + " Segunda imagen:" + this.evento.target.files[0]);
-
-    /*console.log("Subiendo imagen");
-    const file = $event.target.files[0];
-    //const file = $event.target.files;
-    console.log(file);
-
-    const imgRef = ref(this.storage, `imagenes/${file.name}`);
-
-    uploadBytes(imgRef, file)
-      .then(response => {
-        console.log(response)
-        this.obtenerImagenes();
-      })
-      .catch(error => console.log(error));*/
-
+  cargarImagen2($event: any) {
+    this.imagen2 = $event.target.files[0];
+    console.log("Segunda imagen: " + this.imagen2);
   }
 
   Subir(){
+    var nombreCarpeta : string = this.tipo = 'paciente' ? 'especialista/' : 'imagenes/';
+
     console.log("Subiendo imagen");
-    const file = this.evento.target.files[0];
-    //const file = $event.target.files;
-    console.log(file);
-
-    const imgRef = ref(this.storage, `imagenes/${file.name}`);
-
-
-    uploadBytes(imgRef, file)
+    //const file = this.evento.target.files[0];
+    const imgRef = ref(this.storage, `${nombreCarpeta}${this.imagen1.name}`);
+    uploadBytes(imgRef, this.imagen1)
       .then(response => {
         console.log(response)
         this.obtenerImagenes();
       })
       .catch(error => console.log(error));
+    if(this.tipo == 'paciente'){
+      const imgRef2 = ref(this.storage, `imagenes/${this.imagen2.name}`);
+      uploadBytes(imgRef2, this.imagen2)
+        .then(response => {
+          console.log(response)
+          this.obtenerImagenes();
+        })
+        .catch(error => console.log(error));
+    }
   }
 
   obtenerImagenes() {

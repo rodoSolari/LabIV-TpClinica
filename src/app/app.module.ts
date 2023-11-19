@@ -16,6 +16,7 @@ import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { HomeComponent } from './componentes/home/home.component';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import { BotonesDirective } from './directivas/botones.directive';
+import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BotonesDirective } from './directivas/botones.directive';
     RegistroComponent,
     NavbarComponent,
     HomeComponent,
-    BotonesDirective
+    BotonesDirective,
+    UsuariosComponent
   ],
   imports: [
     BrowserModule,

@@ -47,4 +47,9 @@ export class LoginComponent {
     this.email = "especialistaprueba@hotmail.com"
     this.clave = "especialista123";
   }
+
+  fillUserDataAdmin(){
+    this.email = "adminprueba@hotmail.com"
+    this.clave = "admin123";
+  }
 }

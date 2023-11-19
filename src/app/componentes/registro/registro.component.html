@@ -9,11 +9,11 @@
 <body>
 <div class="botones">
 
-  <button appBotones class="btn btn-primary"><img src="../../../assets/pacienteForm.png" width="50px" (click)="mostrarFormPaciente()">Paciente</button>
+  <button appBotones class="btn btn-primary" (click)="mostrarFormPaciente()"><img src="../../../assets/pacienteForm.png" width="50px">Paciente</button>
   <button appBotones class="btn btn-primary" (click)="mostrarFormEspecialista()"><img src="../../../assets/MedicoForm.png" width="50px">Medico</button>
 
 </div>
-    <main>
+    <main *ngIf="this.tipo == 'paciente' || this.tipo == 'especialista'">
         <div class="row">
             <div class="colm-form" style="color: black;">
                 <div class="form-container">
@@ -64,16 +64,16 @@
                   -->
                     <input type="password" placeholder="password" class="form-control" id="password" formControlName="password">
                     <small class="invalid" style="color: red;" *ngIf="formGroup.get('password')?.errors?.['required']  && formGroup.get('password')?.touched">Password requerido</small>
-                    <input type="file" id="imagen1" (change)="ObtenerImagen($event)" accept="image/*" required>
+
+                    <input type="file" id="imagen1" (change)="cargarImagen1($event)" accept="image/*" required>
                     <div *ngIf="this.tipo == 'paciente'">
-                      <input type="file" id="imagen2" (change)="ObtenerImagen($event)" accept="image/*" required>
+                      <input type="file" id="imagen2" (change)="cargarImagen2($event)" accept="image/*" required>
                     </div>
                     <!--<button class="btn-new" (click)="Subir()">Subir imagen</button>-->
                     <!--<button class="btn-new" (click)="register()">Registrarse</button>-->
 
                     <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="formGroup.invalid">Registrarse</button>
                   </form>
-                  <button class="btn-new" (click)="fillPaciente()">Fill Paciente</button>
                 </div>
 
                 <div>

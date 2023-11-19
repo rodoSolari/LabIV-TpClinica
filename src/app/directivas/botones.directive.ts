@@ -15,6 +15,7 @@ export class BotonesDirective implements OnInit {
     this.element.nativeElement.setAttribute(
       'style','display : inline; border-radius : 15px;'
     )
+
   }
 
 }
