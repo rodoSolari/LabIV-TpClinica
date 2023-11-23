@@ -43,8 +43,22 @@ export class LoginComponent {
     this.clave = "prueba123";
   }
 
+  fillPaciente2(){
+    this.email = "pacienteprueba2@hotmail.com"
+    this.clave = "prueba123";
+  }
+
+  fillPaciente3(){
+    this.email = "pacienteprueba3@hotmail.com"
+    this.clave = "prueba123";
+  }
+
   fillUserDataEspecialista(){
     this.email = "especialistaprueba@hotmail.com"
+    this.clave = "especialista123";
+  }
+  fillUserDataEspecialista2(){
+    this.email = "especialistaprueba2@hotmail.com"
     this.clave = "especialista123";
   }
 

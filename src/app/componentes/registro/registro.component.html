@@ -37,40 +37,38 @@
                     <input name="dni" placeholder="dni" type="number" class="form-control" id="dni" formControlName="dni">
                     <small class="invalid" *ngIf="formGroup.get('dni')?.errors?.['min'] || formGroup.get('dni')?.errors?.['max'] && formGroup.get('dni')?.touched">Dni incorrecto</small>
                     <small class="invalid" *ngIf="formGroup.get('dni')?.errors?.['minLength'] || formGroup.get('dni')?.errors?.['maxLength'] && formGroup.get('dni')?.touched">Dni incorrecto</small>
-<!--
-                    <div *ngIf="this.tipo == 'Paciente'">
+
+                    <div *ngIf="this.tipo == 'paciente'">
                       <input name="obraSocial"  placeholder="obraSocial" type="text" class="form-control" id="obraSocial" formControlName="obraSocial">
                       <small class="invalid" style="color: red;" *ngIf="formGroup.get('obraSocial')?.errors?.['required']  && formGroup.get('obraSocial')?.touched">Obra Social requerida</small>
                     </div>
 
 
-                    <div *ngIf="this.tipo == 'Especialista'">
-
-                        <label class="custom-control-label" for="especialidad{{especialidad.nombre}}">{{especialidad.nombre}}</label>
-                        <input type="checkbox" name="checkboxEspecialidad">
+                    <div *ngIf="this.tipo == 'especialista'">
                       <label>Especialidad: </label>
-                        <select name="esp" id="esp">
+                        <select name="esp" id="especialidad" formControlName="especialidad" (change)="onEspecialidadChange($event)">
                           <option value="">Seleccione su especialidad</option>
                           <option *ngFor="let especialidad of this.especialidades" [value]='especialidad.nombre'>{{especialidad.nombre}}</option>
+                          <option value="otro">Otro</option>
                         </select>
-                      <label class="custom-control-label" for="descripcion">Otra especialidad</label>
-                      <input type="checkbox" style="height: 50%; width: 50%;"  name="checkboxEspecialidad" (change)="true" #checkBox>
+                        <small class="invalid" style="color: red;" *ngIf="formGroup.get('especialidad')?.errors?.['required']  && formGroup.get('especialidad')?.touched">Especialidad requerida</small>
 
-                      <div *ngIf="checkBox.checked">
-                        <input name="Especialista"  placeholder="Especialidad" type="text" class="form-control" id="Especialista" formControlName="Especialista">
-                        <small class="invalid" style="color: red;" *ngIf="formGroup.get('Especialista')?.errors?.['required']  && formGroup.get('Especialista')?.touched">Especialista requerido</small>
-                      </div>
+
+                     <div *ngIf="this.especialidad == 'otro'">
+                        <label class="custom-control-label" for="descripcion">Otra especialidad</label>
+                        <input name="esp"  placeholder="especialidad" type="text" class="form-control" id="esp">
+                        <small class="invalid" style="color: red;" *ngIf="formGroup.get('especialidad')?.errors?.['required']  && formGroup.get('especialidad')?.touched">Especialidad requerida</small>
+                       </div>
+
                     </div>
-                  -->
+
                     <input type="password" placeholder="password" class="form-control" id="password" formControlName="password">
                     <small class="invalid" style="color: red;" *ngIf="formGroup.get('password')?.errors?.['required']  && formGroup.get('password')?.touched">Password requerido</small>
 
-                    <input type="file" id="imagen1" (change)="cargarImagen1($event)" accept="image/*" required>
+                    <input type="file" id="imagen1" formControlName = 'imagen1' (change)="cargarImagen1($event)" accept="image/*">
                     <div *ngIf="this.tipo == 'paciente'">
-                      <input type="file" id="imagen2" (change)="cargarImagen2($event)" accept="image/*" required>
+                      <input type="file" id="imagen2" formControlName = 'imagen2' (change)="cargarImagen2($event)" accept="image/*">
                     </div>
-                    <!--<button class="btn-new" (click)="Subir()">Subir imagen</button>-->
-                    <!--<button class="btn-new" (click)="register()">Registrarse</button>-->
 
                     <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="formGroup.invalid">Registrarse</button>
                   </form>

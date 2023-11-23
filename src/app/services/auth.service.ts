@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { sendEmailVerification } from '@angular/fire/auth';
 import { AngularFireAuth } from "@angular/fire/compat/auth";
-import {Firestore, addDoc,collection,collectionData} from '@angular/fire/firestore';
+import {Firestore, addDoc,collection,collectionData,doc} from '@angular/fire/firestore';
 import { Paciente } from '../clases/paciente';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private firestore : Firestore, private auth:AngularFireAuth) { }
+  constructor(private firestore : Firestore, private auth:AngularFireAuth, private angularFire : AngularFirestore) { }
 
   //se registra el mail de usuario y la fecha de logueo
   public subirLog( email: string, date:string){
@@ -46,20 +47,42 @@ export class AuthService {
     return userCredential.sendEmailVerification();
   }
 
-  public addPaciente(paciente : any){
+  public addPaciente(usuario : any,tipo : string){
+    console.log("tipo de usuario registraod:" + tipo);
+    var aprobado : boolean = usuario.tipo == 'paciente' ? true : false;
     const col = collection(this.firestore,'Usuarios');
+   // const documento = this.firestore.doc('Usuarios');
+   if(tipo == 'paciente'){
     addDoc(col,{
-      nombre : paciente.nombre,
-      apellido : paciente.apellido,
-      edad : paciente.edad,
-      dni : paciente.dni,
-      email : paciente.email,
-      tipo : 'paciente',
+     // id : documento.ref.id,
+      nombre : usuario.nombre,
+      apellido : usuario.apellido,
+      edad : usuario.edad,
+      dni : usuario.dni,
+      email : usuario.email,
+      obraSocial : usuario.obraSocial,
+      tipo : tipo,
       estadoAprobado : false,
-      estadoAprobadoPorAdmin : true
+      estadoAprobadoPorAdmin : aprobado
     });
+  }else{
+    addDoc(col,{
+      // id : documento.ref.id,
+       nombre : usuario.nombre,
+       apellido : usuario.apellido,
+       edad : usuario.edad,
+       dni : usuario.dni,
+       email : usuario.email,
+       tipo : tipo,
+       estadoAprobado : false,
+       estadoAprobadoPorAdmin : aprobado,
+       especialidad :usuario.especialidad
+     });
+    }
     console.log("agregado")
   }
+
+
 
   //cerrar sesion
   public logout(){

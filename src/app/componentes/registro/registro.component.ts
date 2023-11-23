@@ -21,8 +21,11 @@ export class RegistroComponent {
   clave : string = '';
   nombre : string = '';
   apellido : string = '';
+  especialidad : string = '';
   edad : number = 0;
   dni : number = 0;
+  otraEspecialidad! : boolean;
+  nuevaEspecialidad : string = '';
   estadoAprobado! : boolean;
   estadoAprobadoPorAdmin! : boolean;
   obraSocial : string = '';
@@ -34,56 +37,49 @@ export class RegistroComponent {
   evento : any;
   formGroup! : FormGroup;
   check! : boolean;
-  nuevaEspecialidad! : string;
+ // nuevaEspecialidad! : string;
 
-  constructor(public service:AuthService,private firestore : Firestore,
-              private router : Router, private storage : Storage,
+  constructor(public service:AuthService,private router : Router, private storage : Storage,
               private form : FormBuilder, usuarioService : UsuarioService) {
     this.mensaje = '';
     this.imagenes = [];
   }
 
   ngOnInit(): void {
-    console.log("tipo =" +this.tipo);
-    this.obtenerImagenes();
-    this.formGroup = this.form.group({
-      'email':['',[Validators.required]],
-      'nombre':['',[Validators.required]],
-      'apellido':['',[Validators.required]],
-      'edad': ['', [Validators.required, Validators.min(18),Validators.max(99)]],
-      'dni': ['',[Validators.required,Validators.min(11111111),Validators.max(99999999),Validators.minLength(8),Validators.minLength(8)]],/*
-      'obraSocial':['',[Validators.required]],
-      'especialista':['',[Validators.required]],*/
-      'password':['',[Validators.required]],
-      /*'imagen1':['',[Validators.required]],
-      'imagen2':['',[Validators.required]]*/
-    });
 
+    this.obtenerImagenes();
+      this.formGroup = this.form.group({
+        'email':['',[Validators.required]],
+        'nombre':['',[Validators.required]],
+        'apellido':['',[Validators.required]],
+        'edad': ['', [Validators.required, Validators.min(1),Validators.max(99)]],
+        'obraSocial':['',[Validators.required]],
+        'especialidad':['',[Validators.required]],
+        'dni': ['',[Validators.required,Validators.min(11111111),Validators.max(99999999),Validators.minLength(8),Validators.minLength(8)]],
+        'password':['',[Validators.required]],
+        'imagen1':['',[Validators.required]],
+        'imagen2':['',],
+      });
+      this.especialidad = this.formGroup.getRawValue().especialidad;
     this.service.traerEspecialidaes().subscribe((respuesta) => {
       this.especialidades = respuesta;
-     // console.log("especialidades " + respuesta);
     })
-
-
   }
 
   register(){
     const datosForm = this.formGroup.getRawValue();
     var date = new Date();
-    console.log(datosForm.email + "  "+datosForm.password);
     this.service.register(datosForm.email,datosForm.password).then((userCredential) => {
       this.service.confirmarMail(userCredential.user);
 
-      console.log("registrado exitosamente, se envio mail de confirmacion");
       this.service.subirLog(datosForm.email,date.toLocaleString());
       setTimeout(() => {
-        const col = collection(this.firestore,'Usuarios');
-        this.service.addPaciente(datosForm);
-      }, 200);
+        this.service.addPaciente(datosForm,this.tipo);
+      }, 400);
       this.Subir();
-      userCredential.user?.updateProfile({displayName: datosForm.nombre})
-      this.router.navigate(['home']);
+      userCredential.user?.updateProfile({displayName: datosForm.nombre});
       this.service.logout();
+      this.router.navigate(['home']);
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -93,16 +89,31 @@ export class RegistroComponent {
 
   }
 
+  onEspecialidadChange(event: any) {
+    this.especialidad = event.target.value;
+  }
+
   showMessage(){
-      this.mensaje = "El usuario que desea registrar ya existe, por favor vuelva a ingresar otros datos";
+    this.mensaje = "El usuario que desea registrar ya existe, por favor vuelva a ingresar otros datos";
   }
 
   mostrarFormPaciente(){
     this.tipo = "paciente";
+    this.formGroup.patchValue({
+      especialidad: false
+    });
   }
 
   mostrarFormEspecialista(){
     this.tipo = "especialista";
+    this.formGroup.patchValue({
+      obraSocial: false
+    });
+
+  }
+
+  opcionEspecialidadNueva(){
+    this.otraEspecialidad = true;
   }
 
   agregarNuevaEspecialidad(){
@@ -125,11 +136,9 @@ export class RegistroComponent {
   }
 
   Subir(){
-    var nombreCarpeta : string = this.tipo = 'paciente' ? 'especialista/' : 'imagenes/';
-
     console.log("Subiendo imagen");
     //const file = this.evento.target.files[0];
-    const imgRef = ref(this.storage, `${nombreCarpeta}${this.imagen1.name}`);
+    const imgRef = ref(this.storage, `imagenes/${this.imagen1.name}`);
     uploadBytes(imgRef, this.imagen1)
       .then(response => {
         console.log(response)

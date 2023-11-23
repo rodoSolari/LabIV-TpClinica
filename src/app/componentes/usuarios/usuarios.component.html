@@ -1,14 +1,19 @@
 <body>
   <div class="container">
     <div class="card" style="width: 25rem; background-color: rgb(144, 207, 192);margin-top: 10px;"
-        *ngFor="let especialista of this.listadoEspecialistas">
-        <div class="card-body">
-          <h5 class="card-title">nombre y apellido: {{especialista.nombre + ' ' + especialista.apellido}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Edad : {{especialista.edad}}</h6>
-          <h6 class="card-subtitle mb-2 text-muted">Especialidad : {{especialista.Especialidad}}</h6>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <button type="button" class="btn btn-outline-success">Aceptar</button>
-          <button type="button" class="btn btn-outline-danger" style="margin-left: 15px;">Cancelar</button>
+        *ngFor="let especialista of this.listadoEspecialistas; index as i">
+        <div *ngIf="especialista.estadoAprobadoPorAdmin == false">
+          <div class="card-body">
+            <h5 class="card-title">nombre y apellido: {{especialista.nombre + ' ' + especialista.apellido}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Edad : {{especialista.edad}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Especialidad : {{especialista.Especialidad}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Mail : {{especialista.email}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Dni : {{especialista.dni}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Aprobado : {{especialista.estadoAprobadoPorAdmin}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">id : {{especialista.id}}</h6>
+            <button type="button" class="btn btn-outline-success" (click)="aceptar(especialista)">Aceptar</button>
+            <button type="button" class="btn btn-outline-danger" style="margin-left: 15px;"  (click)="cancelar(especialista.id)">Cancelar</button>
+          </div>
         </div>
     </div>
   </div>
