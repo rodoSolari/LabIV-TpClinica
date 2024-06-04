@@ -31,11 +31,69 @@ body {
   animation: textclip 2s linear infinite;
   display: inline-block;
   font-size: xx-large;
-
 }
 
 @keyframes textclip {
   to {
     background-position: 200% center;
   }
+}
+
+
+h3 {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px #000;
+}
+
+.header-container {
+  margin-top: 50px;
+  border: 0.5rem solid transparent;
+}
+
+.schedule-container {
+  color: #fff;
+  margin-top: 50px;
+  padding-left: 25%;
+  padding-right: 25%;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+
+.services-container {
+  margin-top: 30px;
+}
+
+.service-card {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.location-contact-container {
+  margin-top: 80px;
+}
+
+.card-title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1.2em;
+}
+
+.card {
+  margin: 10px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.card-container {
+  margin-top: 30px;
 }

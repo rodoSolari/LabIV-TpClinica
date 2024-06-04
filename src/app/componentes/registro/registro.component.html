@@ -8,10 +8,8 @@
 </head>
 <body>
 <div class="botones">
-
   <button appBotones class="btn btn-primary" (click)="mostrarFormPaciente()"><img src="../../../assets/pacienteForm.png" width="50px">Paciente</button>
   <button appBotones class="btn btn-primary" (click)="mostrarFormEspecialista()"><img src="../../../assets/MedicoForm.png" width="50px">Medico</button>
-
 </div>
     <main *ngIf="this.tipo == 'paciente' || this.tipo == 'especialista'">
         <div class="row">

@@ -17,7 +17,7 @@
 
       </button>-->
 
-      <a class="nav-link" routerLink="usuarios" role="button">Usuarios</a>
+      <a *ngIf="this.usuariologeado.email== 'adminprueba@hotmail.com' " class="nav-link" routerLink="usuarios" role="button">Usuarios</a>
 
       <li class="nav-item">
         <h3 style="color: #0e0f11; padding: 0 15px;">Hola {{this.usuariologeado.displayName}}!</h3>
@@ -30,11 +30,11 @@
       <ng-template #Login>
         <ul class="navbar-nav mb-12 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link" routerLink="login">Loguearse</a>
+                <a class="btn btn-light" style="margin-right: 10px;" routerLink="login">Loguearse</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" routerLink="registro">Registrarse</a>
+                <a class="btn btn-light" routerLink="registro">Sos nuevo? Haz click aqui paraRegistrarse</a>
             </li>
         </ul>
       </ng-template>
