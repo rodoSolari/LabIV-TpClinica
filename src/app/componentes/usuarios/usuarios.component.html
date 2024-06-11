@@ -1,21 +1,126 @@
 <body>
   <div class="container">
-    <div class="card" style="width: 25rem; background-color: rgb(144, 207, 192);margin-top: 10px;"
-        *ngFor="let especialista of this.listadoEspecialistas; index as i">
-        <div *ngIf="especialista.estadoAprobadoPorAdmin == false">
-          <div class="card-body">
-            <h5 class="card-title">nombre y apellido: {{especialista.nombre + ' ' + especialista.apellido}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Edad : {{especialista.edad}}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">Especialidad : {{especialista.Especialidad}}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">Mail : {{especialista.email}}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">Dni : {{especialista.dni}}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">Aprobado : {{especialista.estadoAprobadoPorAdmin}}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">id : {{especialista.id}}</h6>
-            <button type="button" class="btn btn-outline-success" (click)="aceptar(especialista)">Aceptar</button>
-            <button type="button" class="btn btn-outline-danger" style="margin-left: 15px;"  (click)="cancelar(especialista.id)">Cancelar</button>
+    <!-- Formulario para crear nuevo Administrador -->
+    <div class="form-container">
+      <div class="card" style="background-color: #333333; margin-top: 10px; color: #ffffff;">
+        <div class="card-body">
+          <h5 class="card-title">Crear Nuevo Administrador</h5>
+          <form (ngSubmit)="registrarAdmin()" [formGroup]="adminFormGroup" #adminForm="ngForm">
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="nombre" style="font-size: 0.9em; color: #bbbbbb;">Nombre</label>
+              <input type="text" id="nombre" class="form-control" name="nombre" formControlName="nombre" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="adminFormGroup.controls['nombre']?.invalid && adminFormGroup.controls['nombre']?.touched" style="color: #ffffff;">Nombre es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="apellido" style="font-size: 0.9em; color: #bbbbbb;">Apellido</label>
+              <input type="text" id="apellido" class="form-control" name="apellido" formControlName="apellido" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="adminFormGroup.controls['apellido']?.invalid && adminFormGroup.controls['apellido']?.touched" style="color: #ffffff;">Apellido es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="edad" style="font-size: 0.9em; color: #bbbbbb;">Edad</label>
+              <input type="number" id="edad" class="form-control" name="edad" formControlName="edad" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="adminFormGroup.controls['edad']?.invalid && adminFormGroup.controls['edad']?.touched" style="color: #ffffff;">Edad es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="dni" style="font-size: 0.9em; color: #bbbbbb;">DNI</label>
+              <input type="number" id="dni" class="form-control" name="dni" formControlName="dni" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="adminFormGroup.controls['dni']?.invalid && adminFormGroup.controls['dni']?.touched" style="color: #ffffff;">DNI es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="email" style="font-size: 0.9em; color: #bbbbbb;">Email</label>
+              <input type="email" id="email" class="form-control" name="email" formControlName="email" required email style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="adminFormGroup.controls['email']?.invalid && adminFormGroup.controls['email']?.touched" style="color: #ffffff;">Email válido es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="password" style="font-size: 0.9em; color: #bbbbbb;">Password</label>
+              <input type="password" id="password" class="form-control" name="password" formControlName="password" required minlength="6" style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="adminFormGroup.controls['password']?.invalid && adminFormGroup.controls['password']?.touched" style="color: #ffffff;">Password es requerido (mínimo 6 caracteres)</small>
+            </div>
+            <button type="submit" class="btn btn-outline-primary" style="border-color: #007bff; color: #007bff; margin-top: 10px;" [disabled]="adminFormGroup.invalid">Registrar</button>
+          </form>
+          <div [class.error-message]="mensajeAdmin !== ''">
+            <p>{{mensajeAdmin}}</p>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Formulario para crear nuevo Paciente -->
+    <div class="form-container">
+      <div class="card" style="background-color: #333333; margin-top: 10px; color: #ffffff;">
+        <div class="card-body">
+          <h5 class="card-title">Registrar Nuevo Paciente</h5>
+          <form (ngSubmit)="registrarPaciente()" [formGroup]="pacienteFormGroup" #pacienteForm="ngForm">
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="nombre" style="font-size: 0.9em; color: #bbbbbb;">Nombre</label>
+              <input type="text" id="nombre" class="form-control" name="nombre" formControlName="nombre" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="pacienteFormGroup.controls['nombre']?.invalid && pacienteFormGroup.controls['nombre']?.touched" style="color: #ffffff;">Nombre es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="apellido" style="font-size: 0.9em; color: #bbbbbb;">Apellido</label>
+              <input type="text" id="apellido" class="form-control" name="apellido" formControlName="apellido" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="pacienteFormGroup.controls['apellido']?.invalid && pacienteFormGroup.controls['apellido']?.touched" style="color: #ffffff;">Apellido es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="edad" style="font-size: 0.9em; color: #bbbbbb;">Edad</label>
+              <input type="number" id="edad" class="form-control" name="edad" formControlName="edad" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="pacienteFormGroup.controls['edad']?.invalid && pacienteFormGroup.controls['edad']?.touched" style="color: #ffffff;">Edad es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="dni" style="font-size: 0.9em; color: #bbbbbb;">DNI</label>
+              <input type="number" id="dni" class="form-control" name="dni" formControlName="dni" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="pacienteFormGroup.controls['dni']?.invalid && pacienteFormGroup.controls['dni']?.touched" style="color: #ffffff;">DNI es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="obraSocial" style="font-size: 0.9em; color: #bbbbbb;">Obra Social</label>
+              <input type="text" id="obraSocial" class="form-control" name="obraSocial" formControlName="obraSocial" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="pacienteFormGroup.controls['obraSocial']?.invalid && pacienteFormGroup.controls['obraSocial']?.touched" style="color: #ffffff;">Obra Social es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="email" style="font-size: 0.9em; color: #bbbbbb;">Email</label>
+              <input type="email" id="email" class="form-control" name="email" formControlName="email" required email style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="pacienteFormGroup.controls['email']?.invalid && pacienteFormGroup.controls['email']?.touched" style="color: #ffffff;">Email válido es requerido</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="password" style="font-size: 0.9em; color: #bbbbbb;">Password</label>
+              <input type="password" id="password" class="form-control" name="password" formControlName="password" required minlength="6" style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="pacienteFormGroup.controls['password']?.invalid && pacienteFormGroup.controls['password']?.touched" style="color: #ffffff;">Password es requerido (mínimo 6 caracteres)</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="imagen1" style="font-size: 0.9em; color: #bbbbbb;">Imagen de Perfil 1</label>
+              <input type="file" id="imagen1" class="form-control" name="imagen1" formControlName="imagen1" (change)="cargarImagen1($event)" required accept="image/*" style="background-color: #444444; border: 1px solid #555555; color: #ffffff; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="pacienteFormGroup.controls['imagen1']?.invalid && pacienteFormGroup.controls['imagen1']?.touched" style="color: #ffffff;">Imagen de perfil 1 es requerida</small>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="imagen2" style="font-size: 0.9em; color: #bbbbbb;">Imagen de Perfil 2</label>
+              <input type="file" id="imagen2" class="form-control" name="imagen2" formControlName="imagen2" (change)="cargarImagen2($event)" required accept="image/*" style="background-color: #444444; border: 1px solid #555555; color: #ffffff; padding: 10px; font-size: 1em; border-radius: 5px;">
+              <small class="text-danger" *ngIf="pacienteFormGroup.controls['imagen2']?.invalid && pacienteFormGroup.controls['imagen2']?.touched" style="color: #ffffff;">Imagen de perfil 2 es requerida</small>
+            </div>
+            <button type="submit" class="btn btn-outline-primary" style="border-color: #007bff; color: #007bff; margin-top: 10px;" [disabled]="pacienteFormGroup.invalid">Registrar</button>
+          </form>
+          <div [class.error-message]="mensajePaciente !== ''">
+            <p>{{mensajePaciente}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Listado de Especialistas -->
+    <div class="list-container">
+      <div class="card" *ngFor="let especialista of listadoEspecialistas; index as i">
+        <div *ngIf="!especialista.estadoAprobadoPorAdmin">
+          <div class="card-body">
+            <h5 class="card-title">Nombre y Apellido: {{especialista.nombre + ' ' + especialista.apellido}}</h5>
+            <h6 class="card-subtitle mb-2">Edad: {{especialista.edad}}</h6>
+            <h6 class="card-subtitle mb-2">Especialidad: {{especialista.especialidad}}</h6>
+            <h6 class="card-subtitle mb-2">Mail: {{especialista.email}}</h6>
+            <h6 class="card-subtitle mb-2">DNI: {{especialista.dni}}</h6>
+            <h6 class="card-subtitle mb-2">Aprobado: {{especialista.estadoAprobadoPorAdmin}}</h6>
+            <h6 class="card-subtitle mb-2">ID: {{especialista.id}}</h6>
+            <button type="button" class="btn btn-outline-success" (click)="aceptar(especialista)">Aceptar</button>
+            <button type="button" class="btn btn-outline-danger" (click)="cancelar(especialista.id)">Cancelar</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>
-

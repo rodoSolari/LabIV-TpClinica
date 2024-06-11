@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -8,25 +10,55 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  constructor(public service : AuthService, private router : Router) {}
+  usuariologeado: any;
+  isAdmin: boolean = false;
 
-  usuariologeado : any;
+  constructor(
+    public service: AuthService,
+    private router: Router,
+    public firestore: Firestore
+  ) {}
 
   ngOnInit(): void {
-    this.service.userLogged().subscribe(usuario => {
-      this.usuariologeado = usuario;
-      console.log(this.usuariologeado);
+    this.service.userLogged().subscribe(async usuario => {
+      if (usuario && usuario.email) {
+        try {
+          const userData = await this.service.obtenerDatosUsuario(usuario.email);
+          console.log('Datos del usuario en navbar:', userData);
+          if (userData) {
+            if (
+              (userData.tipo === 'especialista' && userData.estadoAprobadoPorAdmin && usuario.emailVerified) ||
+              (userData.tipo === 'paciente' && usuario.emailVerified) ||
+              userData.tipo === 'administrador'
+            ) {
+              this.usuariologeado = usuario;
+              this.isAdmin = userData.tipo === 'administrador';
+            } else {
+              await this.service.logout();
+              this.usuariologeado = null;
+              this.router.navigate(['home']);
+            }
+          } else {
+            await this.service.logout();
+            this.usuariologeado = null;
+            this.router.navigate(['home']);
+          }
+        } catch (error) {
+          console.error('Error obteniendo los datos del usuario en navbar:', error);
+          await this.service.logout();
+          this.usuariologeado = null;
+          this.router.navigate(['home']);
+        }
+      } else {
+        this.usuariologeado = null;
+        this.router.navigate(['home']);
+      }
     });
   }
 
-  public userIsLogged(){
-    // return this.service.userLogged();
-  }
-
-  logout(){
+  async logout() {
     console.log("cerrando sesion..");
-    this.service.logout();
+    await this.service.logout();
     this.router.navigate(['home']);
-
   }
 }

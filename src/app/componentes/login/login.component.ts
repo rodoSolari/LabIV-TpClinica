@@ -10,60 +10,62 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent {
   date = new Date();
-  email : string = '';
-  clave : string = '';
-  mensaje : string = ''
+  email: string = '';
+  clave: string = '';
+  mensaje: string = '';
 
-  constructor(public service : AuthService, private router : Router, private auth : AngularFireAuth) {}
+  constructor(public service: AuthService, private router: Router, private auth: AngularFireAuth) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-  }
-
-  login(){
-    this.service.login(this.email,this.clave).then((userCredential) => {
-     /* this.auth.authState.subscribe((usuario : any) =>{
-       if(usuario. usuario.tipo = 'paciente')
-      })*/
-      const date : Date = new Date();
-      this.service.subirLog(this.email,date.toLocaleString());
+  login() {
+    this.service.login(this.email, this.clave).then((userCredential) => {
+      const date: Date = new Date();
+      this.service.subirLog(this.email, date.toLocaleString());
       console.log("usuario logueado correctamente");
-
       this.router.navigate(['home']);
-    })
-    .catch((error) => {
-      this.mensaje = error.message.slice(9);
-      const errorCode = error.code;
-      const errorMessage = error.message;
+    }).catch((error) => {
+      let mensajeError: string;
+      switch (error.code) {
+        case 'especialista/no-aprobado':
+          mensajeError = error.message;
+          break;
+        case 'paciente/no-verificado':
+          mensajeError = error.message;
+          break;
+        case 'usuario/no-encontrado':
+          mensajeError = error.message;
+          break;
+        case 'auth/invalid-email':
+          mensajeError = 'El correo electrónico proporcionado no es válido.';
+          break;
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+        case 'auth/invalid-login-credentials':
+          mensajeError = 'Credenciales de inicio de sesión incorrectas. Por favor, verifica tus datos.';
+          break;
+        default:
+          mensajeError = 'Ocurrió un error durante el inicio de sesión. Por favor, inténtalo de nuevo más tarde.';
+          break;
+      }
+      this.mensaje = mensajeError;
+      console.error('Error de inicio de sesión:', error);
     });
   }
 
-  fillUserData(){
-    this.email = "usuarioprueba@hotmail.com"
-    this.clave = "prueba123";
+
+  fillUserData() {
+    this.email = "beilubruffeutrei-5383@yopmail.com";
+    this.clave = "123123";
   }
 
-  fillPaciente2(){
-    this.email = "pacienteprueba2@hotmail.com"
-    this.clave = "prueba123";
+  fillUserDataEspecialista() {
+    this.email = "wanneugoihoka-1312@yopmail.com";
+    this.clave = "123123";
   }
 
-  fillPaciente3(){
-    this.email = "pacienteprueba3@hotmail.com"
-    this.clave = "prueba123";
-  }
-
-  fillUserDataEspecialista(){
-    this.email = "especialistaprueba@hotmail.com"
-    this.clave = "especialista123";
-  }
-  fillUserDataEspecialista2(){
-    this.email = "especialistaprueba2@hotmail.com"
-    this.clave = "especialista123";
-  }
-
-  fillUserDataAdmin(){
-    this.email = "adminprueba@hotmail.com"
+  fillUserDataAdmin() {
+    this.email = "adminprueba@hotmail.com";
     this.clave = "admin123";
   }
 }

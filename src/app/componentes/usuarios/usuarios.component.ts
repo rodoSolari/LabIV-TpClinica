@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Firestore } from '@angular/fire/firestore';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { collection } from 'firebase/firestore';
+import { collectionData } from 'rxfire/firestore';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -8,61 +15,134 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   styleUrls: ['./usuarios.component.scss']
 })
 export class UsuariosComponent implements OnInit{
+  adminFormGroup: FormGroup;
+  pacienteFormGroup: FormGroup;
+  listadoEspecialistas: any[] = [];
+  listadoAdministradores: any[] = [];
+  currentUserUid: string | null = null;
+  mensajeAdmin: string = '';
+  mensajePaciente: string = '';
 
-  listadoEspecialistas : any[] = [];
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private usuarioService: UsuarioService,
+    private afAuth: AngularFireAuth,
+    private firestore: Firestore
+  ) {
+    this.adminFormGroup = this.fb.group({
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      edad: ['', [Validators.required, Validators.min(18), Validators.max(99)]],
+      dni: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
 
-  constructor(private usuarioService : UsuarioService, private auth : AngularFireAuth){
-
+    this.pacienteFormGroup = this.fb.group({
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      edad: ['', [Validators.required, Validators.min(18), Validators.max(99)]],
+      dni: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
+      obraSocial: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      imagen1: ['', Validators.required],
+      imagen2: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
-    this.usuarioService.traerTodos().subscribe((listadoUsuarios) => {
-
-      this.listadoEspecialistas = listadoUsuarios.map(usuarioRef => {
-        let usuario : any = usuarioRef.payload.doc.data();
-        usuario['id'] = usuarioRef.payload.doc.id;
-        return usuario;
-      })
-      //console.log(this.listadoEspecialistas);
-
-    });
-
-    /*this.usuarioService.traerTodos().subscribe((listado : any[]) => {
-      for(let i of listado){
-        if (i.tipo == 'especialista' && !i.estadoAprobadoPorAdmin){
-          this.listadoEspecialistas.push(i);
-        }
-      }
-      console.log("Lenght listadoEspecialista " + this.listadoEspecialistas.length);
-    });*/
+    this.cargarUsuarios();
   }
 
-  aceptar(especialista : any){
-    especialista.estadoAprobadoPorAdmin = true;
-  }
-
-  cancelar(id : string){
-    console.log(id);
-    this.usuarioService.delete(id).then(res => {
-      console.log("Se elimino con exito");
-    }).catch(err => {
-      console.log("ERROR al eliminar ", err);
+  cargarUsuarios(): void {
+    this.usuarioService.traerUsuarios().subscribe((usuarios: any[]) => {
+      this.listadoEspecialistas = usuarios.filter(usuario => usuario.tipo === 'especialista');
+      this.listadoAdministradores = usuarios.filter(usuario => usuario.tipo === 'administrador');
     });
   }
 
-/*  traer(){
-    this.usuarioService.traerTodos().subscribe((listaDeUsuariosRef) => {
+  aceptar(especialista: any): void {
+    this.usuarioService.habilitarEspecialista(especialista.id).then(() => {
+      this.cargarUsuarios();
+    });
+  }
 
-        this.listadoEspecialistas = listaDeUsuariosRef.map(usuarioRef => {
-          let usuario : any = usuarioRef.payload.doc.data();
-          usuario['id'] = usuarioRef.payload.doc.id;
-          return usuario;
-        })
-        console.log(this.listadoEspecialistas);
+  cancelar(id: string): void {
+    this.usuarioService.eliminar(id).then(() => {
+      this.cargarUsuarios();
+    });
+  }
 
+  registrarAdmin(): void {
+    const { email, password, nombre, apellido, edad, dni } = this.adminFormGroup.value;
+    const adminData = { email, password, nombre, apellido, edad, dni, tipo: 'administrador' };
+    this.authService.register(adminData.email, adminData.password).then(userCredential => {
+      this.authService.addAdmin(adminData).then(() => {
+        this.mensajeAdmin = 'Administrador registrado exitosamente.';
+        this.limpiarFormulario(this.adminFormGroup);
+        this.cargarUsuarios();
+      }).catch(error => {
+        this.mensajeAdmin = error.message;
       });
-    }*/
-
+    }).catch(error => {
+      this.mensajeAdmin = error.message;
+    });
   }
 
+  registrarPaciente(): void {
+    if (!this.currentUserUid) {
+      console.error('No user is currently logged in.');
+      return;
+    }
 
+    const { email, password, nombre, apellido, edad, dni, obraSocial } = this.pacienteFormGroup.value;
+    const pacienteData = {
+      email,
+      password,
+      nombre,
+      apellido,
+      edad,
+      dni,
+      obraSocial,
+      tipo: 'paciente'
+    };
+
+    const imagen1 = this.pacienteFormGroup.get('imagen1')?.value;
+    const imagen2 = this.pacienteFormGroup.get('imagen2')?.value;
+
+    this.authService.register(pacienteData.email, pacienteData.password).then(userCredential => {
+      this.usuarioService.addPaciente(pacienteData, imagen1, imagen2, this.currentUserUid!).then(() => {
+        this.mensajePaciente = 'Paciente registrado exitosamente.';
+        this.limpiarFormulario(this.pacienteFormGroup);
+        this.cargarUsuarios();
+      }).catch(error => {
+        this.mensajePaciente = error.message;
+      });
+    }).catch(error => {
+      this.mensajePaciente = error.message;
+    });
+  }
+
+  limpiarFormulario(form: FormGroup): void {
+    form.reset();
+    for (let control in form.controls) {
+      form.get(control)?.setErrors(null);
+    }
+  }
+
+  cargarImagen1(event: any): void {
+    const file = event.target.files[0];
+    this.pacienteFormGroup.patchValue({
+      imagen1: file
+    });
+  }
+
+  cargarImagen2(event: any): void {
+    const file = event.target.files[0];
+    this.pacienteFormGroup.patchValue({
+      imagen2: file
+    });
+  }
+}

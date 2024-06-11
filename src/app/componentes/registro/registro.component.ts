@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { Paciente } from 'src/app/clases/paciente';
 import { AuthService } from 'src/app/services/auth.service';
 import { Storage, ref, uploadBytes, listAll, getDownloadURL } from '@angular/fire/storage';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import {BotonesDirective} from '../../directivas/botones.directive'
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-registro',
@@ -14,161 +15,116 @@ import {BotonesDirective} from '../../directivas/botones.directive'
   styleUrls: ['./registro.component.scss']
 })
 export class RegistroComponent {
-  date = new Date();
-  tipo : string = '';
-  mensaje : string;
-  email : string = '';
-  clave : string = '';
-  nombre : string = '';
-  apellido : string = '';
-  especialidad : string = '';
-  edad : number = 0;
-  dni : number = 0;
-  otraEspecialidad! : boolean;
-  nuevaEspecialidad : string = '';
-  estadoAprobado! : boolean;
-  estadoAprobadoPorAdmin! : boolean;
-  obraSocial : string = '';
-  especialidades : any[] = [];
-  paciente! : Paciente;
-  imagenes : any[];
-  imagen1: any;
-  imagen2: any;
-  evento : any;
-  formGroup! : FormGroup;
-  check! : boolean;
- // nuevaEspecialidad! : string;
+  formGroup: FormGroup;
+  especialidades: string[] = [];
+  tipo: string = '';
+  mensaje: string = '';
 
-  constructor(public service:AuthService,private router : Router, private storage : Storage,
-              private form : FormBuilder, usuarioService : UsuarioService) {
-    this.mensaje = '';
-    this.imagenes = [];
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private usuarioService: UsuarioService,
+    private router: Router
+  ) {
+    this.formGroup = this.fb.group({
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      edad: ['', [Validators.required, Validators.min(18), Validators.max(99)]],
+      dni: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      especialidad: [''],
+      obraSocial: [''],
+      imagen1: [null, Validators.required],
+      imagen2: [null]
+    });
   }
 
   ngOnInit(): void {
-
-    this.obtenerImagenes();
-      this.formGroup = this.form.group({
-        'email':['',[Validators.required]],
-        'nombre':['',[Validators.required]],
-        'apellido':['',[Validators.required]],
-        'edad': ['', [Validators.required, Validators.min(1),Validators.max(99)]],
-        'obraSocial':['',[Validators.required]],
-        'especialidad':['',[Validators.required]],
-        'dni': ['',[Validators.required,Validators.min(11111111),Validators.max(99999999),Validators.minLength(8),Validators.minLength(8)]],
-        'password':['',[Validators.required]],
-        'imagen1':['',[Validators.required]],
-        'imagen2':['',],
-      });
-      this.especialidad = this.formGroup.getRawValue().especialidad;
-    this.service.traerEspecialidaes().subscribe((respuesta) => {
-      this.especialidades = respuesta;
-    })
-  }
-
-  register(){
-    const datosForm = this.formGroup.getRawValue();
-    var date = new Date();
-    this.service.register(datosForm.email,datosForm.password).then((userCredential) => {
-      this.service.confirmarMail(userCredential.user);
-
-      this.service.subirLog(datosForm.email,date.toLocaleString());
-      setTimeout(() => {
-        this.service.addPaciente(datosForm,this.tipo);
-      }, 400);
-      this.Subir();
-      userCredential.user?.updateProfile({displayName: datosForm.nombre});
-      this.service.logout();
-      this.router.navigate(['home']);
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      this.mensaje = error.message.slice(9);
-    });
-
-  }
-
-  onEspecialidadChange(event: any) {
-    this.especialidad = event.target.value;
-  }
-
-  showMessage(){
-    this.mensaje = "El usuario que desea registrar ya existe, por favor vuelva a ingresar otros datos";
-  }
-
-  mostrarFormPaciente(){
-    this.tipo = "paciente";
-    this.formGroup.patchValue({
-      especialidad: false
+    this.authService.traerEspecialidades().subscribe(especialidades => {
+      this.especialidades = especialidades;
     });
   }
 
-  mostrarFormEspecialista(){
-    this.tipo = "especialista";
-    this.formGroup.patchValue({
-      obraSocial: false
-    });
-
-  }
-
-  opcionEspecialidadNueva(){
-    this.otraEspecialidad = true;
-  }
-
-  agregarNuevaEspecialidad(){
-    /*if(!this.especialidades.includes(this.nuevaEspecialidad)){
-      this.service.agregarEspecialidad(this.nuevaEspecialidad).subscribe((respuesta : any) =>{
-        console.log(respuesta);
-      });
-    }*/
-  }
-
-
-  cargarImagen1(event: any) {
-    this.imagen1 = event.target.files[0];
-    console.log("Primera imagen: " + this.imagen1);
-  }
-
-  cargarImagen2($event: any) {
-    this.imagen2 = $event.target.files[0];
-    console.log("Segunda imagen: " + this.imagen2);
-  }
-
-  Subir(){
-    console.log("Subiendo imagen");
-    //const file = this.evento.target.files[0];
-    const imgRef = ref(this.storage, `imagenes/${this.imagen1.name}`);
-    uploadBytes(imgRef, this.imagen1)
-      .then(response => {
-        console.log(response)
-        this.obtenerImagenes();
-      })
-      .catch(error => console.log(error));
-    if(this.tipo == 'paciente'){
-      const imgRef2 = ref(this.storage, `imagenes/${this.imagen2.name}`);
-      uploadBytes(imgRef2, this.imagen2)
-        .then(response => {
-          console.log(response)
-          this.obtenerImagenes();
-        })
-        .catch(error => console.log(error));
+  onEspecialidadChange(event: any): void {
+    if (event.target.value === 'otro') {
+      this.formGroup.addControl('nuevaEspecialidad', this.fb.control('', Validators.required));
+    } else {
+      this.formGroup.removeControl('nuevaEspecialidad');
     }
   }
 
-  obtenerImagenes() {
-    const imagesRef = ref(this.storage, 'imagenes');
+  register(): void {
+    const { email, password, nombre, apellido, edad, dni, obraSocial, especialidad } = this.formGroup.value;
+    const tipo = this.tipo;
+    const imagen1 = this.formGroup.get('imagen1')?.value;
+    const imagen2 = this.formGroup.get('imagen2')?.value;
+    const usuarioData = { email, password, nombre, apellido, edad, dni, obraSocial, especialidad, tipo };
 
-    listAll(imagesRef)
-      .then(async response => {
-        console.log(response);
-        this.imagenes = [];
-        for (let item of response.items) {
-          const url = await getDownloadURL(item);
-          this.imagenes.push(url);
+    this.authService.register(email, password).then(userCredential => {
+      const uid = userCredential.user?.uid;
+
+      if (tipo === 'administrador') {
+        this.authService.addAdmin(usuarioData).then(() => {
+          this.mensaje = 'Administrador registrado exitosamente.';
+          this.limpiarFormulario();
+        }).catch((error: any) => {
+          this.mensaje = 'Error al registrar el administrador: ' + error.message;
+        });
+      } else {
+        if (tipo === 'paciente') {
+          this.usuarioService.addPaciente(usuarioData, imagen1, imagen2, uid!).then(() => {
+            this.authService.confirmarMail(userCredential.user).then(() => {
+              this.mensaje = 'Paciente registrado exitosamente. Por favor, verifique su correo electrónico.';
+              this.limpiarFormulario();
+              this.authService.logout();
+            }).catch((error: any) => {
+              this.mensaje = 'Error al enviar el correo de verificación: ' + error.message;
+            });
+          }).catch((error: any) => {
+            this.mensaje = 'Error al registrar el paciente: ' + error.message;
+          });
+        } else if (tipo === 'especialista') {
+          if (especialidad === 'otro') {
+            usuarioData.especialidad = this.formGroup.get('nuevaEspecialidad')?.value;
+            this.authService.agregarEspecialidad(usuarioData.especialidad);
+          }
+          this.usuarioService.addEspecialista(usuarioData, imagen1, uid!).then(() => {
+            this.authService.confirmarMail(userCredential.user).then(() => {
+              this.mensaje = 'Especialista registrado exitosamente. Su cuenta debe ser aprobada por un administrador.';
+              this.limpiarFormulario();
+              this.authService.logout();
+            }).catch((error: any) => {
+              this.mensaje = 'Error al enviar el correo de verificación: ' + error.message;
+            });
+          }).catch((error: any) => {
+            this.mensaje = 'Error al registrar el especialista: ' + error.message;
+          });
         }
-      })
-      .catch(error => console.log(error));
+      }
+    }).catch((error: any) => {
+      this.mensaje = 'Error al registrar el usuario: ' + error.message;
+    });
   }
 
+  limpiarFormulario(): void {
+    this.formGroup.reset();
+    for (let control in this.formGroup.controls) {
+      this.formGroup.get(control)?.setErrors(null);
+    }
+  }
+
+  cargarImagen1(event: any): void {
+    const file = event.target.files[0];
+    this.formGroup.patchValue({
+      imagen1: file
+    });
+  }
+
+  cargarImagen2(event: any): void {
+    const file = event.target.files[0];
+    this.formGroup.patchValue({
+      imagen2: file
+    });
+  }
 }
