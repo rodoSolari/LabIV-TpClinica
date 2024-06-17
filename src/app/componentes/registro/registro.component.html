@@ -59,10 +59,10 @@
               </select>
               <small class="invalid" style="color: red;" *ngIf="formGroup.get('especialidad')?.errors?.['required'] && formGroup.get('especialidad')?.touched">Especialidad requerida</small>
 
-              <div *ngIf="formGroup.get('nuevaEspecialidad')">
-                <label class="custom-control-label" for="descripcion">Otra especialidad</label>
-                <input name="nuevaEspecialidad" placeholder="Especialidad" type="text" class="form-control" id="nuevaEspecialidad" formControlName="nuevaEspecialidad">
-                <small class="invalid" style="color: red;" *ngIf="formGroup.get('nuevaEspecialidad')?.errors?.['required'] && formGroup.get('nuevaEspecialidad')?.touched">Especialidad requerida</small>
+              <div *ngIf="formGroup.get('especialidad')?.value == 'otro'">
+                <label class="custom-control-label" for="nuevaEspecialidad">Otra especialidad</label>
+                <input name="nuevaEspecialidad" placeholder="Especialidad" type="text" class="form-control" id="nuevaEspecialidad" formControlName="nuevaEspecialidad" (input)="validateEspecialidad()">
+                <small class="invalid" style="color: red;" *ngIf="formGroup.get('nuevaEspecialidad')?.errors?.['especialidadExistente'] && formGroup.get('nuevaEspecialidad')?.touched">La especialidad ya existe</small>
               </div>
             </div>
 

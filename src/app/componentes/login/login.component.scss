@@ -5,6 +5,55 @@
 }
 
 
+.login-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.quick-access-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 20px;
+}
+
+.btn-new {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.btn-new:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  background-color: #ffcccc;
+  color: #ff0000;
+  border: 1px solid #ff0000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -20,13 +69,6 @@ body {
   background-size: cover;
 }
 
-main {
-  height: 90vh;
-  width: 100vw;
-  position: relative;
-  margin: 0 auto;
-}
-
 
 .row {
   display: flex;
@@ -40,6 +82,20 @@ main {
   transform: translate(-50%, -50%);
 }
 
+.row-acesso-rapido {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 270px;
+  position: absolute;
+  left: 0; /* Cambiado de 50% a 0 para pegar a la izquierda */
+  top: 50%;
+  transform: translateY(-50%); /* Eliminado translateX(-50%) */
+  background-color: rgb(0, 0, 0);
+  border-radius: 4%;
+}
+
+
 .colm-logo {
   flex: 0 0 50%;
   text-align: left;
@@ -49,6 +105,12 @@ main {
   flex: 0 0 40%;
   text-align: center;
 }
+
+.colm-form-acceso-rapido {
+
+  text-align: left;
+}
+
 
 .colm-logo img {
   max-width: 400px;
@@ -186,12 +248,4 @@ footer small {
   font-size: 11px;
 }
 
-.error-message {
-  background-color: #ffcccc;
-  color: #ff0000;
-  border: 1px solid #ff0000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
+

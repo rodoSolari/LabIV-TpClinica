@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class NavbarComponent {
   usuariologeado: any;
   isAdmin: boolean = false;
+  imagenPerfil: string | null = null; // Agregamos una variable para la imagen de perfil
 
   constructor(
     public service: AuthService,
@@ -24,30 +25,31 @@ export class NavbarComponent {
       if (usuario && usuario.email) {
         try {
           const userData = await this.service.obtenerDatosUsuario(usuario.email);
-          console.log('Datos del usuario en navbar:', userData);
-          if (userData) {
-            if (
-              (userData.tipo === 'especialista' && userData.estadoAprobadoPorAdmin && usuario.emailVerified) ||
-              (userData.tipo === 'paciente' && usuario.emailVerified) ||
-              userData.tipo === 'administrador'
-            ) {
-              this.usuariologeado = usuario;
-              this.isAdmin = userData.tipo === 'administrador';
-            } else {
-              await this.service.logout();
+          //console.log('Datos del usuario en navbar:', userData);
+          //if (userData){
+            if((userData.tipo === 'especialista' && userData.estadoAprobadoPorAdmin && usuario.emailVerified) ||
+                (userData.tipo === 'paciente' && usuario.emailVerified) ||
+                userData.tipo === 'administrador'){
+                  this.usuariologeado = usuario;
+                  this.isAdmin = userData.tipo === 'administrador';
+                  this.imagenPerfil = userData.imagen1; // Usamos imagen1 como la imagen de perfil
+            }else{
+              console.warn('El usuario no cumple con los requisitos de inicio de sesión.');
+              /*await this.logout();
               this.usuariologeado = null;
-              this.router.navigate(['home']);
+              this.router.navigate(['home']);*/
             }
-          } else {
-            await this.service.logout();
+         // } else {
+         //   console.error('No se encontraron datos del usuario.');
+            /*await this.logout();
             this.usuariologeado = null;
-            this.router.navigate(['home']);
-          }
+            this.router.navigate(['home']);*/
+         // }
         } catch (error) {
           console.error('Error obteniendo los datos del usuario en navbar:', error);
-          await this.service.logout();
-          this.usuariologeado = null;
-          this.router.navigate(['home']);
+          /*await this.service.logout();
+          this.usuariologeado = null;*/
+          //this.router.navigate(['home']);
         }
       } else {
         this.usuariologeado = null;

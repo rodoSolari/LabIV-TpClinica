@@ -12,7 +12,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private auth: AngularFireAuth, private firestore: Firestore, private afs: AngularFirestore) {}
+  constructor(private auth: AngularFireAuth, private firestore: Firestore) {}
 
   public async subirLog(email: string, date: string): Promise<void> {
     const col = collection(this.firestore, 'logs');
@@ -21,10 +21,12 @@ export class AuthService {
       date: date
     });
   }
+
   public async addAdmin(admin: any): Promise<void> {
     const col = collection(this.firestore, 'Usuarios');
-    const userCredential = await this.register(admin.email, admin.password);
+    const userCredential = await this.auth.createUserWithEmailAndPassword(admin.email, admin.password);
     const uid = userCredential.user?.uid;
+    console.log("UID del nuevo usuario:", uid); // Agrega este log para verificar el UID
 
     return setDoc(doc(this.firestore, `Usuarios/${uid}`), {
       nombre: admin.nombre,
@@ -32,7 +34,7 @@ export class AuthService {
       edad: admin.edad,
       dni: admin.dni,
       email: admin.email,
-      tipo: admin.tipo,
+      tipo: 'administrador',
       estadoAprobado: true,
       estadoAprobadoPorAdmin: true
     });
@@ -63,17 +65,19 @@ export class AuthService {
       const userDocRef = doc(this.firestore, `Usuarios/${uid}`);
       const userDocSnap = await getDoc(userDocRef);
 
+      console.log(userDocRef.path);
+
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
         const emailVerified = userCredential.user?.emailVerified;
 
         if (userData['tipo'] === 'especialista' && (!userData['estadoAprobadoPorAdmin'] || !emailVerified)) {
-          await this.auth.signOut();
+          //await this.auth.signOut();
           throw { code: 'especialista/no-aprobado', message: 'Tu cuenta de especialista no ha sido aprobada por un administrador o no has verificado tu correo electrónico.' };
         }
 
         if (userData['tipo'] === 'paciente' && !emailVerified) {
-          await this.auth.signOut();
+         // await this.auth.signOut();
           throw { code: 'paciente/no-verificado', message: 'No has verificado tu correo electrónico.' };
         }
 
@@ -92,10 +96,10 @@ export class AuthService {
       throw error;
     }
   }
+
   public confirmarMail(user: any) {
     return user.sendEmailVerification();
   }
-
 
   public async logout() {
     await this.auth.signOut();

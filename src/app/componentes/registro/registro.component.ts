@@ -35,6 +35,7 @@ export class RegistroComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       especialidad: [''],
       obraSocial: [''],
+      nuevaEspecialidad:[''],
       imagen1: [null, Validators.required],
       imagen2: [null]
     });
@@ -48,11 +49,40 @@ export class RegistroComponent {
 
   onEspecialidadChange(event: any): void {
     if (event.target.value === 'otro') {
-      this.formGroup.addControl('nuevaEspecialidad', this.fb.control('', Validators.required));
+      this.formGroup.get('nuevaEspecialidad')?.setValidators([Validators.required, this.existingEspecialidadValidator.bind(this)]);
+      this.formGroup.get('nuevaEspecialidad')?.updateValueAndValidity();
     } else {
-      this.formGroup.removeControl('nuevaEspecialidad');
+      this.formGroup.get('nuevaEspecialidad')?.clearValidators();
+      this.formGroup.get('nuevaEspecialidad')?.updateValueAndValidity();
     }
   }
+
+  existingEspecialidadValidator(control: AbstractControl): { [key: string]: any } | null {
+    return this.especialidades.includes(control.value) ? { 'especialidadExistente': true } : null;
+  }
+
+  validateEspecialidad(): void {
+    const nuevaEspecialidadControl = this.formGroup.get('nuevaEspecialidad');
+    if (nuevaEspecialidadControl) {
+      nuevaEspecialidadControl.updateValueAndValidity();
+    }
+  }
+
+  /**
+   onTipoChange(tipo: string): void {
+    this.tipo = tipo;
+    if (tipo === 'paciente') {
+      this.formGroup.get('imagen1')?.setValidators(Validators.required);
+      this.formGroup.get('imagen2')?.setValidators(Validators.required);
+    } else if (tipo === 'especialista') {
+      this.formGroup.get('imagen1')?.setValidators(Validators.required);
+      this.formGroup.get('imagen2')?.clearValidators();
+    }
+    this.formGroup.get('imagen1')?.updateValueAndValidity();
+    this.formGroup.get('imagen2')?.updateValueAndValidity();
+  }
+
+   */
 
   register(): void {
     const { email, password, nombre, apellido, edad, dni, obraSocial, especialidad } = this.formGroup.value;
@@ -77,7 +107,7 @@ export class RegistroComponent {
             this.authService.confirmarMail(userCredential.user).then(() => {
               this.mensaje = 'Paciente registrado exitosamente. Por favor, verifique su correo electrónico.';
               this.limpiarFormulario();
-              this.authService.logout();
+              //this.authService.logout();
             }).catch((error: any) => {
               this.mensaje = 'Error al enviar el correo de verificación: ' + error.message;
             });
@@ -93,7 +123,7 @@ export class RegistroComponent {
             this.authService.confirmarMail(userCredential.user).then(() => {
               this.mensaje = 'Especialista registrado exitosamente. Su cuenta debe ser aprobada por un administrador.';
               this.limpiarFormulario();
-              this.authService.logout();
+              //this.authService.logout();
             }).catch((error: any) => {
               this.mensaje = 'Error al enviar el correo de verificación: ' + error.message;
             });

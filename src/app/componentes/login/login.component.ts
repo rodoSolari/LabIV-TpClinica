@@ -54,10 +54,16 @@ export class LoginComponent {
   }
 
 
-  fillUserData() {
+
+  fillUserData(email: string, password: string): void {
+    this.email = email;
+    this.clave = password;
+  }
+
+/*  fillUserData() {
     this.email = "beilubruffeutrei-5383@yopmail.com";
     this.clave = "123123";
-  }
+  }*/
 
   fillUserDataEspecialista() {
     this.email = "wanneugoihoka-1312@yopmail.com";

@@ -9,21 +9,36 @@
 </head>
 <body>
   <main style="font-size: arial;">
-    <div class="row">
-      <h2 style="text-align: center; text-shadow:  1px; color: black;">Loguearse</h2>
+    <div class="login-container">
+      <div class="row">
         <div class="colm-form">
-            <div class="form-container">
-              <input type="text" placeholder="email" [(ngModel)]="this.email">
-              <input type="password" placeholder="Password" [(ngModel)]="this.clave">
-              <button class="btn-login" style="background-color: black;" (click)="login()">Login</button>
-              <button class="btn-new" (click)="fillUserData()">Ingresar como usuario</button>
-              <button class="btn-new" (click)="fillUserDataEspecialista()">Ingresar como Especialista</button>
-              <button class="btn-new" (click)="fillUserDataAdmin()">Ingresar como Admin</button>
-            </div>
+          <div class="form-container">
+            <h2 style="text-align: center; text-shadow:  1px; color: black;">Loguearse</h2>
+            <input type="text" placeholder="email" [(ngModel)]="this.email">
+            <input type="password" placeholder="Password" [(ngModel)]="this.clave">
+            <button class="btn-login" style="background-color: black;" (click)="login()">Login</button>
+            <button class="btn-new" (click)="fillUserData('beilubruffeutrei-5383@yopmail.com','123123')">Ingresar como usuario</button>
+            <button class="btn-new" (click)="fillUserDataEspecialista()">Ingresar como Especialista</button>
+            <button class="btn-new" (click)="fillUserDataAdmin()">Ingresar como Admin</button>
             <div [class.error-message]="mensaje !== ''">
               <p>{{this.mensaje}}</p>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row-acesso-rapido">
+      <div class="colm-form-acceso-rapido">
+      <div class="quick-access-container">
+        <h5>Botones De acceso rapido</h5>
+        <button class="btn-new" (click)="fillUserData('kelurippaxeu-4746@yopmail.com', '123123')">Ingresar como Paciente 1</button>
+        <button class="btn-new" (click)="fillUserData('wiyeisoittepei-4912@yopmail.com', '123123')">Ingresar como Paciente 2</button>
+        <button class="btn-new" (click)="fillUserData('youheddaujifa-1419@yopmail.com', '123123')">Ingresar como Paciente 3</button>
+        <button class="btn-new" (click)="fillUserData('wanneugoihoka-1312@yopmail.com', '123123')">Ingresar como Especialista 1</button>
+        <button class="btn-new" (click)="fillUserData('quatreguhuce-3168@yopmail.com', '123123')">Ingresar como Especialista 2</button>
+        <button class="btn-new" (click)="fillUserData('adminprueba2@hotmail.com', '123123')">Ingresar como Admin</button>
+      </div>
+      </div>
     </div>
 </main>
 <footer>
