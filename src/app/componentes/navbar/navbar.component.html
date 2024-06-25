@@ -20,6 +20,9 @@
       </ul>
     </div>
     <ul class="navbar-nav" *ngIf="usuariologeado; else Login">
+      <li class="nav-item" *ngIf="!isAdmin">
+        <a class="nav-link" routerLink="mi-perfil">Mi perfil</a>
+      </li>
       <li class="nav-item d-flex align-items-center">
         <img [src]="imagenPerfil" alt="Perfil" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;">
         <h5 style="color: #0e0f11; padding: 0 15px;">Hola {{usuariologeado.displayName || usuariologeado.email}}!</h5>

@@ -46,11 +46,6 @@ export class MiPerfilComponent {
         horarioFin: this.horarioFin
       };
       this.horariosDisponibles.push(nuevaDisponibilidad);
-    /*  this.turnosService.actualizarHorariosDisponibles(this.userData.email, this.horariosDisponibles).then(() => {
-        this.especialidadSeleccionada = '';
-        this.horarioInicio = '';
-        this.horarioFin = '';
-      });*/
     }
   }
 }

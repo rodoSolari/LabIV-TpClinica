@@ -75,13 +75,17 @@
 
             <input *ngIf="tipo === 'paciente'" type="file" class="form-control" (change)="cargarImagen2($event)" accept="image/*">
             <small class="invalid" style="color: red;" *ngIf="formGroup.get('imagen2')?.errors?.['required'] && formGroup.get('imagen2')?.touched">Imagen requerida</small>
-            <ngx-recaptcha2 #captchaElem
-            [siteKey]="siteKey"
-
-            formControlName="recaptcha">
-          </ngx-recaptcha2>
+           <!-- <ngx-recaptcha2 #captchaElem
+                [siteKey]="siteKey"
+                formControlName="recaptcha">
+            </ngx-recaptcha2>-->
             <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid">Registrar</button>
+
           </form>
+
+
+          <div class="spinner" *ngIf="loading"></div>
+
           <div [class.error-message]="mensaje !== ''">
             <p>{{mensaje}}</p>
           </div>

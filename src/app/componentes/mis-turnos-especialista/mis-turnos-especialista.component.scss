@@ -8,21 +8,21 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  overflow-y: auto; /* Permitir desplazamiento vertical */
+  overflow-y: auto;
   margin: 0;
   padding: 0;
 }
 
 .container {
-  min-height: 100vh; /* Asegura que el contenedor tenga al menos la altura de la ventana */
-  padding-bottom: 60px; /* Ajusta este valor según el espacio necesario */
+  min-height: 100vh;
+  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente para las tarjetas */
+  background: rgba(255, 255, 255, 0.8);
   color: black;
 }
 
@@ -39,5 +39,5 @@ form {
 }
 
 .modal-content {
-  color: black; /* Color del texto en los modales */
+  color: black;
 }

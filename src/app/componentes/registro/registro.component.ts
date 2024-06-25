@@ -21,12 +21,14 @@ export class RegistroComponent {
   tipo: string = '';
   mensaje: string = '';
   siteKey : string = '6LegtgAqAAAAAMlArl43xxDmD7G3Ub9txQ78_hH1';
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private usuarioService: UsuarioService,
-    private router: Router
+    private router: Router,
+
   ) {
     this.formGroup = this.fb.group({
       nombre: ['', Validators.required],
@@ -40,11 +42,12 @@ export class RegistroComponent {
       nuevaEspecialidad:[''],
       imagen1: [null, Validators.required],
       imagen2: [null],
-      recaptcha: ['', Validators.required]
+     // recaptcha: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
+
     this.usuarioService.traerEspecialidades().subscribe(especialidades => {
       this.especialidades = especialidades;
     });
@@ -72,6 +75,7 @@ export class RegistroComponent {
   }
 
   register(): void {
+    this.loading = true;
     const { email, password, nombre, apellido, edad, dni, obraSocial, especialidad } = this.formGroup.value;
     const tipo = this.tipo;
     const imagen1 = this.formGroup.get('imagen1')?.value;
@@ -94,12 +98,15 @@ export class RegistroComponent {
             this.authService.confirmarMail(userCredential.user).then(() => {
               this.mensaje = 'Paciente registrado exitosamente. Por favor, verifique su correo electrónico.';
               this.limpiarFormulario();
+              this.loading = false;
               //this.authService.logout();
             }).catch((error: any) => {
               this.mensaje = 'Error al enviar el correo de verificación: ' + error.message;
+              this.loading = false;
             });
           }).catch((error: any) => {
             this.mensaje = 'Error al registrar el paciente: ' + error.message;
+            this.loading = false;
           });
         } else if (tipo === 'especialista') {
           if (especialidad === 'otro') {
@@ -108,19 +115,23 @@ export class RegistroComponent {
           }
           this.usuarioService.addEspecialista(usuarioData, imagen1, uid!).then(() => {
             this.authService.confirmarMail(userCredential.user).then(() => {
-              this.mensaje = 'Especialista registrado exitosamente. Su cuenta debe ser aprobada por un administrador.';
+              this.mensaje = 'Especialista registrado exitosamente. Por favor, verifique su correo electrónico, luego aguarde a que su cuenta sea aprobada por un administrador.';
               this.limpiarFormulario();
+              this.loading = false;
               //this.authService.logout();
             }).catch((error: any) => {
               this.mensaje = 'Error al enviar el correo de verificación: ' + error.message;
+              this.loading = false;
             });
           }).catch((error: any) => {
             this.mensaje = 'Error al registrar el especialista: ' + error.message;
+            this.loading = false;
           });
         }
      // }
     }).catch((error: any) => {
       this.mensaje = 'Error al registrar el usuario: ' + error.message;
+      this.loading = false;
     });
   }
 
