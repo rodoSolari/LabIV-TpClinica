@@ -9,6 +9,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import {BotonesDirective} from '../../directivas/botones.directive'
 import { Observable } from 'rxjs';
 
+
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
@@ -19,6 +20,7 @@ export class RegistroComponent {
   especialidades: string[] = [];
   tipo: string = '';
   mensaje: string = '';
+  siteKey : string = '6LegtgAqAAAAAMlArl43xxDmD7G3Ub9txQ78_hH1';
 
   constructor(
     private fb: FormBuilder,
@@ -37,7 +39,8 @@ export class RegistroComponent {
       obraSocial: [''],
       nuevaEspecialidad:[''],
       imagen1: [null, Validators.required],
-      imagen2: [null]
+      imagen2: [null],
+      recaptcha: ['', Validators.required]
     });
   }
 
@@ -67,22 +70,6 @@ export class RegistroComponent {
       nuevaEspecialidadControl.updateValueAndValidity();
     }
   }
-
-  /**
-   onTipoChange(tipo: string): void {
-    this.tipo = tipo;
-    if (tipo === 'paciente') {
-      this.formGroup.get('imagen1')?.setValidators(Validators.required);
-      this.formGroup.get('imagen2')?.setValidators(Validators.required);
-    } else if (tipo === 'especialista') {
-      this.formGroup.get('imagen1')?.setValidators(Validators.required);
-      this.formGroup.get('imagen2')?.clearValidators();
-    }
-    this.formGroup.get('imagen1')?.updateValueAndValidity();
-    this.formGroup.get('imagen2')?.updateValueAndValidity();
-  }
-
-   */
 
   register(): void {
     const { email, password, nombre, apellido, edad, dni, obraSocial, especialidad } = this.formGroup.value;

@@ -22,6 +22,7 @@ import { MisTurnosPacienteComponent } from './componentes/mis-turnos-paciente/mi
 import { MisTurnosEspecialistaComponent } from './componentes/mis-turnos-especialista/mis-turnos-especialista.component';
 import { TurnosAdministradorComponent } from './componentes/turnos-administrador/turnos-administrador.component';
 import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
     HttpClientModule,
     AngularFireModule,
     ReactiveFormsModule,
+    NgxCaptchaModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
