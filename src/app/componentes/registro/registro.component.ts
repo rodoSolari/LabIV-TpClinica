@@ -42,7 +42,7 @@ export class RegistroComponent {
   }
 
   ngOnInit(): void {
-    this.authService.traerEspecialidades().subscribe(especialidades => {
+    this.usuarioService.traerEspecialidades().subscribe(especialidades => {
       this.especialidades = especialidades;
     });
   }
@@ -94,14 +94,14 @@ export class RegistroComponent {
     this.authService.register(email, password).then(userCredential => {
       const uid = userCredential.user?.uid;
 
-      if (tipo === 'administrador') {
+     /* if (tipo === 'administrador') {
         this.authService.addAdmin(usuarioData).then(() => {
           this.mensaje = 'Administrador registrado exitosamente.';
           this.limpiarFormulario();
         }).catch((error: any) => {
           this.mensaje = 'Error al registrar el administrador: ' + error.message;
         });
-      } else {
+      } else {*/
         if (tipo === 'paciente') {
           this.usuarioService.addPaciente(usuarioData, imagen1, imagen2, uid!).then(() => {
             this.authService.confirmarMail(userCredential.user).then(() => {
@@ -117,7 +117,7 @@ export class RegistroComponent {
         } else if (tipo === 'especialista') {
           if (especialidad === 'otro') {
             usuarioData.especialidad = this.formGroup.get('nuevaEspecialidad')?.value;
-            this.authService.agregarEspecialidad(usuarioData.especialidad);
+            this.usuarioService.agregarEspecialidad(usuarioData.especialidad);
           }
           this.usuarioService.addEspecialista(usuarioData, imagen1, uid!).then(() => {
             this.authService.confirmarMail(userCredential.user).then(() => {
@@ -131,7 +131,7 @@ export class RegistroComponent {
             this.mensaje = 'Error al registrar el especialista: ' + error.message;
           });
         }
-      }
+     // }
     }).catch((error: any) => {
       this.mensaje = 'Error al registrar el usuario: ' + error.message;
     });

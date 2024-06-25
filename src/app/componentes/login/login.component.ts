@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -13,10 +15,29 @@ export class LoginComponent {
   email: string = '';
   clave: string = '';
   mensaje: string = '';
+  userImages: { [key: string]: string } = {};
 
-  constructor(public service: AuthService, private router: Router, private auth: AngularFireAuth) {}
+  constructor(public service: AuthService, private router: Router, private auth: AngularFireAuth,private storage: AngularFireStorage) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const users = [
+      'kelurippaxeu-4746@yopmail.com',
+      'wiyeisoittepei-4912@yopmail.com',
+      'youheddaujifa-1419@yopmail.com',
+      'wanneugoihoka-1312@yopmail.com',
+      'quatreguhuce-3168@yopmail.com',
+      'adminprueba2@hotmail.com'
+    ];
+
+    users.forEach(email => {
+      this.service.obtenerDatosUsuario(email).then(userData => {
+        if (userData && userData.imagen1) {
+          this.userImages[email] = userData.imagen1;
+        }
+      });
+    });
+
+  }
 
   login() {
     this.service.login(this.email, this.clave).then((userCredential) => {
@@ -59,11 +80,6 @@ export class LoginComponent {
     this.email = email;
     this.clave = password;
   }
-
-/*  fillUserData() {
-    this.email = "beilubruffeutrei-5383@yopmail.com";
-    this.clave = "123123";
-  }*/
 
   fillUserDataEspecialista() {
     this.email = "wanneugoihoka-1312@yopmail.com";

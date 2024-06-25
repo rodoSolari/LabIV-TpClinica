@@ -27,18 +27,32 @@
         </div>
       </div>
     </div>
-    <div class="row-acesso-rapido">
-      <div class="colm-form-acceso-rapido">
-      <div class="quick-access-container">
-        <h5>Botones De acceso rapido</h5>
-        <button class="btn-new" (click)="fillUserData('kelurippaxeu-4746@yopmail.com', '123123')">Ingresar como Paciente 1</button>
-        <button class="btn-new" (click)="fillUserData('wiyeisoittepei-4912@yopmail.com', '123123')">Ingresar como Paciente 2</button>
-        <button class="btn-new" (click)="fillUserData('youheddaujifa-1419@yopmail.com', '123123')">Ingresar como Paciente 3</button>
-        <button class="btn-new" (click)="fillUserData('wanneugoihoka-1312@yopmail.com', '123123')">Ingresar como Especialista 1</button>
-        <button class="btn-new" (click)="fillUserData('quatreguhuce-3168@yopmail.com', '123123')">Ingresar como Especialista 2</button>
-        <button class="btn-new" (click)="fillUserData('adminprueba2@hotmail.com', '123123')">Ingresar como Admin</button>
-      </div>
-      </div>
+    <h5 style="text-align: center;">Botones De acceso rapido</h5>
+    <div class="quick-access-buttons">
+      <button class="btn btn-primary btn-access" (click)="fillUserData('kelurippaxeu-4746@yopmail.com', '123123')">
+        <img [src]="userImages['kelurippaxeu-4746@yopmail.com']" alt="Paciente 1" class="button-img">
+        <div>Paciente 1</div>
+      </button>
+      <button class="btn btn-primary btn-access" (click)="fillUserData('wiyeisoittepei-4912@yopmail.com', '123123')">
+        <img [src]="userImages['wiyeisoittepei-4912@yopmail.com']" alt="Paciente 2" class="button-img">
+        <div>Paciente 2</div>
+      </button>
+      <button class="btn btn-primary btn-access" (click)="fillUserData('youheddaujifa-1419@yopmail.com', '123123')">
+        <img [src]="userImages['youheddaujifa-1419@yopmail.com']" alt="Paciente 3" class="button-img">
+        <div>Paciente 3</div>
+      </button>
+      <button class="btn btn-primary btn-access" (click)="fillUserData('wanneugoihoka-1312@yopmail.com', '123123')">
+        <img [src]="userImages['wanneugoihoka-1312@yopmail.com']" alt="Especialista 1" class="button-img">
+        <div>Especialista 1</div>
+      </button>
+      <button class="btn btn-primary btn-access" (click)="fillUserData('quatreguhuce-3168@yopmail.com', '123123')">
+        <img [src]="userImages['quatreguhuce-3168@yopmail.com']" alt="Especialista 2" class="button-img">
+        <div>Especialista 2</div>
+      </button>
+      <button class="btn btn-primary btn-access" (click)="fillUserData('adminprueba2@hotmail.com', '123123')">
+        <img [src]="userImages['adminprueba2@hotmail.com']" alt="Admin" class="button-img">
+        <div>Admin</div>
+      </button>
     </div>
 </main>
 <footer>

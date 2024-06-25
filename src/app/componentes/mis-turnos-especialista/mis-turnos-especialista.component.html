@@ -1,0 +1,110 @@
+<body>
+  <div class="container" style="padding-top: 60px;">
+    <h2>Mis Turnos</h2>
+    <div class="form-group">
+      <label>Filtrar por Especialidad</label>
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary me-2 mb-2"
+          [ngClass]="{'btn-primary': filtroEspecialidad === '', 'btn-outline-primary': filtroEspecialidad !== ''}"
+          (click)="filtroEspecialidad = ''; filtrarTurnos()">Todas</button>
+        <button
+          type="button"
+          class="btn btn-primary me-2 mb-2"
+          [ngClass]="{'btn-primary': filtroEspecialidad === especialidad, 'btn-outline-primary': filtroEspecialidad !== especialidad}"
+          *ngFor="let especialidad of especialidades"
+          (click)="filtroEspecialidad = especialidad; filtrarTurnos()">{{especialidad}}</button>
+      </div>
+    </div>
+
+    <div *ngFor="let turno of turnosFiltrados">
+      <div class="card" style="max-width: 40%; margin-top: 20px;">
+        <div class="card-body">
+          <h5 class="card-title">{{turno.especialidad}} - {{turno.pacienteNombre}}</h5>
+          <p class="card-text">Fecha y Hora: {{turno.dia + ' | '}}{{turno.horario}}hs </p>
+          <p class="card-text">Estado: {{turno.estado}}</p>
+          <button *ngIf="turno.estado === 'pendiente'" class="btn btn-success" (click)="aceptarTurno(turno)">Aceptar Turno</button>
+          <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalRechazo(turno)">Rechazar Turno</button>
+          <button *ngIf="turno.estado !== 'realizado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
+          <button *ngIf="turno.estado === 'aceptado'" class="btn btn-primary" (click)="abrirModalResenia(turno)">Finalizar Turno</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para cancelar turno -->
+  <div *ngIf="mostrarModalCancelar" class="modal show d-block" tabindex="-1" aria-labelledby="modalCancelarLabel" aria-hidden="true" style="background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCancelarLabel" style="color: black;">Cancelar Turno</h5>
+          <button type="button" class="btn-close" (click)="cerrarModal('cancelar')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          <form [formGroup]="cancelacionForm">
+            <div class="mb-3">
+              <label for="comentario" class="form-label">Motivo de la Cancelación</label>
+              <textarea id="comentario" class="form-control" formControlName="comentario" rows="3" required></textarea>
+            </div>
+          </form>
+          <p>¿Estás seguro de que deseas cancelar este turno?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('cancelar')">Cerrar</button>
+          <button type="button" class="btn btn-danger" [disabled]="!cancelacionForm.valid" (click)="confirmarCancelarTurno()">Cancelar Turno</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para rechazar turno -->
+  <div *ngIf="mostrarModalRechazo" class="modal show d-block" tabindex="-1" aria-labelledby="modalRechazoLabel" aria-hidden="true" style="background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalRechazoLabel" style="color: black;">Rechazar Turno</h5>
+          <button type="button" class="btn-close" (click)="cerrarModal('rechazo')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          <form [formGroup]="rechazoForm">
+            <div class="mb-3">
+              <label for="comentarioRechazo" class="form-label">Motivo del Rechazo</label>
+              <textarea id="comentarioRechazo" class="form-control" formControlName="comentario" rows="3" required></textarea>
+            </div>
+          </form>
+          <p>¿Estás seguro de que deseas rechazar este turno?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('rechazo')">Cerrar</button>
+          <button type="button" class="btn btn-danger" [disabled]="!rechazoForm.valid" (click)="confirmarRechazoTurno()">Rechazar Turno</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para finalizar turno con reseña -->
+  <div *ngIf="mostrarModalResenia" class="modal show d-block" tabindex="-1" aria-labelledby="modalReseniaLabel" aria-hidden="true" style="background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalReseniaLabel" style="color: black;">Finalizar Turno</h5>
+          <button type="button" class="btn-close" (click)="cerrarModal('resenia')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          <form [formGroup]="reseniaForm">
+            <div class="mb-3">
+              <label for="resenia" class="form-label">Reseña</label>
+              <textarea id="resenia" class="form-control" formControlName="resenia" rows="3" required></textarea>
+            </div>
+          </form>
+          <p>¿Estás seguro de que deseas finalizar este turno?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('resenia')">Cerrar</button>
+          <button type="button" class="btn btn-primary" [disabled]="!reseniaForm.valid" (click)="confirmarResenia()">Finalizar Turno</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

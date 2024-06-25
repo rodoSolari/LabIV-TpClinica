@@ -1,0 +1,104 @@
+<body>
+  <div class="container" style="padding-top: 60px;">
+    <h2>Mis Turnos</h2>
+    <div class="form-group">
+      <label>Filtrar por Especialidad</label>
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary me-2 mb-2"
+          [ngClass]="{'btn-primary': filtroEspecialidad === '', 'btn-outline-primary': filtroEspecialidad !== ''}"
+          (click)="filtroEspecialidad = ''; filtrarTurnos()">Todas</button>
+        <button
+          type="button"
+          class="btn btn-primary me-2 mb-2"
+          [ngClass]="{'btn-primary': filtroEspecialidad === especialidad, 'btn-outline-primary': filtroEspecialidad !== especialidad}"
+          *ngFor="let especialidad of especialidades"
+          (click)="filtroEspecialidad = especialidad; filtrarTurnos()">{{especialidad}}</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Filtrar por Especialista</label>
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary me-2 mb-2"
+          [ngClass]="{'btn-primary': filtroEspecialista === '', 'btn-outline-primary': filtroEspecialista !== ''}"
+          (click)="filtroEspecialista = ''; filtrarTurnos()">Todos</button>
+        <button
+          type="button"
+          class="btn btn-primary me-2 mb-2"
+          [ngClass]="{'btn-primary': filtroEspecialista === especialista, 'btn-outline-primary': filtroEspecialista !== especialista}"
+          *ngFor="let especialista of especialistas"
+          (click)="filtroEspecialista = especialista; filtrarTurnos()">{{especialista}}</button>
+      </div>
+    </div>
+
+    <div *ngFor="let turno of turnosFiltrados">
+      <div class="card" style="max-width: 40%; margin-top: 20px;">
+        <div class="card-body">
+          <h5 class="card-title">{{turno.especialidad}} - {{turno.especialista}}</h5>
+          <p class="card-text">Fecha y Hora: {{turno.dia + ' | '}}{{turno.horario}}hs </p>
+          <p class="card-text">Estado: {{turno.estado}}</p>
+          <button *ngIf="turno.estado !== 'realizado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
+          <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)">Ver Reseña</button>
+          <button *ngIf="turno.estado === 'realizado'" class="btn btn-success" (click)="abrirModalEncuesta(turno)">Completar Encuesta</button>
+          <button *ngIf="turno.estado === 'realizado'" class="btn btn-primary" (click)="abrirModalCalificacion(turno)">Calificar Atención</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para completar encuesta -->
+  <div *ngIf="mostrarModalEncuesta" class="modal show d-block" tabindex="-1" aria-labelledby="modalEncuestaLabel" aria-hidden="true" style="background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEncuestaLabel">Completar Encuesta</h5>
+          <button type="button" class="btn-close" (click)="cerrarModal('encuesta')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="encuestaForm">
+            <div class="mb-3">
+              <label for="encuesta" class="form-label">Tu opinión</label>
+              <textarea id="encuesta" class="form-control" formControlName="encuesta" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('encuesta')">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="confirmarEncuesta()">Enviar Encuesta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para calificar atención -->
+  <div *ngIf="mostrarModalCalificacion" class="modal show d-block" tabindex="-1" aria-labelledby="modalCalificacionLabel" aria-hidden="true" style="background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCalificacionLabel">Calificar Atención</h5>
+          <button type="button" class="btn-close" (click)="cerrarModal('calificacion')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="calificacionForm">
+            <div class="mb-3">
+              <label for="calificacion" class="form-label">Calificación (1-5)</label>
+              <input type="number" id="calificacion" class="form-control" formControlName="calificacion" min="1" max="5">
+            </div>
+            <div class="mb-3">
+              <label for="comentarios" class="form-label">Comentarios</label>
+              <textarea id="comentarios" class="form-control" formControlName="comentarios" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('calificacion')">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="confirmarCalificacion()">Enviar Calificación</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

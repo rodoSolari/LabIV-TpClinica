@@ -1,0 +1,43 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  height: 100%;
+  color: white;
+  background: url('../../../assets/FotoHome.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow-y: auto; /* Permitir desplazamiento vertical */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  min-height: 100vh; /* Asegura que el contenedor tenga al menos la altura de la ventana */
+  padding-bottom: 60px; /* Ajusta este valor según el espacio necesario */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente para las tarjetas */
+  color: black;
+}
+
+.btn-primary, .btn-outline-primary {
+  border-radius: 20px;
+}
+
+h2 {
+  margin-top: 20px;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+.modal-content {
+  color: black; /* Color del texto en los modales */
+}

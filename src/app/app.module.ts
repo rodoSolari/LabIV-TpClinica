@@ -17,6 +17,11 @@ import { HomeComponent } from './componentes/home/home.component';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import { BotonesDirective } from './directivas/botones.directive';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
+import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
+import { MisTurnosPacienteComponent } from './componentes/mis-turnos-paciente/mis-turnos-paciente.component';
+import { MisTurnosEspecialistaComponent } from './componentes/mis-turnos-especialista/mis-turnos-especialista.component';
+import { TurnosAdministradorComponent } from './componentes/turnos-administrador/turnos-administrador.component';
+import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,12 @@ import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
     NavbarComponent,
     HomeComponent,
     BotonesDirective,
-    UsuariosComponent
+    UsuariosComponent,
+    SolicitarTurnoComponent,
+    MisTurnosPacienteComponent,
+    MisTurnosEspecialistaComponent,
+    TurnosAdministradorComponent,
+    MiPerfilComponent
   ],
   imports: [
     BrowserModule,

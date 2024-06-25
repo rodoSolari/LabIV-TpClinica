@@ -1,0 +1,50 @@
+<body>
+  <div class="container" style="padding-top: 60px;">
+    <h2>Turnos de la Clínica</h2>
+    <div class="form-group">
+      <label for="especialidad">Filtrar por Especialidad</label>
+      <select id="especialidad" [(ngModel)]="filtroEspecialidad" class="form-control" (change)="filtrarTurnos()">
+        <option value="">Todas</option>
+        <option *ngFor="let especialidad of especialidades" [value]="especialidad">{{especialidad}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="especialista">Filtrar por Especialista</label>
+      <select id="especialista" [(ngModel)]="filtroEspecialista" class="form-control" (change)="filtrarTurnos()">
+        <option value="">Todos</option>
+        <option *ngFor="let especialista of especialistas" [value]="especialista">{{especialista}}</option>
+      </select>
+    </div>
+
+    <div *ngFor="let turno of turnosFiltrados">
+      <div class="card" style="max-width: 40%; margin-top: 20px;">
+        <div class="card-body">
+          <h5 class="card-title">{{turno.especialidad}} - {{turno.especialista}}</h5>
+          <p class="card-text">Fecha y Hora: {{turno.dia + ' | '}}{{turno.horario}}hs </p>
+          <p class="card-text">Estado: {{turno.estado}}</p>
+          <button *ngIf="turno.estado !== 'aceptado' && turno.estado !== 'realizado' && turno.estado !== 'rechazado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para cancelar turno -->
+  <div *ngIf="mostrarModalCancelar" class="modal show d-block" tabindex="-1" aria-labelledby="modalCancelarLabel" aria-hidden="true" style="background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCancelarLabel">Cancelar Turno</h5>
+          <button type="button" class="btn-close" (click)="cerrarModal('cancelar')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>¿Estás seguro de que deseas cancelar este turno?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('cancelar')">Cerrar</button>
+          <button type="button" class="btn btn-danger" (click)="confirmarCancelarTurno()">Cancelar Turno</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

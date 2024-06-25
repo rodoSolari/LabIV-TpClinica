@@ -75,7 +75,7 @@ body {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1500px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -86,11 +86,11 @@ body {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 270px;
+  max-width: 73%;
   position: absolute;
-  left: 0; /* Cambiado de 50% a 0 para pegar a la izquierda */
-  top: 50%;
-  transform: translateY(-50%); /* Eliminado translateX(-50%) */
+  left: 10%;
+  top: 90%;
+  transform: translateY(-50%);
   background-color: rgb(0, 0, 0);
   border-radius: 4%;
 }
@@ -249,3 +249,38 @@ footer small {
 }
 
 
+.quick-access-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 10px;
+}
+
+.btn-access {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  position: relative;
+}
+
+.button-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.btn-access div {
+  font-size: 12px;
+}

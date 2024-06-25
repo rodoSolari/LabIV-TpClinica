@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Firestore,collection, collectionData, deleteDoc, doc  } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
-import { setDoc, updateDoc } from 'firebase/firestore';
+import { Observable, map } from 'rxjs';
+import { addDoc, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { AuthService } from './auth.service';
 
@@ -65,4 +65,32 @@ export class UsuarioService {
       });
     }).then(() => {}); // Convertimos la Promesa a Promise<void>
   }
+
+
+  public traerEspecialidades(): Observable<string[]> {
+    const col = collection(this.firestore, 'Especialidades');
+    return collectionData(col).pipe(
+      map((especialidades: any[]) => especialidades.map(e => e.nombre))
+    );
+  }
+
+  public agregarEspecialidad(nombreEspecialidad: string) {
+    const col = collection(this.firestore, 'Especialidades');
+    return addDoc(col, {
+      nombre: nombreEspecialidad
+    });
+  }
+
+  traerPacientes(): Observable<any[]> {
+    const pacientesRef = collection(this.firestore, 'Usuarios');
+    const q = query(pacientesRef, where('tipo', '==', 'paciente'));
+    return collectionData(q) as Observable<any[]>;
+  }
+
+  traerEspecialistasPorEspecialidad(especialidad: string): Observable<any[]> {
+    const especialistasRef = collection(this.firestore, 'Usuarios');
+    const q = query(especialistasRef, where('especialidad', '==', especialidad));
+    return collectionData(q) as Observable<any[]>;
+  }
+
 }

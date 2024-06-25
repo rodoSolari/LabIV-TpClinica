@@ -5,6 +5,15 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink=''>Home</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" *ngIf="isPaciente" routerLink="solicitar-turno">Solicitar Turno</a>
+        </li>
+        <li class="nav-item" *ngIf="isPaciente">
+          <a class="nav-link" routerLink="mis-turnos-paciente">Mis Turnos como paciente</a>
+        </li>
+        <li class="nav-item" *ngIf="isEspecialista">
+          <a class="nav-link" routerLink="mis-turnos-especialista">Mis Turnos como especialista</a>
+        </li>
         <li class="nav-item" *ngIf="isAdmin">
           <a class="nav-link" routerLink="usuarios">Usuarios</a>
         </li>
@@ -12,7 +21,7 @@
     </div>
     <ul class="navbar-nav" *ngIf="usuariologeado; else Login">
       <li class="nav-item d-flex align-items-center">
-        <img *ngIf="!isAdmin" [src]="imagenPerfil" alt="Perfil" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;">
+        <img [src]="imagenPerfil" alt="Perfil" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;">
         <h5 style="color: #0e0f11; padding: 0 15px;">Hola {{usuariologeado.displayName || usuariologeado.email}}!</h5>
       </li>
       <li class="nav-item">

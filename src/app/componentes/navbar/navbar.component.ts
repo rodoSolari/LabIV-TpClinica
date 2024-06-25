@@ -13,6 +13,8 @@ export class NavbarComponent {
   usuariologeado: any;
   isAdmin: boolean = false;
   imagenPerfil: string | null = null; // Agregamos una variable para la imagen de perfil
+  isPaciente: boolean = false;
+  isEspecialista: boolean = false;
 
   constructor(
     public service: AuthService,
@@ -32,6 +34,8 @@ export class NavbarComponent {
                 userData.tipo === 'administrador'){
                   this.usuariologeado = usuario;
                   this.isAdmin = userData.tipo === 'administrador';
+                  this.isPaciente = userData.tipo === 'paciente';
+                  this.isEspecialista = userData.tipo === 'especialista';
                   this.imagenPerfil = userData.imagen1; // Usamos imagen1 como la imagen de perfil
             }else{
               console.warn('El usuario no cumple con los requisitos de inicio de sesión.');

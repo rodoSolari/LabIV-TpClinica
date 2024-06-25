@@ -5,6 +5,9 @@ import { LoginComponent } from './componentes/login/login.component';
 import { RegistroComponent } from './componentes/registro/registro.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
 import { AuthGuard } from './auth.guard';
+import { MisTurnosPacienteComponent } from './componentes/mis-turnos-paciente/mis-turnos-paciente.component';
+import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
+import { MisTurnosEspecialistaComponent } from './componentes/mis-turnos-especialista/mis-turnos-especialista.component';
 
 
 const routes: Routes = [
@@ -12,7 +15,10 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
-  { path: 'usuarios', component: UsuariosComponent/*, canActivate: [AuthGuard]*/ },
+  { path: 'usuarios', component: UsuariosComponent},
+  { path: 'solicitar-turno', component: SolicitarTurnoComponent },
+  { path: 'mis-turnos-paciente', component: MisTurnosPacienteComponent },
+  { path: 'mis-turnos-especialista', component: MisTurnosEspecialistaComponent },
   { path: '**', redirectTo: 'home' }
 ];
 

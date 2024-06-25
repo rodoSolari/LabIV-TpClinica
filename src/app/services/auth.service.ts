@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import {Firestore, addDoc,collection,collectionData,doc} from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, finalize, map, switchMap } from 'rxjs';
 
 import 'firebase/firestore';
 import { getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private auth: AngularFireAuth, private firestore: Firestore) {}
+  constructor(private auth: AngularFireAuth, private firestore: Firestore, private storage:AngularFireStorage) {}
 
   public async subirLog(email: string, date: string): Promise<void> {
     const col = collection(this.firestore, 'logs');
@@ -21,7 +22,7 @@ export class AuthService {
       date: date
     });
   }
-
+/*
   public async addAdmin(admin: any): Promise<void> {
     const col = collection(this.firestore, 'Usuarios');
     const userCredential = await this.auth.createUserWithEmailAndPassword(admin.email, admin.password);
@@ -39,20 +40,29 @@ export class AuthService {
       estadoAprobadoPorAdmin: true
     });
   }
+*/
 
-  public traerEspecialidades(): Observable<string[]> {
-    const col = collection(this.firestore, 'Especialidades');
-    return collectionData(col).pipe(
-      map((especialidades: any[]) => especialidades.map(e => e.nombre))
-    );
-  }
+  addAdmin(adminData: any, imagen: File, uid: string): Promise<void> {
+    const col = collection(this.firestore, 'Usuarios');
+    const adminRef = doc(col, uid);
+    const filePath = `usuarios/${uid}/${imagen.name}`;
+    const fileRef = this.storage.ref(filePath);
+    const uploadTask = this.storage.upload(filePath, imagen);
 
-  public agregarEspecialidad(nombreEspecialidad: string) {
-    const col = collection(this.firestore, 'Especialidades');
-    return addDoc(col, {
-      nombre: nombreEspecialidad
+    return new Promise((resolve, reject) => {
+      uploadTask.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url: string) => {
+            adminData.imagen1 = url;
+            setDoc(adminRef, adminData)
+              .then(() => resolve())
+              .catch(error => reject(error));
+          }, error => reject(error));
+        })
+      ).subscribe();
     });
   }
+
 
   public register(email: string, password: string) {
     return this.auth.createUserWithEmailAndPassword(email, password);
@@ -118,5 +128,21 @@ export class AuthService {
       userData = doc.data();
     });
     return userData;
+  }
+
+  getUserData(): Observable<any> {
+    return this.auth.user.pipe(
+      map(user => {
+        if (user) {
+          return {
+            email: user.email,
+            nombre: user.displayName?.split(' ')[0],
+            apellido: user.displayName?.split(' ')[1]
+          };
+        } else {
+          return null;
+        }
+      })
+    );
   }
 }

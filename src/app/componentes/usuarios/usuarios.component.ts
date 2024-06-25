@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Firestore } from '@angular/fire/firestore';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { collection } from 'firebase/firestore';
 import { collectionData } from 'rxfire/firestore';
@@ -20,10 +20,18 @@ import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 export class UsuariosComponent implements OnInit{
   adminFormGroup: FormGroup;
   pacienteFormGroup: FormGroup;
+  especialistaFormGroup: FormGroup;
   listadoEspecialistas: any[] = [];
   listadoAdministradores: any[] = [];
   mensajeAdmin: string = '';
   mensajePaciente: string = '';
+  listadoUsuarios: any[] = [];
+  showPacientesAdmins : boolean = false;
+  showEspecialistas : boolean = false;
+  showPacienteForm : boolean = false;
+  showAdminForm  : boolean = false;
+  showEspecialistasForm : boolean = false;
+  especialidades: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -37,6 +45,7 @@ export class UsuariosComponent implements OnInit{
       edad: ['', [Validators.required, Validators.min(18), Validators.max(99)]],
       dni: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
       email: ['', [Validators.required, Validators.email]],
+      imagen1: [null, Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
@@ -51,14 +60,28 @@ export class UsuariosComponent implements OnInit{
       imagen1: [null, Validators.required],
       imagen2: [null, Validators.required]
     });
+
+    this.especialistaFormGroup = this.fb.group({
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      edad: ['', [Validators.required, Validators.min(18), Validators.max(99)]],
+      dni: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
+      especialidad: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      imagen1: [null, Validators.required]
+    });
   }
 
   ngOnInit(): void {
     this.cargarUsuarios();
+    this.usuarioService.traerEspecialidades().subscribe(especialidades => {
+      this.especialidades = especialidades;
+    });
   }
-
   cargarUsuarios(): void {
     this.usuarioService.traerUsuarios().subscribe((usuarios: any[]) => {
+      this.listadoUsuarios = usuarios;
       this.listadoEspecialistas = usuarios.filter(usuario => usuario.tipo === 'especialista');
       this.listadoAdministradores = usuarios.filter(usuario => usuario.tipo === 'administrador');
     });
@@ -78,15 +101,57 @@ export class UsuariosComponent implements OnInit{
 
   registrarAdmin(): void {
     const { email, password, nombre, apellido, edad, dni } = this.adminFormGroup.value;
-    const adminData = { email, password, nombre, apellido, edad, dni, tipo: 'administrador' };
+    const imagen1 = this.adminFormGroup.get('imagen1')?.value;
 
-    this.authService.addAdmin(adminData).then(() => {
-      this.mensajeAdmin = 'Administrador registrado exitosamente.';
-      this.limpiarFormulario(this.adminFormGroup);
-      this.cargarUsuarios();
-    }).catch(error => {
-      this.mensajeAdmin = error.message;
-    });
+    const adminData = {
+      email,
+      password,
+      nombre,
+      apellido,
+      edad,
+      dni,
+      tipo: 'administrador',
+      aprobado: true,
+      imagen1: ''
+    };
+
+    const auth = getAuth();
+    const adminUser = auth.currentUser;
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        const uid = userCredential.user.uid;
+        const filePath1 = `usuarios/${uid}/${imagen1.name}`;
+        const fileRef1 = this.storage.ref(filePath1);
+        const uploadTask1 = this.storage.upload(filePath1, imagen1);
+
+        uploadTask1.snapshotChanges().pipe(
+          finalize(() => {
+            fileRef1.getDownloadURL().subscribe((url1: string) => {
+              adminData.imagen1 = url1;
+
+              this.authService.addAdmin(adminData, imagen1, uid).then(() => {
+                this.mensajeAdmin = 'Administrador registrado exitosamente.';
+                this.limpiarFormulario(this.adminFormGroup);
+                this.cargarUsuarios();
+
+                if (adminUser) {
+                  auth.updateCurrentUser(adminUser).then(() => {
+                    console.log("Administrador logueado nuevamente.");
+                  }).catch((error) => {
+                    console.error("Error al loguear nuevamente al administrador:", error);
+                  });
+                }
+              }).catch(error => {
+                this.mensajeAdmin = 'Error al registrar el administrador: ' + error.message;
+              });
+            });
+          })
+        ).subscribe();
+      })
+      .catch(error => {
+        this.mensajeAdmin = 'Error al registrar el administrador: ' + error.message;
+      });
   }
 
   registrarPaciente(): void {
@@ -96,19 +161,7 @@ export class UsuariosComponent implements OnInit{
     const imagen1 = this.pacienteFormGroup.get('imagen1')?.value;
     const imagen2 = this.pacienteFormGroup.get('imagen2')?.value;
 
-    const pacienteData = {
-      email,
-      password,
-      nombre,
-      apellido,
-      edad,
-      dni,
-      obraSocial,
-      especialidad: '',
-      tipo: 'paciente',
-      imagen1: '',
-      imagen2: ''
-    };
+    const pacienteData = {email,password,nombre,apellido,edad,dni,obraSocial,especialidad: '',tipo: 'paciente',imagen1: '',imagen2: ''};
 
     const auth = getAuth();
     const adminUser = auth.currentUser; // Guardar el usuario administrador actual
@@ -163,6 +216,89 @@ export class UsuariosComponent implements OnInit{
       });
   }
 
+  onEspecialidadChange(event: any): void {
+    if (event.target.value === 'otro') {
+      this.especialistaFormGroup.get('nuevaEspecialidad')?.setValidators([Validators.required, this.existingEspecialidadValidator.bind(this)]);
+      this.especialistaFormGroup.get('nuevaEspecialidad')?.updateValueAndValidity();
+    } else {
+      this.especialistaFormGroup.get('nuevaEspecialidad')?.clearValidators();
+      this.especialistaFormGroup.get('nuevaEspecialidad')?.updateValueAndValidity();
+    }
+  }
+
+  existingEspecialidadValidator(control: AbstractControl): { [key: string]: any } | null {
+    return this.especialidades.includes(control.value) ? { 'especialidadExistente': true } : null;
+  }
+
+  validateEspecialidad(): void {
+    const nuevaEspecialidadControl = this.especialistaFormGroup.get('nuevaEspecialidad');
+    if (nuevaEspecialidadControl) {
+      nuevaEspecialidadControl.updateValueAndValidity();
+    }
+  }
+
+  registrarEspecialista(): void {
+    const { email, password, nombre, apellido, edad, dni, especialidad } = this.especialistaFormGroup.value;
+    const nuevaEspecialidad = this.especialistaFormGroup.get('nuevaEspecialidad')?.value;
+    const imagen1 = this.especialistaFormGroup.get('imagen1')?.value;
+
+    let finalEspecialidad = especialidad;
+    if (especialidad === 'otro') {
+      finalEspecialidad = nuevaEspecialidad;
+      this.usuarioService.agregarEspecialidad(finalEspecialidad);
+    }
+
+    const especialistaData = {
+      email,
+      password,
+      nombre,
+      apellido,
+      edad,
+      dni,
+      especialidad: finalEspecialidad,
+      tipo: 'especialista',
+      aprobado: false,
+      imagen1: ''
+    };
+
+    const auth = getAuth();
+    const adminUser = auth.currentUser;
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        const uid = userCredential.user.uid;
+        const filePath1 = `usuarios/${uid}/${imagen1.name}`;
+        const fileRef1 = this.storage.ref(filePath1);
+        const uploadTask1 = this.storage.upload(filePath1, imagen1);
+
+        uploadTask1.snapshotChanges().pipe(
+          finalize(() => {
+            fileRef1.getDownloadURL().subscribe((url1: string) => {
+              especialistaData.imagen1 = url1;
+
+              this.usuarioService.addEspecialista(especialistaData, imagen1, uid).then(() => {
+                this.mensajeAdmin = 'Especialista registrado exitosamente.';
+                this.limpiarFormulario(this.especialistaFormGroup);
+
+                if (adminUser) {
+                  auth.updateCurrentUser(adminUser).then(() => {
+                    console.log("Administrador logueado nuevamente.");
+                  }).catch((error) => {
+                    console.error("Error al loguear nuevamente al administrador:", error);
+                  });
+                }
+              }).catch(error => {
+                this.mensajeAdmin = 'Error al registrar el especialista: ' + error.message;
+              });
+            });
+          })
+        ).subscribe();
+      })
+      .catch(error => {
+        this.mensajeAdmin = 'Error al registrar el especialista: ' + error.message;
+      });
+  }
+
   limpiarFormulario(form: FormGroup): void {
     form.reset();
     for (let control in form.controls) {
@@ -170,11 +306,11 @@ export class UsuariosComponent implements OnInit{
     }
   }
 
-  cargarImagen1(event: any): void {
+
+
+  cargarImagen1(event: any, formGroup: FormGroup): void {
     const file = event.target.files[0];
-    this.pacienteFormGroup.patchValue({
-      imagen1: file
-    });
+    formGroup.patchValue({ imagen1: file });
   }
 
   cargarImagen2(event: any): void {
@@ -183,4 +319,19 @@ export class UsuariosComponent implements OnInit{
       imagen2: file
     });
   }
+
+  toggleForm(form: string): void {
+    this.showAdminForm = form === 'admin';
+    this.showPacienteForm = form === 'paciente';
+    this.showEspecialistasForm = form === 'especialistasForm'
+    this.showPacientesAdmins = form === 'pacientesAdmins';
+    this.showEspecialistas = form === 'especialistas';
+  }
+
+  toggleTable(table: string): void {
+    this.showPacientesAdmins = table === 'pacientesAdmins';
+    this.showEspecialistas = table === 'especialistas';
+  }
+
+
 }
