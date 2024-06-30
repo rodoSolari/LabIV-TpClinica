@@ -15,17 +15,24 @@ import Swal from 'sweetalert2';
 })
 export class SolicitarTurnoComponent {
   solicitarTurnoForm!: FormGroup;
-  especialidades: string[] = [];
+  especialidades: any[] = [];
   especialistas: any[] = [];
   diasDisponibles: string[] = [];
-  horariosDisponibles: string[] = [];
   horariosReservados: { [key: string]: string[] } = {};
-  especialidadSeleccionada: string = '';
+  especialidadSeleccionada: any = '';
   especialistaSeleccionado: any;
-  diaSeleccionado: string  = '';
+  diaSeleccionado: string = '';
   horarioSeleccionado: { dia: string, horario: string } | null = null;
   mensaje: string = '';
   userData: any;
+
+  especialidadImagenes: { [key: string]: string } = {
+    'oftalmologia': '../../../assets/oftalmologia.jpg',
+    'traumatologia': '../../../assets/traumatologia.jpg',
+    'odontologia': '../../../assets/odontologia.jpg',
+    'radiologia': '../../../assets/radiologia.jpg',
+    'default': '../../../assets/default-specialty.jpg'
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -39,57 +46,49 @@ export class SolicitarTurnoComponent {
     this.solicitarTurnoForm = this.fb.group({
       especialidad: ['', Validators.required],
       especialista: ['', Validators.required],
-      dia: ['', ],
+      dia: ['', Validators.required],
       horario: ['', Validators.required]
     });
 
     this.authService.userLogged().subscribe(async user => {
       if (user) {
         this.userData = await this.authService.obtenerDatosUsuario(user.email!);
-        console.log('User Data:', this.userData); // Añadir esta línea para depuración
       }
     });
 
-
-    this.usuarioService.traerEspecialidades().subscribe(especialidades => {
-      this.especialidades = especialidades;
+    this.usuarioService.traerEspecialistas().subscribe(especialistas => {
+      this.especialistas = especialistas;
+      this.cdr.detectChanges();
     });
 
     this.diasDisponibles = this.generarDiasDisponibles();
-
-    this.diasDisponibles.forEach(dia => {
-      this.obtenerHorariosReservados(dia, this.especialidadSeleccionada, this.especialistaSeleccionado?.nombre || '');
-    });
   }
 
-  selectEspecialidad(especialidad: string) {
+  selectEspecialidad(especialidad: any) {
     this.especialidadSeleccionada = especialidad;
-    this.solicitarTurnoForm.patchValue({ especialidad });
-
-    this.usuarioService.traerEspecialistasPorEspecialidad(especialidad).subscribe(especialistas => {
-      this.especialistas = especialistas;
-      this.solicitarTurnoForm.patchValue({ especialista: '' });
-
-      this.diasDisponibles.forEach(dia => {
-        this.obtenerHorariosReservados(dia, this.especialidadSeleccionada, this.especialistaSeleccionado?.nombre || '');
-      });
-
-      this.cdr.detectChanges();
+    this.solicitarTurnoForm.patchValue({ especialidad: especialidad.nombre });
+    this.diasDisponibles.forEach(dia => {
+      this.obtenerHorariosReservados(dia, this.especialidadSeleccionada.nombre, this.especialistaSeleccionado.nombre);
     });
+    this.cdr.detectChanges();
   }
 
   selectEspecialista(especialista: any) {
     this.solicitarTurnoForm.patchValue({ especialista: especialista.nombre });
     this.especialistaSeleccionado = especialista;
 
-    // Obtener horarios reservados nuevamente cuando se selecciona un especialista
-    this.diasDisponibles.forEach(dia => {
-      this.obtenerHorariosReservados(dia, this.especialidadSeleccionada, this.especialistaSeleccionado?.nombre || '');
+    const especialidadesDelEspecialista = [especialista.especialidad, especialista.especialidad2].filter(especialidad => especialidad);
+    this.especialidades = especialidadesDelEspecialista.map(especialidad => ({ nombre: especialidad }));
+    this.especialidades.forEach(especialidad => {
+      console.log("Especialidad: ", especialidad);
     });
 
     this.cdr.detectChanges();
   }
 
+  getEspecialidadImagen(especialidad: string): string {
+    return this.especialidadImagenes[especialidad.toLowerCase()] || this.especialidadImagenes['default'];
+  }
 
   selectHorario(dia: string, horario: string) {
     this.horarioSeleccionado = { dia, horario };
@@ -97,9 +96,7 @@ export class SolicitarTurnoComponent {
     this.solicitarTurnoForm.patchValue({ dia, horario });
   }
 
-
-
- generarDiasDisponibles(): string[] {
+  generarDiasDisponibles(): string[] {
     const dias = [];
     const hoy = moment();
     for (let i = 0; i < 15; i++) {
@@ -111,12 +108,15 @@ export class SolicitarTurnoComponent {
   generarHorariosDisponibles(dia: string): string[] {
     const horarios = [];
     const diaSemana = moment(dia).day();
-    const horaInicio = diaSemana === 6 ? 8 : 8; // Sábado 8:00, Otros días 8:00
-    const horaFin = diaSemana === 6 ? 14 : 19; // Sábado 14:00, Otros días 19:00
+    const disponibilidad = this.especialistaSeleccionado?.horariosDisponibles?.find((d: any) => this.getDayName(diaSemana) === d.dia);
 
-    for (let h = horaInicio; h < horaFin; h++) {
-      for (let m = 0; m < 60; m += 30) {
-        horarios.push(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`);
+    if (disponibilidad) {
+      let horaInicio = moment(disponibilidad.horarioInicio, 'HH:mm');
+      const horaFin = moment(disponibilidad.horarioFin, 'HH:mm');
+
+      while (horaInicio.isBefore(horaFin) || horaInicio.isSame(horaFin)) {
+        horarios.push(horaInicio.format('HH:mm'));
+        horaInicio = horaInicio.clone().add(30, 'minutes');
       }
     }
 
@@ -124,12 +124,13 @@ export class SolicitarTurnoComponent {
   }
 
   obtenerHorariosReservados(dia: string, especialidad: string, especialista: string) {
-    this.turnosService.obtenerTurnosReservados(dia, especialidad, especialista).subscribe(turnos => {
-      this.horariosReservados[dia] = turnos.map(turno => turno.horario);
-      this.cdr.detectChanges();
-    });
+    if (dia && especialidad && especialista) {
+      this.turnosService.obtenerTurnosReservados(dia, especialidad, especialista).subscribe(turnos => {
+        this.horariosReservados[dia] = turnos.map(turno => turno.horario);
+        this.cdr.detectChanges();
+      });
+    }
   }
-
 
   onSubmit() {
     if (this.solicitarTurnoForm.valid && this.isFormValid()) {
@@ -138,7 +139,8 @@ export class SolicitarTurnoComponent {
         pacienteEmail: this.userData.email,
         pacienteNombre: this.userData.nombre,
         pacienteApellido: this.userData.apellido,
-        especialistaEmail: this.especialistaSeleccionado.email
+        especialistaEmail: this.especialistaSeleccionado.email,
+        estado: 'pendiente'
       };
       this.turnosService.solicitarTurno(turnoData).then(() => {
         Swal.fire({
@@ -155,9 +157,8 @@ export class SolicitarTurnoComponent {
           text: 'Error al solicitar turno: ' + error,
           icon: 'error',
           confirmButtonText: 'OK'
+        });
       });
-      console.error('Error al solicitar turno:', error);
-    });
     }
   }
 
@@ -167,10 +168,14 @@ export class SolicitarTurnoComponent {
     this.especialistaSeleccionado = null;
     this.diaSeleccionado = '';
     this.horarioSeleccionado = null;
-    this.cdr.detectChanges();
   }
 
   isFormValid(): boolean {
     return this.especialidadSeleccionada && this.especialistaSeleccionado && this.diaSeleccionado && this.horarioSeleccionado;
+  }
+
+  private getDayName(dayIndex: number): string {
+    const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+    return days[dayIndex];
   }
 }

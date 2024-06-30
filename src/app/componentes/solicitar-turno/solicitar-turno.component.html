@@ -1,109 +1,56 @@
-
 <body>
-  <div class="container mt-5" style="padding-top: 50px; background-color: black;" >
-    <h3 class="text-center mb-4">Solicitar Turno</h3>
+  <div class="container mt-5" style="padding-top: 50px; background-color: black;">
+    <h3 class="text-center mb-4" style="color: white;">Solicitar Turno</h3>
     <form [formGroup]="solicitarTurnoForm" (ngSubmit)="onSubmit()">
-      <!-- Especialidad -->
-      <div class="form-group mb-3">
-        <label class="form-label">Especialidad:</label>
-        <div>
-          <button
-            type="button"
-            class="btn btn-primary me-2 mb-2"
-            [ngClass]="{'btn-primary': especialidadSeleccionada === especialidad, 'btn-outline-primary': especialidadSeleccionada !== especialidad}"
-            *ngFor="let especialidad of especialidades"
-            (click)="selectEspecialidad(especialidad)">
-            {{ especialidad }}
-          </button>
+
+      <!-- Mostrar profesionales -->
+      <div *ngIf="!especialistaSeleccionado">
+        <h4 class="text-center mb-4" style="color: white;">Seleccione un Profesional</h4>
+        <div class="row">
+          <div class="col-3" *ngFor="let especialista of especialistas">
+            <button type="button" class="btn btn-primary mb-3" (click)="selectEspecialista(especialista)">
+              <img [src]="especialista.imagen1" alt="Profesional" class="img-fluid rounded-circle">
+              <p>{{especialista.nombre}}</p>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Especialista -->
-      <div class="form-group mb-3">
-        <label class="form-label">Especialista:</label>
-        <div>
-          <button
-            type="button"
-            class="btn btn-secondary me-2 mb-2"
-            [ngClass]="{'btn-secondary': especialistaSeleccionado?.nombre === especialista.nombre, 'btn-outline-secondary': especialistaSeleccionado?.nombre !== especialista.nombre}"
-            *ngFor="let especialista of especialistas"
-            (click)="selectEspecialista(especialista)">
-            {{ especialista.nombre }}
-          </button>
+      <!-- Mostrar especialidades del especialista seleccionado -->
+      <div *ngIf="especialistaSeleccionado && !especialidadSeleccionada">
+        <h4 class="text-center mb-4" style="color: white;">Seleccione una Especialidad</h4>
+        <div class="row">
+          <div class="col-3" *ngFor="let especialidad of especialidades">
+            <button type="button" class="btn btn-primary mb-3" (click)="selectEspecialidad(especialidad)">
+              <img [src]="getEspecialidadImagen(especialidad.nombre) || 'assets/default-user.png'" alt="Especialidad" class="img-fluid">
+              <p>{{especialidad.nombre}}</p>
+            </button>
+          </div>
         </div>
       </div>
 
-
-
-      <div class="row">
-        <div class="col-md-4" *ngFor="let dia of diasDisponibles">
-          <div class="card mb-3" style="background-color: black;">
-            <div class="card-header" style="color: white;">
-              {{ dia }}
-            </div>
-            <div class="card-body">
-              <button
-                type="button"
-                style="margin: 5px;"
-                class="btn"
-                [ngClass]="{'btn-info': horarioSeleccionado && horarioSeleccionado.dia === dia && horarioSeleccionado.horario === horario, 'btn-outline-info': !(horarioSeleccionado && horarioSeleccionado.dia === dia && horarioSeleccionado.horario === horario)}"
-                [disabled]="horariosReservados[dia] && horariosReservados[dia].includes(horario)"
-                *ngFor="let horario of generarHorariosDisponibles(dia)"
-                (click)="selectHorario(dia, horario)">
-                {{ horario }}
+      <!-- Mostrar días y horarios -->
+      <div *ngIf="especialidadSeleccionada">
+        <h4 class="text-center mb-4" style="color: white;">Seleccione Día y Horario</h4>
+        <div *ngFor="let dia of diasDisponibles">
+          <h5 class="text-center" style="color: white;">{{dia}}</h5>
+          <div class="row">
+            <div class="col-3" *ngFor="let horario of generarHorariosDisponibles(dia)">
+              <button type="button" class="btn btn-primary mb-3"
+                      [ngClass]="{'active': horarioSeleccionado?.dia === dia && horarioSeleccionado?.horario === horario}"
+                      [disabled]="horariosReservados[dia] && horariosReservados[dia].includes(horario)"
+                      (click)="selectHorario(dia, horario)">
+                {{horario}}
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="text-center mt-3">
-        <button type="submit" class="btn btn-primary" [disabled]="!isFormValid()">Solicitar Turno</button>
+      <!-- Botón para solicitar turno -->
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-success" [disabled]="!isFormValid()">Solicitar Turno</button>
       </div>
-
-
-
     </form>
-    <div>
-      <p>{{this.mensaje}}</p>
-    </div>
   </div>
 </body>
-<!--
-
-<div class="container">
-  <h2>Solicitar Turno</h2>
-  <form [formGroup]="turnoForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="especialidad">Especialidad</label>
-      <select id="especialidad" formControlName="especialidad" class="form-control" (change)="onEspecialidadChange($event)">
-        <option value="">Seleccione una especialidad</option>
-        <option *ngFor="let especialidad of especialidades" [value]="especialidad">{{especialidad}}</option>
-      </select>
-    </div>
-
-    <div class="form-group" *ngIf="especialidadSeleccionada">
-      <label for="especialista">Especialista</label>
-      <select id="especialista" formControlName="especialista" class="form-control">
-        <option value="">Seleccione un especialista</option>
-        <option *ngFor="let especialista of especialistas" [value]="especialista">{{especialista.nombre}}</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="fecha">Fecha y Hora</label>
-      <input type="datetime-local" id="fecha" formControlName="fecha" class="form-control">
-    </div>
-
-    <div class="form-group" *ngIf="isAdmin">
-      <label for="paciente">Paciente</label>
-      <select id="paciente" formControlName="paciente" class="form-control">
-        <option value="">Seleccione un paciente</option>
-        <option *ngFor="let paciente of pacientes" [value]="paciente">{{paciente.nombre}}</option>
-      </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary" [disabled]="turnoForm.invalid">Solicitar Turno</button>
-  </form>
-</div>
--->

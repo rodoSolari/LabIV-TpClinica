@@ -39,3 +39,43 @@ form {
 .modal-content {
   color: black;
 }
+
+.filtros {
+  margin-bottom: 20px;
+}
+
+label {
+  margin-right: 10px;
+}
+
+select {
+  margin-right: 20px;
+  padding: 5px;
+}
+
+.turno {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.modal.show.d-block {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}

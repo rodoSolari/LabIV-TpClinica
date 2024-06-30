@@ -23,6 +23,8 @@ import { MisTurnosEspecialistaComponent } from './componentes/mis-turnos-especia
 import { TurnosAdministradorComponent } from './componentes/turnos-administrador/turnos-administrador.component';
 import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
+import { HistoriaClinicaComponent } from './componentes/historia-clinica/historia-clinica.component';
+import { PacientesComponent } from './componentes/pacientes/pacientes.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     MisTurnosPacienteComponent,
     MisTurnosEspecialistaComponent,
     TurnosAdministradorComponent,
-    MiPerfilComponent
+    MiPerfilComponent,
+    HistoriaClinicaComponent,
+    PacientesComponent
   ],
   imports: [
     BrowserModule,

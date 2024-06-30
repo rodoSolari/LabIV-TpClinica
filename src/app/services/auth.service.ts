@@ -22,25 +22,6 @@ export class AuthService {
       date: date
     });
   }
-/*
-  public async addAdmin(admin: any): Promise<void> {
-    const col = collection(this.firestore, 'Usuarios');
-    const userCredential = await this.auth.createUserWithEmailAndPassword(admin.email, admin.password);
-    const uid = userCredential.user?.uid;
-    console.log("UID del nuevo usuario:", uid); // Agrega este log para verificar el UID
-
-    return setDoc(doc(this.firestore, `Usuarios/${uid}`), {
-      nombre: admin.nombre,
-      apellido: admin.apellido,
-      edad: admin.edad,
-      dni: admin.dni,
-      email: admin.email,
-      tipo: 'administrador',
-      estadoAprobado: true,
-      estadoAprobadoPorAdmin: true
-    });
-  }
-*/
 
   addAdmin(adminData: any, imagen: File, uid: string): Promise<void> {
     const col = collection(this.firestore, 'Usuarios');

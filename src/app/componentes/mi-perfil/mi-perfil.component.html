@@ -1,35 +1,86 @@
 <body>
-  <div class="container" style="padding-top: 60px;">
-    <h2>Mi Perfil</h2>
-    <div *ngIf="userData">
-      <p><strong>Nombre:</strong> {{userData.nombre}}</p>
-      <p><strong>Apellido:</strong> {{userData.apellido}}</p>
-      <p><strong>Email:</strong> {{userData.email}}</p>
-      <p><strong>Especialidades:</strong> {{userData.especialidades?.join(', ')}}</p>
-    </div>
-
-    <div *ngIf="userData?.perfil === 'especialista'">
-      <h3>Mis Horarios</h3>
-      <div *ngFor="let horario of horariosDisponibles">
-        <p>{{horario.especialidad}}: {{horario.horarioInicio}} - {{horario.horarioFin}}</p>
+  <div *ngIf="mostrarModalHistoriaClinica" class="modal d-block" tabindex="-1" style="align-items: center;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Historial Clínico</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModalHistoriaClinica()"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngFor="let historia of historiaClinica">
+            <p><strong>Altura:</strong> {{ historia.altura }}</p>
+            <p><strong>Peso:</strong> {{ historia.peso }}</p>
+            <p><strong>Temperatura:</strong> {{ historia.temperatura }}</p>
+            <p><strong>Presión:</strong> {{ historia.presion }}</p>
+            <div *ngFor="let dato of historia.datosDinamicos">
+              <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
+            </div>
+            <hr>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModalHistoriaClinica()">Cerrar</button>
+        </div>
       </div>
-      <form (ngSubmit)="agregarDisponibilidad()">
-        <div class="form-group">
-          <label for="especialidad">Especialidad</label>
-          <select id="especialidad" [(ngModel)]="especialidadSeleccionada" name="especialidad" class="form-control">
-            <option *ngFor="let especialidad of especialidades" [value]="especialidad">{{especialidad}}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="horarioInicio">Horario de Inicio</label>
-          <input type="time" id="horarioInicio" [(ngModel)]="horarioInicio" name="horarioInicio" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="horarioFin">Horario de Fin</label>
-          <input type="time" id="horarioFin" [(ngModel)]="horarioFin" name="horarioFin" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Agregar Disponibilidad</button>
-      </form>
     </div>
   </div>
+  <div class="container" *ngIf="userData">
+    <form (ngSubmit)="actualizarPerfil()">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" [(ngModel)]="userData.nombre" name="nombre" class="form-control"  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" [(ngModel)]="userData.apellido" name="apellido" class="form-control"  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" [(ngModel)]="userData.email" name="email" class="form-control" readonly  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div *ngIf="userData?.tipo === 'paciente'" class="form-group">
+        <label for="obraSocial">Obra Social:</label>
+        <input type="text" id="obraSocial" [(ngModel)]="userData.obraSocial" name="obraSocial" class="form-control"  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label for="imagen1">Imagen de Perfil:</label>
+        <input type="file" id="imagen1" (change)="cargarImagen($event, 'imagen1')" class="form-control d-none">
+        <img *ngIf="userData.imagen1" [src]="userData.imagen1" alt="Imagen de Perfil" class="img-thumbnail mt-2 img-circular" width="150" (click)="clickImagen('imagen1')">
+      </div>
+      <div *ngIf="userData?.tipo === 'paciente'" class="form-group">
+        <label for="imagen2">Imagen Adicional:</label>
+        <input type="file" id="imagen2" (change)="cargarImagen($event, 'imagen2')" class="form-control d-none">
+        <img *ngIf="userData.imagen2" [src]="userData.imagen2" alt="Imagen Adicional" class="img-thumbnail mt-2 img-circular" width="150" (click)="clickImagen('imagen2')">
+      </div>
+      <div *ngIf="userData?.tipo === 'especialista'" class="form-group">
+        <label for="especialidades">Especialidades:</label>
+        <input type="text" id="especialidades" [(ngModel)]="especialidadesString" name="especialidades" class="form-control" placeholder="Separadas con comas." [ngModelOptions]="{standalone: true}">
+      </div>
+      <div *ngIf="userData?.tipo === 'especialista'" class="horarios-container">
+        <h4>Horarios</h4>
+        <div *ngFor="let especialidad of especialidades">
+          <h5>{{ especialidad }}</h5>
+          <div *ngFor="let dia of diasSemana">
+            <button type="button" (click)="toggleDia(especialidad, dia)"
+                    [class.active]="isDiaActivo(especialidad, dia)">
+              {{ dia | titlecase }}
+            </button>
+            <select [(ngModel)]="horarios[especialidad][dia].inicio" [disabled]="!isDiaActivo(especialidad, dia)" class="form-control"  [ngModelOptions]="{standalone: true}">
+              <option *ngFor="let hora of (dia === 'sábado' ? horasDisponiblesSabado : horasDisponibles)" [value]="hora">{{hora}}</option>
+            </select>
+            <select [(ngModel)]="horarios[especialidad][dia].fin" [disabled]="!isDiaActivo(especialidad, dia)" class="form-control"  [ngModelOptions]="{standalone: true}">
+              <option *ngFor="let hora of (dia === 'sábado' ? horasDisponiblesSabado : horasDisponibles)" [value]="hora">{{hora}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+    </form>
+  </div>
+  <div class="d-flex justify-content-center my-3">
+    <button class="btn btn-info" (click)="abrirModalHistoriaClinica()">Ver Historial Clínico</button>
+  </div>
+
+
+
 </body>

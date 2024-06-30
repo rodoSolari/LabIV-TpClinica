@@ -25,6 +25,8 @@ export class MisTurnosPacienteComponent {
   mostrarModalCancelar: boolean = false;
   mostrarModalEncuesta: boolean = false;
   mostrarModalCalificacion: boolean = false;
+  searchText: string = '';
+
 
   constructor(
     private turnosService: TurnosService,
@@ -70,7 +72,6 @@ export class MisTurnosPacienteComponent {
 
     this.turnos.forEach(turno => {
       especialidadesSet.add(turno.especialidad);
-     // especialistasSet.add(turno.especialistaEmail);
       especialistasSet.add(turno.especialista);
     });
 
@@ -84,13 +85,6 @@ export class MisTurnosPacienteComponent {
              (this.filtroEspecialista === '' || turno.especialista === this.filtroEspecialista);
     });
   }
-
-  /*  filtrarTurnos() {
-      this.turnosFiltrados = this.turnos.filter(turno => {
-        return (this.filtroEspecialidad === '' || turno.especialidad === this.filtroEspecialidad) &&
-               (this.filtroEspecialista === '' || turno.especialistaEmail === this.filtroEspecialista);
-      });
-    }*/
 
   abrirModalCancelar(turno: any) {
     this.selectedTurno = turno;
@@ -113,17 +107,24 @@ export class MisTurnosPacienteComponent {
       this.turnosService.cancelarTurno(this.selectedTurno.id, comentario).then(() => {
         this.cargarTurnos();
         this.cerrarModal('cancelar');
+        Swal.fire('Turno cancelado', 'El turno ha sido cancelado con éxito', 'success');
       }).catch((error) => {
         console.error('Error al cancelar el turno:', error);
+        Swal.fire('Error', 'Hubo un error al cancelar el turno', 'error');
       });
     } else {
       console.error('No se puede cancelar el turno: ID de turno no definido');
+      Swal.fire('Error', 'No se puede cancelar el turno', 'error');
     }
   }
 
-
   verResenia(turno: any) {
-    //Swal.(`Reseña: ${turno.resenia}`);
+    Swal.fire({
+      title: 'Reseña del Turno',
+      text: turno.resenia,
+      icon: 'info',
+      confirmButtonText: 'Cerrar'
+    });
   }
 
   abrirModalEncuesta(turno: any) {
@@ -140,9 +141,11 @@ export class MisTurnosPacienteComponent {
           this.cerrarModal('encuesta');
         }).catch((error) => {
           console.error('Error al enviar la encuesta:', error);
+          Swal.fire('Error', 'Hubo un error al enviar la encuesta', 'error');
         });
       } else {
         console.error('No se puede completar la encuesta: ID de turno no definido');
+        Swal.fire('Error', 'No se puede completar la encuesta', 'error');
       }
     }
   }
@@ -161,12 +164,25 @@ export class MisTurnosPacienteComponent {
           this.cerrarModal('calificacion');
         }).catch((error) => {
           console.error('Error al enviar la calificación:', error);
+          Swal.fire('Error', 'Hubo un error al enviar la calificación', 'error');
         });
       } else {
         console.error('No se puede calificar la atención: ID de turno no definido');
+        Swal.fire('Error', 'No se puede calificar la atención', 'error');
       }
     }
   }
 
+  transform(turnos: any[], searchText: string): any[] {
+    if (!turnos || !searchText) {
+      return turnos;
+    }
+    searchText = searchText.toLowerCase();
+    return turnos.filter(turno =>
+      Object.keys(turno).some(key =>
+        turno[key].toString().toLowerCase().includes(searchText)
+      )
+    );
+  }
 
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { DocumentReference, addDoc, collection, doc, query, updateDoc, where } from 'firebase/firestore';
 import { collectionData } from 'rxfire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,11 @@ import { Observable } from 'rxjs';
 export class TurnosService {
 
   constructor(private firestore: Firestore) {}
+
+  obtenerTurnos(): Observable<any[]> {
+    const turnosRef = collection(this.firestore, 'Turnos');
+    return collectionData(turnosRef, { idField: 'id' });
+  }
 
   solicitarTurno(turnoData: any): Promise<DocumentReference> {
     const turnosRef = collection(this.firestore, 'Turnos');
@@ -73,5 +78,39 @@ export class TurnosService {
   completarEncuesta(turnoId: string, encuesta: any): Promise<void> {
     const turnoDoc = doc(this.firestore, `Turnos/${turnoId}`);
     return updateDoc(turnoDoc, { encuesta });
+  }
+
+  obtenerPacientesAtendidos(): Observable<any[]> {
+    const turnosRef = collection(this.firestore, 'Turnos');
+    const q = query(turnosRef, where('estado', '==', 'realizado'));
+    return collectionData(q).pipe(
+      map((turnos: any[]) => {
+        const pacientes: any[] = [];
+        turnos.forEach((turno: any) => {
+          pacientes.push({
+            nombre: turno.pacienteNombre,
+            apellido: turno.pacienteApellido,
+            email: turno.pacienteEmail
+          });
+        });
+        return pacientes;
+      })
+    );
+  }
+
+  obtenerTurnosRealizadosEspecialista(email: string): Observable<any[]> {
+    const turnosRef = collection(this.firestore, 'Turnos');
+    const q = query(turnosRef, where('especialistaEmail', '==', email), where('estado', '==', 'realizado'));
+    return collectionData(q) as Observable<any[]>;
+  }
+
+  obtenerHistoriaClinica(email: string): Observable<any[]> {
+    const historiasRef = collection(this.firestore, 'HistoriasClinicas');
+    const q = query(historiasRef, where('pacienteEmail', '==', email));
+    return collectionData(q).pipe(
+      map((historias: any[]) => {
+        return historias.length ? historias[0] : null; // Suponiendo que hay solo una historia clínica por paciente
+      })
+    );
   }
 }

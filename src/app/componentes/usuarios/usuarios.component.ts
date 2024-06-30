@@ -11,6 +11,8 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import * as XLSX from 'xlsx';
+import { TurnosService } from 'src/app/services/turnos.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -23,6 +25,7 @@ export class UsuariosComponent implements OnInit{
   especialistaFormGroup: FormGroup;
   listadoEspecialistas: any[] = [];
   listadoAdministradores: any[] = [];
+  listadoPacientes: any[] = [];
   mensajeAdmin: string = '';
   mensajePaciente: string = '';
   listadoUsuarios: any[] = [];
@@ -32,12 +35,17 @@ export class UsuariosComponent implements OnInit{
   showAdminForm  : boolean = false;
   showEspecialistasForm : boolean = false;
   especialidades: string[] = [];
+  emailDelPaciente: string = '';
+  historiaClinica: any;
+  pacienteSeleccionado: any;
+
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private usuarioService: UsuarioService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private turnosService : TurnosService
   ) {
     this.adminFormGroup = this.fb.group({
       nombre: ['', Validators.required],
@@ -79,11 +87,19 @@ export class UsuariosComponent implements OnInit{
       this.especialidades = especialidades;
     });
   }
+
+  setPacienteEmail(email: string): void {
+    this.emailDelPaciente = email;
+  }
+
+
   cargarUsuarios(): void {
     this.usuarioService.traerUsuarios().subscribe((usuarios: any[]) => {
-      this.listadoUsuarios = usuarios;
+      //this.listadoUsuarios = usuarios;
+      this.listadoUsuarios = usuarios.filter(usuario => usuario.tipo === 'administrador' || usuario.tipo === 'paciente');
       this.listadoEspecialistas = usuarios.filter(usuario => usuario.tipo === 'especialista');
       this.listadoAdministradores = usuarios.filter(usuario => usuario.tipo === 'administrador');
+      this.listadoPacientes = usuarios.filter(usuario => usuario.tipo === 'paciente');
     });
   }
 
@@ -333,5 +349,33 @@ export class UsuariosComponent implements OnInit{
     this.showEspecialistas = table === 'especialistas';
   }
 
+  descargarDatosUsuario(usuario: any): void {
+    this.usuarioService.obtenerTurnosUsuario(usuario.email).subscribe(turnos => {
+      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(turnos);
+      const workbook: XLSX.WorkBook = { Sheets: { 'Turnos': worksheet }, SheetNames: ['Turnos'] };
+      XLSX.writeFile(workbook, `${usuario.nombre}_${usuario.apellido}_turnos.xlsx`);
+    });
+  }
 
+  verHistoriaClinica(paciente: any) {
+    console.log("paciente "+ paciente.email);
+    this.pacienteSeleccionado = paciente;
+    this.turnosService.obtenerHistoriaClinica(paciente.email).subscribe(historiaClinica => {
+      this.historiaClinica = historiaClinica;
+      this.abrirModal('historiaClinicaModal');
+    });
+  }
+  abrirModal(id: string) {
+    const modal = document.getElementById(id);
+    if (modal) {
+      modal.style.display = 'block';
+    }
+  }
+
+  cerrarModal(id: string) {
+    const modal = document.getElementById(id);
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
 }

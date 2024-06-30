@@ -18,6 +18,23 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label>Filtrar por Paciente</label>
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary me-2 mb-2"
+          [ngClass]="{'btn-primary': filtroPaciente === '', 'btn-outline-primary': filtroPaciente !== ''}"
+          (click)="filtroPaciente = ''; filtrarTurnos()">Todos</button>
+        <button
+          type="button"
+          class="btn btn-primary me-2 mb-2"
+          [ngClass]="{'btn-primary': filtroPaciente === paciente, 'btn-outline-primary': filtroPaciente !== paciente}"
+          *ngFor="let paciente of pacientes"
+          (click)="filtroPaciente = paciente; filtrarTurnos()">{{paciente}}</button>
+      </div>
+    </div>
+
     <div *ngFor="let turno of turnosFiltrados">
       <div class="card" style="max-width: 40%; margin-top: 20px;">
         <div class="card-body">
@@ -26,8 +43,10 @@
           <p class="card-text">Estado: {{turno.estado}}</p>
           <button *ngIf="turno.estado === 'pendiente'" class="btn btn-success" (click)="aceptarTurno(turno)">Aceptar Turno</button>
           <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalRechazo(turno)">Rechazar Turno</button>
-          <button *ngIf="turno.estado !== 'realizado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
+          <button *ngIf="turno.estado !== 'realizado' && turno.estado !== 'cancelado' && turno.estado !== 'rechazado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
           <button *ngIf="turno.estado === 'aceptado'" class="btn btn-primary" (click)="abrirModalResenia(turno)">Finalizar Turno</button>
+          <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)">Ver Reseña</button>
+          <button *ngIf="turno.estado === 'realizado'" class="btn btn-primary" (click)="abrirModalHistoriaClinica(turno)">Cargar historia clinica</button>
         </div>
       </div>
     </div>
@@ -107,4 +126,54 @@
       </div>
     </div>
   </div>
+
+  <div *ngIf="mostrarModalHistoriaClinica" class="modal d-block" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cargar Historia Clínica</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModal('historiaClinica')"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="historiaClinicaForm">
+            <div class="mb-3">
+              <label for="altura" class="form-label">Altura</label>
+              <input id="altura" class="form-control" formControlName="altura">
+            </div>
+            <div class="mb-3">
+              <label for="peso" class="form-label">Peso</label>
+              <input id="peso" class="form-control" formControlName="peso">
+            </div>
+            <div class="mb-3">
+              <label for="temperatura" class="form-label">Temperatura</label>
+              <input id="temperatura" class="form-control" formControlName="temperatura">
+            </div>
+            <div class="mb-3">
+              <label for="presion" class="form-label">Presión</label>
+              <input id="presion" class="form-control" formControlName="presion">
+            </div>
+            <div formArrayName="datosDinamicos">
+              <div *ngFor="let dato of datosDinamicos.controls; let i = index" [formGroupName]="i">
+                <div class="mb-3">
+                  <label for="clave" class="form-label">Clave</label>
+                  <input id="clave" class="form-control" formControlName="clave">
+                </div>
+                <div class="mb-3">
+                  <label for="valor" class="form-label">Valor</label>
+                  <input id="valor" class="form-control" formControlName="valor">
+                </div>
+                <button type="button" class="btn btn-danger" (click)="removeDatoDinamico(i)">Eliminar</button>
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary" (click)="addDatoDinamico()">Agregar Dato Dinámico</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('historiaClinica')">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="confirmarHistoriaClinica()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>

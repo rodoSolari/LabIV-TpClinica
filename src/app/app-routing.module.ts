@@ -9,6 +9,8 @@ import { MisTurnosPacienteComponent } from './componentes/mis-turnos-paciente/mi
 import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
 import { MisTurnosEspecialistaComponent } from './componentes/mis-turnos-especialista/mis-turnos-especialista.component';
 import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
+import { TurnosAdministradorComponent } from './componentes/turnos-administrador/turnos-administrador.component';
+import { PacientesComponent } from './componentes/pacientes/pacientes.component';
 
 
 const routes: Routes = [
@@ -20,7 +22,9 @@ const routes: Routes = [
   { path: 'solicitar-turno', component: SolicitarTurnoComponent },
   { path: 'mis-turnos-paciente', component: MisTurnosPacienteComponent },
   { path: 'mis-turnos-especialista', component: MisTurnosEspecialistaComponent },
+  { path: 'turnos-administrador', component: TurnosAdministradorComponent },
   { path: 'mi-perfil', component: MiPerfilComponent },
+  { path: 'pacientes', component: PacientesComponent },
   { path: '**', redirectTo: 'home' }
 ];
 

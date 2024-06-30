@@ -14,8 +14,14 @@
         <li class="nav-item" *ngIf="isEspecialista">
           <a class="nav-link" routerLink="mis-turnos-especialista">Mis Turnos como especialista</a>
         </li>
+        <li class="nav-item" *ngIf="isEspecialista">
+          <a class="nav-link" routerLink="pacientes">Mis pacientes</a>
+        </li>
         <li class="nav-item" *ngIf="isAdmin">
           <a class="nav-link" routerLink="usuarios">Usuarios</a>
+        </li>
+        <li class="nav-item" *ngIf="isAdmin">
+          <a class="nav-link" routerLink="turnos-administrador">TURNOS ADMIN</a>
         </li>
       </ul>
     </div>

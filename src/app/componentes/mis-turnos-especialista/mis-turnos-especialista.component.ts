@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { TurnosService } from 'src/app/services/turnos.service';
+import Swal from 'sweetalert2';
+import { HistoriaClinicaComponent } from '../historia-clinica/historia-clinica.component';
+import { HistoriaClinicaService } from 'src/app/services/historia-clinica.service';
 
 @Component({
   selector: 'app-mis-turnos-especialista',
@@ -20,13 +23,16 @@ export class MisTurnosEspecialistaComponent {
   cancelacionForm!: FormGroup;
   rechazoForm!: FormGroup;
   reseniaForm!: FormGroup;
+  historiaClinicaForm!: FormGroup;
   mostrarModalCancelar: boolean = false;
   mostrarModalRechazo: boolean = false;
   mostrarModalResenia: boolean = false;
+  mostrarModalHistoriaClinica: boolean = false;
 
   constructor(
     private authService: AuthService,
     private turnosService: TurnosService,
+    private historiaClinicaService: HistoriaClinicaService,
     private fb: FormBuilder
   ) {}
 
@@ -49,6 +55,14 @@ export class MisTurnosEspecialistaComponent {
     this.reseniaForm = this.fb.group({
       resenia: ['', Validators.required]
     });
+
+    this.historiaClinicaForm = this.fb.group({
+      altura: ['', Validators.required],
+      peso: ['', Validators.required],
+      temperatura: ['', Validators.required],
+      presion: ['', Validators.required],
+      datosDinamicos: this.fb.array([])
+    });
   }
 
   cargarTurnos() {
@@ -67,7 +81,7 @@ export class MisTurnosEspecialistaComponent {
 
     this.turnos.forEach(turno => {
       especialidadesSet.add(turno.especialidad);
-      pacientesSet.add(turno.paciente);
+      pacientesSet.add(turno.pacienteNombre);
     });
 
     this.especialidades = Array.from(especialidadesSet);
@@ -77,7 +91,7 @@ export class MisTurnosEspecialistaComponent {
   filtrarTurnos() {
     this.turnosFiltrados = this.turnos.filter(turno => {
       return (this.filtroEspecialidad === '' || turno.especialidad === this.filtroEspecialidad) &&
-             (this.filtroPaciente === '' || turno.pacienteEmail === this.filtroPaciente);
+             (this.filtroPaciente === '' || turno.pacienteNombre === this.filtroPaciente);
     });
   }
 
@@ -96,6 +110,11 @@ export class MisTurnosEspecialistaComponent {
     this.mostrarModalResenia = true;
   }
 
+  abrirModalHistoriaClinica(turno: any) {
+    this.selectedTurno = turno;
+    this.mostrarModalHistoriaClinica = true;
+  }
+
   cerrarModal(tipo: string) {
     if (tipo === 'cancelar') {
       this.mostrarModalCancelar = false;
@@ -103,6 +122,8 @@ export class MisTurnosEspecialistaComponent {
       this.mostrarModalRechazo = false;
     } else if (tipo === 'resenia') {
       this.mostrarModalResenia = false;
+    }else if (tipo === 'historiaClinica') {
+      this.mostrarModalHistoriaClinica = false;
     }
   }
 
@@ -112,8 +133,10 @@ export class MisTurnosEspecialistaComponent {
       this.turnosService.cancelarTurno(this.selectedTurno.id, comentario).then(() => {
         this.cargarTurnos();
         this.cerrarModal('cancelar');
+        Swal.fire('Turno cancelado', 'El turno ha sido cancelado con éxito', 'success');
       }).catch((error) => {
         console.error('Error al cancelar el turno:', error);
+        Swal.fire('Error', 'Hubo un error al cancelar el turno', 'error');
       });
     } else {
       console.error('Formulario de cancelación no es válido o ID de turno no definido');
@@ -126,8 +149,10 @@ export class MisTurnosEspecialistaComponent {
       this.turnosService.rechazarTurno(this.selectedTurno.id, comentario).then(() => {
         this.cargarTurnos();
         this.cerrarModal('rechazo');
+        Swal.fire('Turno rechazado', 'El turno ha sido rechazado con éxito', 'success');
       }).catch((error) => {
         console.error('Error al rechazar el turno:', error);
+        Swal.fire('Error', 'Hubo un error al rechazar el turno', 'error');
       });
     } else {
       console.error('Formulario de rechazo no es válido o ID de turno no definido');
@@ -137,14 +162,41 @@ export class MisTurnosEspecialistaComponent {
   confirmarResenia() {
     if (this.reseniaForm.valid && this.selectedTurno && this.selectedTurno.id) {
       const resenia = this.reseniaForm.value.resenia;
+
       this.turnosService.finalizarTurno(this.selectedTurno.id, resenia).then(() => {
         this.cargarTurnos();
         this.cerrarModal('resenia');
+        Swal.fire('Turno finalizado', 'El turno ha sido finalizado con éxito', 'success');
+        this.abrirModalHistoriaClinica(this.selectedTurno);
       }).catch((error) => {
         console.error('Error al finalizar el turno:', error);
+        Swal.fire('Error', 'Hubo un error al finalizar el turno', 'error');
       });
     } else {
       console.error('Formulario de reseña no es válido o ID de turno no definido');
+    }
+  }
+
+  confirmarHistoriaClinica() {
+    if (this.historiaClinicaForm.valid && this.selectedTurno && this.selectedTurno.id) {
+      const historiaClinica = {
+        altura: this.historiaClinicaForm.value.altura,
+        peso: this.historiaClinicaForm.value.peso,
+        temperatura: this.historiaClinicaForm.value.temperatura,
+        presion: this.historiaClinicaForm.value.presion,
+        datosDinamicos: this.historiaClinicaForm.value.datosDinamicos
+      };
+
+      this.historiaClinicaService.agregarHistoriaClinica(historiaClinica).then(() => {
+        this.cargarTurnos();
+        this.cerrarModal('historiaClinica');
+        Swal.fire('Historia Clínica cargada', 'La historia clínica ha sido cargada con éxito', 'success');
+      }).catch((error) => {
+        console.error('Error al cargar la historia clínica:', error);
+        Swal.fire('Error', 'Hubo un error al cargar la historia clínica', 'error');
+      });
+    } else {
+      console.error('Formulario de historia clínica no es válido o ID de turno no definido');
     }
   }
 
@@ -152,11 +204,39 @@ export class MisTurnosEspecialistaComponent {
     if (turno && turno.id) {
       this.turnosService.aceptarTurno(turno.id).then(() => {
         this.cargarTurnos();
+        Swal.fire('Turno aceptado', 'El turno ha sido aceptado con éxito', 'success');
       }).catch((error) => {
         console.error('Error al aceptar el turno:', error);
+        Swal.fire('Error', 'Hubo un error al aceptar el turno', 'error');
       });
     } else {
       console.error('ID de turno no definido');
     }
+  }
+
+  verResenia(turno: any) {
+    Swal.fire({
+      title: 'Reseña del Turno',
+      text: turno.resenia,
+      icon: 'info',
+      confirmButtonText: 'Cerrar'
+    });
+  }
+
+  addDatoDinamico(): void {
+    const datosDinamicos = this.historiaClinicaForm.get('datosDinamicos') as FormArray;
+    datosDinamicos.push(this.fb.group({
+      clave: ['', Validators.required],
+      valor: ['', Validators.required]
+    }));
+  }
+
+  removeDatoDinamico(index: number): void {
+    const datosDinamicos = this.historiaClinicaForm.get('datosDinamicos') as FormArray;
+    datosDinamicos.removeAt(index);
+  }
+
+  get datosDinamicos(): FormArray {
+    return this.historiaClinicaForm.get('datosDinamicos') as FormArray;
   }
 }

@@ -1,0 +1,17 @@
+<div *ngIf="historiaClinica.length > 0">
+  <h3>Historia Clínica de {{ pacienteEmail }}</h3>
+  <div *ngFor="let historia of historiaClinica">
+    <h4>Atención el {{ historia.fecha }}</h4>
+    <p>Altura: {{ historia.altura }} cm</p>
+    <p>Peso: {{ historia.peso }} kg</p>
+    <p>Temperatura: {{ historia.temperatura }} °C</p>
+    <p>Presión: {{ historia.presion }} mmHg</p>
+    <div *ngFor="let dato of historia.datosDinamicos">
+      <p>{{ dato.clave }}: {{ dato.valor }}</p>
+    </div>
+    <hr>
+  </div>
+</div>
+<div *ngIf="historiaClinica.length === 0">
+  <p>No hay historia clínica disponible para este paciente.</p>
+</div>

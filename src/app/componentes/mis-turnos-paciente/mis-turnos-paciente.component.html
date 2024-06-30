@@ -17,7 +17,6 @@
           (click)="filtroEspecialidad = especialidad; filtrarTurnos()">{{especialidad}}</button>
       </div>
     </div>
-
     <div class="form-group">
       <label>Filtrar por Especialista</label>
       <div>
@@ -35,13 +34,16 @@
       </div>
     </div>
 
+
+
     <div *ngFor="let turno of turnosFiltrados">
       <div class="card" style="max-width: 40%; margin-top: 20px;">
         <div class="card-body">
           <h5 class="card-title">{{turno.especialidad}} - {{turno.especialista}}</h5>
           <p class="card-text">Fecha y Hora: {{turno.dia + ' | '}}{{turno.horario}}hs </p>
           <p class="card-text">Estado: {{turno.estado}}</p>
-          <button *ngIf="turno.estado !== 'realizado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
+          <p *ngIf="turno.estado === 'cancelado'">Motivo Cancelacion: {{turno.comentarioCancelacion}}</p>
+          <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
           <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)">Ver Reseña</button>
           <button *ngIf="turno.estado === 'realizado'" class="btn btn-success" (click)="abrirModalEncuesta(turno)">Completar Encuesta</button>
           <button *ngIf="turno.estado === 'realizado'" class="btn btn-primary" (click)="abrirModalCalificacion(turno)">Calificar Atención</button>
@@ -49,6 +51,30 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal para cancelar turno -->
+<div *ngIf="mostrarModalCancelar" class="modal show d-block" tabindex="-1" aria-labelledby="modalCancelarLabel" aria-hidden="true" style="background: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCancelarLabel">Cancelar Turno</h5>
+        <button type="button" class="btn-close" (click)="cerrarModal('cancelar')" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="cancelacionForm">
+          <div class="mb-3">
+            <label for="comentario" class="form-label">Motivo de la cancelación</label>
+            <textarea id="comentario" class="form-control" formControlName="comentario" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal('cancelar')">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="confirmarCancelarTurno()">Confirmar Cancelación</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- Modal para completar encuesta -->
   <div *ngIf="mostrarModalEncuesta" class="modal show d-block" tabindex="-1" aria-labelledby="modalEncuestaLabel" aria-hidden="true" style="background: rgba(0, 0, 0, 0.5);">
@@ -101,4 +127,6 @@
       </div>
     </div>
   </div>
+
+
 </body>

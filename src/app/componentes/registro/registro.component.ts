@@ -42,7 +42,7 @@ export class RegistroComponent {
       nuevaEspecialidad:[''],
       imagen1: [null, Validators.required],
       imagen2: [null],
-     // recaptcha: ['', Validators.required]
+      recaptcha: ['', Validators.required]
     });
   }
 

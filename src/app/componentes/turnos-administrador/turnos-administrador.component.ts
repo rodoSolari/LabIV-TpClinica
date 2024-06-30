@@ -11,67 +11,79 @@ export class TurnosAdministradorComponent {
   turnosFiltrados: any[] = [];
   especialidades: string[] = [];
   especialistas: string[] = [];
-  filtroEspecialidad: string = '';
-  filtroEspecialista: string = '';
-  selectedTurno: any;
-  mostrarModalCancelar: boolean = false;
+  especialidadSeleccionada: string | null = null;
+  especialistaSeleccionado: string | null = null;
+  modalVisible: boolean = false;
+  turnoSeleccionado: any = null;
+  comentarioCancelacion: string = '';
 
-  constructor(private turnosService: TurnosService) {}
+  constructor(private turnosService: TurnosService) { }
 
   ngOnInit(): void {
-    this.cargarTurnos();
-  }
-
-  cargarTurnos() {
-   /*this.turnosService.traerTodosLosTurnos().subscribe(turnos => {
+    this.turnosService.obtenerTurnos().subscribe(turnos => {
       this.turnos = turnos;
-      this.turnosFiltrados = turnos;
-      this.extraerEspecialidadesYEspecialistas();
-    });*/
+      this.turnosFiltrados = this.turnos;
+      this.cargarEspecialidadesYEspecialistas();
+    });
   }
 
-  extraerEspecialidadesYEspecialistas() {
-    const especialidadesSet = new Set<string>();
-    const especialistasSet = new Set<string>();
+  cargarEspecialidadesYEspecialistas() {
+    this.especialidades = [...new Set(this.turnos.map(turno => turno.especialidad))];
+    this.especialistas = [...new Set(this.turnos.map(turno => turno.especialista))];
+  }
 
-    this.turnos.forEach(turno => {
-      especialidadesSet.add(turno.especialidad);
-      especialistasSet.add(turno.especialista);
-    });
+  filtrarPorEspecialidad(especialidad: string) {
+    this.especialidadSeleccionada = especialidad;
+    this.filtrarTurnos();
+  }
 
-    this.especialidades = Array.from(especialidadesSet);
-    this.especialistas = Array.from(especialistasSet);
+  filtrarPorEspecialista(especialista: string) {
+    this.especialistaSeleccionado = especialista;
+    this.filtrarTurnos();
+  }
+
+  quitarFiltros() {
+    this.especialidadSeleccionada = null;
+    this.especialistaSeleccionado = null;
+    this.turnosFiltrados = this.turnos;
   }
 
   filtrarTurnos() {
     this.turnosFiltrados = this.turnos.filter(turno => {
-      return (this.filtroEspecialidad === '' || turno.especialidad === this.filtroEspecialidad) &&
-             (this.filtroEspecialista === '' || turno.especialista === this.filtroEspecialista);
+      return (!this.especialidadSeleccionada || turno.especialidad === this.especialidadSeleccionada) &&
+             (!this.especialistaSeleccionado || turno.especialista === this.especialistaSeleccionado);
     });
   }
 
   abrirModalCancelar(turno: any) {
-    this.selectedTurno = turno;
-    this.mostrarModalCancelar = true;
+    this.turnoSeleccionado = turno;
+    this.modalVisible = true;
   }
 
-  cerrarModal(tipo: string) {
-    if (tipo === 'cancelar') {
-      this.mostrarModalCancelar = false;
-    }
+  cerrarModal() {
+    this.modalVisible = false;
+    this.turnoSeleccionado = null;
+    this.comentarioCancelacion = '';
   }
 
-  confirmarCancelarTurno() {
-   /* if (this.selectedTurno && this.selectedTurno.id) {
-      this.turnosService.cancelarTurno(this.selectedTurno.id).then(() => {
-        this.cargarTurnos();
-        this.cerrarModal('cancelar');
-      }).catch((error) => {
-        console.error('Error al cancelar el turno:', error);
+  cancelarTurno() {
+    if (this.turnoSeleccionado) {
+      this.turnosService.cancelarTurno(this.turnoSeleccionado.id, this.comentarioCancelacion).then(() => {
+        this.turnoSeleccionado.estado = 'cancelado';
+        this.cerrarModal();
       });
-    } else {
-      console.error('No se puede cancelar el turno: ID de turno no definido');
     }
-  }*/
-}
+  }
+
+  puedeCancelar(turno: any): boolean {
+    return !['aceptado', 'realizado', 'rechazado', 'cancelado'].includes(turno.estado);
+  }
+
+  convertirHora(horario: string): Date {
+    const [hours, minutes] = horario.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours);
+    date.setMinutes(minutes);
+    return date;
+  }
 }

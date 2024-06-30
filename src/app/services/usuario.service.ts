@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Firestore,collection, collectionData, deleteDoc, doc  } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map } from 'rxjs';
-import { addDoc, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { AuthService } from './auth.service';
 
@@ -90,6 +90,27 @@ export class UsuarioService {
   traerEspecialistasPorEspecialidad(especialidad: string): Observable<any[]> {
     const especialistasRef = collection(this.firestore, 'Usuarios');
     const q = query(especialistasRef, where('especialidad', '==', especialidad));
+    return collectionData(q) as Observable<any[]>;
+  }
+
+  traerEspecialistas(): Observable<any[]> {
+    const especialistasRef = collection(this.firestore, 'Usuarios');
+    const q = query(especialistasRef, where('tipo', '==', 'especialista'));
+    return collectionData(q) as Observable<any[]>;
+  }
+
+  async actualizarDatosUsuario(userData: any): Promise<void> {
+    const q = query(collection(this.firestore, 'Usuarios'), where('email', '==', userData.email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (docSnap) => {
+      const userDocRef = doc(this.firestore, 'Usuarios', docSnap.id);
+      await updateDoc(userDocRef, userData);
+    });
+  }
+
+  obtenerTurnosUsuario(email: string): Observable<any[]> {
+    const turnosRef = collection(this.firestore, 'Turnos');
+    const q = query(turnosRef, where('pacienteEmail', '==', email));
     return collectionData(q) as Observable<any[]>;
   }
 

@@ -1,0 +1,41 @@
+<body>
+  <div class="container">
+    <div class="row">
+      <div *ngFor="let paciente of pacientes" class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ paciente.pacienteNombre }} {{ paciente.pacienteApellido }}</h5>
+            <button (click)="verHistoriaClinica(paciente)" class="btn btn-primary">Ver Historia Clínica</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div id="historiaClinicaModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="historiaClinicaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="historiaClinicaModalLabel">Historia Clínica de {{ pacienteSeleccionado?.Nombre }} {{ pacienteSeleccionado?.Apellido }}</h5>
+        <button type="button" class="btn-close" (click)="cerrarModal('historiaClinicaModal')" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="historiaClinica">
+          <p>Altura: {{ historiaClinica.altura }} cm</p>
+          <p>Peso: {{ historiaClinica.peso }} kg</p>
+          <p>Temperatura: {{ historiaClinica.temperatura }} °C</p>
+          <p>Presión: {{ historiaClinica.presion }}</p>
+          <div *ngFor="let dato of historiaClinica.datosDinamicos">
+            <p>{{ dato.clave }}: {{ dato.valor }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal('historiaClinicaModal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
