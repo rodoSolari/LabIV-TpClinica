@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { HistoriaClinicaService } from 'src/app/services/historia-clinica.service';
 import { TurnosService } from 'src/app/services/turnos.service';
 
 import Swal from 'sweetalert2';
@@ -15,6 +16,7 @@ export class MisTurnosPacienteComponent {
   turnosFiltrados: any[] = [];
   especialidades: string[] = [];
   especialistas: string[] = [];
+  historiaClinica: any;
   filtroEspecialidad: string = '';
   filtroEspecialista: string = '';
   userData: any;
@@ -31,7 +33,8 @@ export class MisTurnosPacienteComponent {
   constructor(
     private turnosService: TurnosService,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private historiaClinicaService: HistoriaClinicaService,
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +42,10 @@ export class MisTurnosPacienteComponent {
       if (user) {
         this.userData = user;
         this.cargarTurnos();
+        this.historiaClinicaService.obtenerHistoriaClinica(this.userData.email).subscribe((historiaClinica: any[]) => {
+          this.historiaClinica = historiaClinica;
+          console.log(this.historiaClinica)
+        });
       }
     });
 
@@ -60,10 +67,20 @@ export class MisTurnosPacienteComponent {
     if (this.userData && this.userData.email) {
       this.turnosService.traerTurnosPorPaciente(this.userData.email).subscribe(turnos => {
         this.turnos = turnos;
-        this.turnosFiltrados = turnos;
-        this.extraerEspecialidadesYEspecialistas();
+        this.cargarHistoriaClinica(this.userData.email);
+       // this.turnosFiltrados = turnos;
+       // this.extraerEspecialidadesYEspecialistas();
       });
     }
+  }
+
+
+
+  cargarHistoriaClinica(email: string): void {
+    this.historiaClinicaService.obtenerHistoriaClinica(email).subscribe(historia => {
+      this.historiaClinica = historia;
+      this.filtrarTurnos();  // Aplicar el filtro una vez que la historia clínica está cargada
+    });
   }
 
   extraerEspecialidadesYEspecialistas() {
@@ -78,13 +95,58 @@ export class MisTurnosPacienteComponent {
     this.especialidades = Array.from(especialidadesSet);
     this.especialistas = Array.from(especialistasSet);
   }
-
+/*
   filtrarTurnos() {
     this.turnosFiltrados = this.turnos.filter(turno => {
       return (this.filtroEspecialidad === '' || turno.especialidad === this.filtroEspecialidad) &&
              (this.filtroEspecialista === '' || turno.especialista === this.filtroEspecialista);
     });
-  }
+  }*/
+
+
+    filtrarTurnos(): void {
+      const searchText = this.searchText.toLowerCase();
+      this.turnosFiltrados = this.turnos.filter(turno =>
+        turno.especialidad.toLowerCase().includes(searchText) ||
+        turno.especialista.toLowerCase().includes(searchText) ||
+        turno.dia.toLowerCase().includes(searchText) ||
+        turno.horario.toLowerCase().includes(searchText) ||
+        turno.estado.toLowerCase().includes(searchText) ||
+        this.historiaClinicaMatches(searchText)
+      );
+    }
+
+    historiaClinicaMatches(searchText: string): boolean {
+      if (!this.historiaClinica || this.historiaClinica.length === 0) return false;
+
+    const lowerSearchText = searchText.toLowerCase();
+
+    for (const historia of this.historiaClinica) {
+      // Verificar los datos fijos
+      const datosFijos = ['altura', 'peso', 'temperatura', 'presion'];
+      for (const dato of datosFijos) {
+        if (historia[dato] && historia[dato].toString().toLowerCase().includes(lowerSearchText)) {
+          console.log(historia[dato])
+          return true;
+
+        }
+      }
+
+
+        for (const datoDinamico of historia.datosDinamicos) {
+          console.log(datoDinamico);
+          if (
+
+            (datoDinamico.clave && datoDinamico.clave.toLowerCase().includes(lowerSearchText)) ||
+            (datoDinamico.valor && datoDinamico.valor.toLowerCase().includes(lowerSearchText))
+          ) {
+            return true;
+          }
+        }
+
+    }
+      return false;
+    }
 
   abrirModalCancelar(turno: any) {
     this.selectedTurno = turno;

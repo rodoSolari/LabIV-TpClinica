@@ -28,6 +28,8 @@ export class MisTurnosEspecialistaComponent {
   mostrarModalRechazo: boolean = false;
   mostrarModalResenia: boolean = false;
   mostrarModalHistoriaClinica: boolean = false;
+  searchText: string = '';
+  historiaClinica: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -37,10 +39,14 @@ export class MisTurnosEspecialistaComponent {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.selectedTurno);
     this.authService.userLogged().subscribe(user => {
       if (user) {
         this.userData = user;
         this.cargarTurnos();
+        this.historiaClinicaService.obtenerHistoriaClinica(this.userData.email).subscribe((historiaClinica: any[]) => {
+          this.historiaClinica = historiaClinica;
+        });
       }
     });
 
@@ -75,6 +81,27 @@ export class MisTurnosEspecialistaComponent {
     }
   }
 
+  filtrarHistoriaClinica(email: string, searchText: string): boolean {
+    const historia = this.historiaClinica.find(historia => historia.pacienteEmail === email);
+    if (!historia) return false;
+    return Object.keys(historia).some(key =>
+      historia[key].toString().toLowerCase().includes(searchText)
+    );
+  }
+
+  filtrarTurnos(turnos: any[], searchText: string): any[] {
+    if (!turnos || !searchText) {
+      return turnos;
+    }
+    searchText = searchText.toLowerCase();
+    return turnos.filter(turno =>
+      Object.keys(turno).some(key =>
+        turno[key].toString().toLowerCase().includes(searchText)
+      ) || this.filtrarHistoriaClinica(turno.pacienteEmail, searchText)
+    );
+  }
+
+
   extraerEspecialidadesYPacientes() {
     const especialidadesSet = new Set<string>();
     const pacientesSet = new Set<string>();
@@ -86,13 +113,6 @@ export class MisTurnosEspecialistaComponent {
 
     this.especialidades = Array.from(especialidadesSet);
     this.pacientes = Array.from(pacientesSet);
-  }
-
-  filtrarTurnos() {
-    this.turnosFiltrados = this.turnos.filter(turno => {
-      return (this.filtroEspecialidad === '' || turno.especialidad === this.filtroEspecialidad) &&
-             (this.filtroPaciente === '' || turno.pacienteNombre === this.filtroPaciente);
-    });
   }
 
   abrirModalCancelar(turno: any) {
@@ -112,6 +132,7 @@ export class MisTurnosEspecialistaComponent {
 
   abrirModalHistoriaClinica(turno: any) {
     this.selectedTurno = turno;
+    console.log(turno);
     this.mostrarModalHistoriaClinica = true;
   }
 
@@ -167,7 +188,7 @@ export class MisTurnosEspecialistaComponent {
         this.cargarTurnos();
         this.cerrarModal('resenia');
         Swal.fire('Turno finalizado', 'El turno ha sido finalizado con éxito', 'success');
-        this.abrirModalHistoriaClinica(this.selectedTurno);
+       // this.abrirModalHistoriaClinica(this.selectedTurno);
       }).catch((error) => {
         console.error('Error al finalizar el turno:', error);
         Swal.fire('Error', 'Hubo un error al finalizar el turno', 'error');
@@ -184,10 +205,14 @@ export class MisTurnosEspecialistaComponent {
         peso: this.historiaClinicaForm.value.peso,
         temperatura: this.historiaClinicaForm.value.temperatura,
         presion: this.historiaClinicaForm.value.presion,
-        datosDinamicos: this.historiaClinicaForm.value.datosDinamicos
+        datosDinamicos: this.historiaClinicaForm.value.datosDinamicos,
+        historiaClinica : true,
+        turnoId : this.selectedTurno.id,
+        pacienteEmail : this.selectedTurno.pacienteEmail,
+        especialistaEmail : this.selectedTurno.especialistaEmail
       };
 
-      this.historiaClinicaService.agregarHistoriaClinica(historiaClinica).then(() => {
+      this.historiaClinicaService.agregarHistoriaClinica(historiaClinica,this.selectedTurno.id).then(() => {
         this.cargarTurnos();
         this.cerrarModal('historiaClinica');
         Swal.fire('Historia Clínica cargada', 'La historia clínica ha sido cargada con éxito', 'success');
@@ -238,5 +263,9 @@ export class MisTurnosEspecialistaComponent {
 
   get datosDinamicos(): FormArray {
     return this.historiaClinicaForm.get('datosDinamicos') as FormArray;
+  }
+
+  puedeCargarHistoriaClinica(turno: any): boolean {
+    return turno.estado === 'realizado' && !turno.historiaClinica;
   }
 }

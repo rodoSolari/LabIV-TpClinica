@@ -33,6 +33,7 @@ export class UsuariosComponent implements OnInit{
   showEspecialistas : boolean = false;
   showPacienteForm : boolean = false;
   showAdminForm  : boolean = false;
+  showHistoriaClinica : boolean = false;
   showEspecialistasForm : boolean = false;
   especialidades: string[] = [];
   emailDelPaciente: string = '';
@@ -362,6 +363,7 @@ export class UsuariosComponent implements OnInit{
     this.pacienteSeleccionado = paciente;
     this.turnosService.obtenerHistoriaClinica(paciente.email).subscribe(historiaClinica => {
       this.historiaClinica = historiaClinica;
+      this.showHistoriaClinica = true;
       this.abrirModal('historiaClinicaModal');
     });
   }
@@ -374,6 +376,7 @@ export class UsuariosComponent implements OnInit{
 
   cerrarModal(id: string) {
     const modal = document.getElementById(id);
+    this.showHistoriaClinica = false;
     if (modal) {
       modal.style.display = 'none';
     }

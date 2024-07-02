@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col-3" *ngFor="let especialista of especialistas">
             <button type="button" class="btn btn-primary mb-3" (click)="selectEspecialista(especialista)">
-              <img [src]="especialista.imagen1" alt="Profesional" class="img-fluid rounded-circle">
+              <img [src]="especialista.imagen1" alt="Profesional" class="img-fluid">
               <p>{{especialista.nombre}}</p>
             </button>
           </div>
@@ -31,17 +31,19 @@
 
       <!-- Mostrar días y horarios -->
       <div *ngIf="especialidadSeleccionada">
-        <h4 class="text-center mb-4" style="color: white;">Seleccione Día y Horario</h4>
+        <h4 class="text-center mb-3" style="color: white;">Seleccione Día y Horario</h4>
         <div *ngFor="let dia of diasDisponibles">
-          <h5 class="text-center" style="color: white;">{{dia}}</h5>
-          <div class="row">
-            <div class="col-3" *ngFor="let horario of generarHorariosDisponibles(dia)">
-              <button type="button" class="btn btn-primary mb-3"
-                      [ngClass]="{'active': horarioSeleccionado?.dia === dia && horarioSeleccionado?.horario === horario}"
-                      [disabled]="horariosReservados[dia] && horariosReservados[dia].includes(horario)"
-                      (click)="selectHorario(dia, horario)">
-                {{horario}}
-              </button>
+          <div *ngIf="generarHorariosDisponibles(dia).length > 0">
+            <h5 class="text-center" style="color: white; margin-top: 25px;">{{dia}}</h5>
+            <div class="horarios-container">
+              <div class="horarios-container" *ngFor="let horario of generarHorariosDisponibles(dia)">
+                <button type="button" class="btn btn-primary mb-3 btn-cuadrado"
+                        [ngClass]="{'active': horarioSeleccionado?.dia === dia && horarioSeleccionado?.horario === horario}"
+                        [disabled]="horariosReservados[dia] && horariosReservados[dia].includes(horario)"
+                        (click)="selectHorario(dia, horario)">
+                  {{horario}}
+                </button>
+              </div>
             </div>
           </div>
         </div>

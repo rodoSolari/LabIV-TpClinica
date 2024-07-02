@@ -206,7 +206,7 @@
           </tr>
         </tbody>
       </table>
-      <div id="historiaClinicaModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="historiaClinicaModalLabel" aria-hidden="true">
+      <div *ngIf="this.showHistoriaClinica" id="historiaClinicaModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="historiaClinicaModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">

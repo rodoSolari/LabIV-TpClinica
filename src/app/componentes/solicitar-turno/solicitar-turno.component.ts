@@ -115,7 +115,7 @@ export class SolicitarTurnoComponent {
       const horaFin = moment(disponibilidad.horarioFin, 'HH:mm');
 
       while (horaInicio.isBefore(horaFin) || horaInicio.isSame(horaFin)) {
-        horarios.push(horaInicio.format('HH:mm'));
+        horarios.push(horaInicio.format('YYYY-MM-DD h:mm A'));
         horaInicio = horaInicio.clone().add(30, 'minutes');
       }
     }

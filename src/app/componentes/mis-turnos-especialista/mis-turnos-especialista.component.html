@@ -1,54 +1,37 @@
 <body>
   <div class="container" style="padding-top: 60px;">
     <h2>Mis Turnos</h2>
-    <div class="form-group">
-      <label>Filtrar por Especialidad</label>
-      <div>
-        <button
-          type="button"
-          class="btn btn-primary me-2 mb-2"
-          [ngClass]="{'btn-primary': filtroEspecialidad === '', 'btn-outline-primary': filtroEspecialidad !== ''}"
-          (click)="filtroEspecialidad = ''; filtrarTurnos()">Todas</button>
-        <button
-          type="button"
-          class="btn btn-primary me-2 mb-2"
-          [ngClass]="{'btn-primary': filtroEspecialidad === especialidad, 'btn-outline-primary': filtroEspecialidad !== especialidad}"
-          *ngFor="let especialidad of especialidades"
-          (click)="filtroEspecialidad = especialidad; filtrarTurnos()">{{especialidad}}</button>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Filtrar por Paciente</label>
-      <div>
-        <button
-          type="button"
-          class="btn btn-primary me-2 mb-2"
-          [ngClass]="{'btn-primary': filtroPaciente === '', 'btn-outline-primary': filtroPaciente !== ''}"
-          (click)="filtroPaciente = ''; filtrarTurnos()">Todos</button>
-        <button
-          type="button"
-          class="btn btn-primary me-2 mb-2"
-          [ngClass]="{'btn-primary': filtroPaciente === paciente, 'btn-outline-primary': filtroPaciente !== paciente}"
-          *ngFor="let paciente of pacientes"
-          (click)="filtroPaciente = paciente; filtrarTurnos()">{{paciente}}</button>
-      </div>
-    </div>
-
-    <div *ngFor="let turno of turnosFiltrados">
-      <div class="card" style="max-width: 40%; margin-top: 20px;">
-        <div class="card-body">
-          <h5 class="card-title">{{turno.especialidad}} - {{turno.pacienteNombre}}</h5>
-          <p class="card-text">Fecha y Hora: {{turno.dia + ' | '}}{{turno.horario}}hs </p>
-          <p class="card-text">Estado: {{turno.estado}}</p>
-          <button *ngIf="turno.estado === 'pendiente'" class="btn btn-success" (click)="aceptarTurno(turno)">Aceptar Turno</button>
-          <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalRechazo(turno)">Rechazar Turno</button>
-          <button *ngIf="turno.estado !== 'realizado' && turno.estado !== 'cancelado' && turno.estado !== 'rechazado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
-          <button *ngIf="turno.estado === 'aceptado'" class="btn btn-primary" (click)="abrirModalResenia(turno)">Finalizar Turno</button>
-          <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)">Ver Reseña</button>
-          <button *ngIf="turno.estado === 'realizado'" class="btn btn-primary" (click)="abrirModalHistoriaClinica(turno)">Cargar historia clinica</button>
-        </div>
-      </div>
+    <div>
+      <input type="text" [(ngModel)]="searchText" placeholder="Buscar..." class="form-control mb-3" />
+      <table class="table table-striped table-dark table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>Especialidad</th>
+            <th>Especialista</th>
+            <th>Fecha y Hora</th>
+            <th>Paciente</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let turno of filtrarTurnos(turnos, searchText)">
+            <td>{{ turno.especialidad }}</td>
+            <td>{{ turno.especialista }}</td>
+            <td>{{ turno.dia }} {{ turno.horario }}</td>
+            <td>{{ turno.pacienteNombre }}</td>
+            <td>{{ turno.estado }}</td>
+            <td>
+              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-success" (click)="aceptarTurno(turno)"             >Aceptar Turno</button>
+              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalRechazo(turno)"         >Rechazar Turno</button>
+              <button *ngIf="turno.estado !== 'realizado' && turno.estado !== 'cancelado' && turno.estado !== 'rechazado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
+              <button *ngIf="turno.estado === 'aceptado'" class="btn btn-primary" (click)="abrirModalResenia(turno)"         >Finalizar Turno</button>
+              <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)"                                 >Ver Reseña</button>
+              <button *ngIf="turno.estado === 'realizado' && !turno.historiaClinica" class="btn btn-primary" (click)="abrirModalHistoriaClinica(turno)">Cargar historia clinica</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 

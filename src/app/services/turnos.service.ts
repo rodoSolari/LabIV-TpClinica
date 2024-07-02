@@ -113,4 +113,9 @@ export class TurnosService {
       })
     );
   }
+
+  actualizarTurno(turnoId: string, data: any): Promise<void> {
+    const turnoDoc = doc(this.firestore, `Turnos/${turnoId}`);
+    return updateDoc(turnoDoc, data);
+  }
 }

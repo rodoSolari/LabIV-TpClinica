@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, doc, query, setDoc, where } from 'firebase/firestore';
+import { addDoc, collection, doc, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { collectionData } from 'rxfire/firestore';
 import { Observable } from 'rxjs';
 
@@ -22,13 +22,19 @@ export class HistoriaClinicaService {
     return setDoc(historiaDoc, historiaData, { merge: true });
   }
 
-  agregarHistoriaClinica(historiaClinica: any): Promise<void> {
-    const historiaClinicaRef = collection(this.firestore, 'HistoriasClinicas');
-    return addDoc(historiaClinicaRef, historiaClinica).then(() => {
-      console.log('Historia clínica agregada con éxito');
-    }).catch((error) => {
-      console.error('Error agregando historia clínica: ', error);
-    });
+  agregarHistoriaClinica(historiaClinica: any, turnoId: string): Promise<void> {
+    const historiasRef = collection(this.firestore, 'HistoriasClinicas');
+    return addDoc(historiasRef, historiaClinica)
+      .then(() => {
+        const turnoDoc = doc(this.firestore, `Turnos/${turnoId}`);
+        return updateDoc(turnoDoc, { historiaClinica: true
+
+        });
+      })
+      .catch((error) => {
+        console.error('Error al agregar la historia clínica: ', error);
+        throw error;
+      });
   }
 
 }
