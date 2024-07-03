@@ -178,4 +178,11 @@ export class SolicitarTurnoComponent {
     const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
     return days[dayIndex];
   }
+
+  volver(){
+    this.especialistaSeleccionado = '';
+    this.especialidadSeleccionada = '';
+    this.diaSeleccionado = '';
+    this.horarioSeleccionado = null;
+  }
 }

@@ -12,7 +12,7 @@ export class PacientesComponent {
   pacienteSeleccionado: any;
   historiaClinica: any;
   turnosRealizados: any[] = [];
-
+  modalHistoriaClinica:  boolean = false;
   constructor(private turnosService: TurnosService, private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -44,6 +44,7 @@ export class PacientesComponent {
 
   abrirModal(id: string) {
     const modal = document.getElementById(id);
+    this.modalHistoriaClinica = true;
     if (modal) {
       modal.style.display = 'block';
     }
