@@ -11,6 +11,7 @@ import { MisTurnosEspecialistaComponent } from './componentes/mis-turnos-especia
 import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
 import { TurnosAdministradorComponent } from './componentes/turnos-administrador/turnos-administrador.component';
 import { PacientesComponent } from './componentes/pacientes/pacientes.component';
+import { EstadisticasAdminComponent } from './componentes/estadisticas-admin/estadisticas-admin.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'turnos-administrador', component: TurnosAdministradorComponent },
   { path: 'mi-perfil', component: MiPerfilComponent },
   { path: 'pacientes', component: PacientesComponent },
+  { path: 'estadisticas-admin', component: EstadisticasAdminComponent },
   { path: '**', redirectTo: 'home' }
 ];
 

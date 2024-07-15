@@ -36,8 +36,7 @@
 
     <!-- mis-turnos-paciente.component.html -->
     <div>
-      <input type="text" [(ngModel)]="searchText" placeholder="Buscar turnos" (input)="filtrarTurnos()" />
-     <!-- <input type="text" [(ngModel)]="searchText" placeholder="Buscar..." class="form-control mb-3" />-->
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar turnos..." class="form-control mb-3" (input)="aplicarFiltros()"> />
       <table class="table table-striped table-dark table-bordered">
         <thead class="thead-dark">
           <tr>
@@ -61,6 +60,7 @@
             <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)">Ver Reseña</button>
             <button *ngIf="turno.estado === 'realizado'" class="btn btn-success" (click)="abrirModalEncuesta(turno)">Completar Encuesta</button>
             <button *ngIf="turno.estado === 'realizado'" class="btn btn-primary" (click)="abrirModalCalificacion(turno)">Calificar Atención</button>
+            <button *ngIf="turno.historiaClinica" class="btn btn-info" (click)="verHistoriaClinica(turno)">Ver Historia Clínica</button>
             </td>
           </tr>
         </tbody>
@@ -162,5 +162,27 @@
     </div>
   </div>
 
+  <div #historiaClinicaModal class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Historia Clínica</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Altura:</strong> {{ historiaClinica?.altura }}</p>
+          <p><strong>Peso:</strong> {{ historiaClinica?.peso }}</p>
+          <p><strong>Presión:</strong> {{ historiaClinica?.presion }}</p>
+          <p><strong>Temperatura:</strong> {{ historiaClinica?.temperatura }}</p>
+          <div *ngFor="let dato of historiaClinica?.datosDinamicos">
+            <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>

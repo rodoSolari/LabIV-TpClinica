@@ -18,7 +18,7 @@ export class AuthService {
   public async subirLog(email: string, date: string): Promise<void> {
     const col = collection(this.firestore, 'logs');
     await addDoc(col, {
-      nombre: email,
+      email: email,
       date: date
     });
   }

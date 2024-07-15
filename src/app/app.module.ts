@@ -25,6 +25,9 @@ import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { HistoriaClinicaComponent } from './componentes/historia-clinica/historia-clinica.component';
 import { PacientesComponent } from './componentes/pacientes/pacientes.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EstadisticasAdminComponent } from './componentes/estadisticas-admin/estadisticas-admin.component';
+
 
 @NgModule({
   declarations: [
@@ -41,10 +44,12 @@ import { PacientesComponent } from './componentes/pacientes/pacientes.component'
     TurnosAdministradorComponent,
     MiPerfilComponent,
     HistoriaClinicaComponent,
-    PacientesComponent
+    PacientesComponent,
+    EstadisticasAdminComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,

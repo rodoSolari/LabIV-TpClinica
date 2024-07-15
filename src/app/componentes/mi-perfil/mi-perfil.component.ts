@@ -6,6 +6,10 @@ import { HistoriaClinicaService } from 'src/app/services/historia-clinica.servic
 import { TurnosService } from 'src/app/services/turnos.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-mi-perfil',
@@ -235,5 +239,40 @@ export class MiPerfilComponent {
   clickImagen(imagenKey: string): void {
     const input = document.getElementById(imagenKey) as HTMLInputElement;
     input.click();
+  }
+
+  generarPDFHistoriaClinica(): void {
+    const nombreApellido = this.userData.nombre + ' ' + this.userData.apellido;
+    console.log(this.userData)
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text('Informe de Historia Clínica de '+nombreApellido, 11, 8);
+    doc.setFontSize(11);
+    doc.text(`Fecha de emisión: ${moment().format('YYYY-MM-DD HH:mm:ss')}`, 11, 14);
+    doc.addImage('../../assets/favicon-3.png', 'PNG', 150, 5, 40, 20);
+
+
+
+    const datos = [
+      ['Nombre', this.userData.nombre],
+      ['Apellido', this.userData.apellido],
+      ['Email', this.userData.email],
+      ['Altura', this.historiaClinica[0].altura],
+      ['Peso', this.historiaClinica[0].peso],
+      ['Temperatura', this.historiaClinica[0].temperatura],
+      ['Presión', this.historiaClinica[0].presion],
+    ];
+
+    this.historiaClinica[0].datosDinamicos.forEach((dato: any) => {
+      datos.push([dato.clave, dato.valor]);
+    });
+
+    (doc as any).autoTable({
+      head: [''],
+      body: datos,
+      startY: 22,
+    });
+
+    doc.save(`HistoriaClinica_${this.userData.nombre}_${this.userData.apellido}.pdf`);
   }
 }

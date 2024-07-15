@@ -358,6 +358,14 @@ export class UsuariosComponent implements OnInit{
     });
   }
 
+  descargarDatosTodosUsuario(): void {
+    this.usuarioService.traerCamposEspecificosUsuarios().subscribe(user => {
+      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(user);
+      const workbook: XLSX.WorkBook = { Sheets: { 'Usuarios': worksheet }, SheetNames: ['Usuarios'] };
+      XLSX.writeFile(workbook, `Usuarios.xlsx`);
+    });
+  }
+
   verHistoriaClinica(paciente: any) {
     console.log("paciente "+ paciente.email);
     this.pacienteSeleccionado = paciente;

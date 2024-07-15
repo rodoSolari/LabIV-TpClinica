@@ -114,4 +114,21 @@ export class UsuarioService {
     return collectionData(q) as Observable<any[]>;
   }
 
+  traerCamposEspecificosUsuarios(): Observable<any[]> {
+    const usuariosRef = collection(this.firestore, 'Usuarios');
+    const q = query(usuariosRef,where('tipo','==','paciente')); // Puedes agregar filtros aquí si es necesario
+    return collectionData(q, { idField: 'id' }).pipe(
+      map(users => users.map(user => ({
+        nombre: user['nombre'],
+        apellido: user['apellido'],
+        email: user['email'],
+        dni: user['dni'],
+        edad: user['edad'],
+        obraSocial: user['obraSocial'],
+        imagen1:user['imagen1'],
+        imagen2:user['imagen2']
+      })))
+    ) as Observable<any[]>;
+  }
+
 }

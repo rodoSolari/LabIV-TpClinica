@@ -1,14 +1,28 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import * as moment from 'moment';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  animations:[
+      trigger('enterLeaveAnimation', [
+        transition(':enter', [
+          style({ transform: 'translateY(100%)', opacity: 0 }),
+          animate('0.5s ease-in-out', style({ transform: 'translateY(0)', opacity: 1 }))
+        ]),
+        transition(':leave', [
+          animate('0.5s ease-in-out', style({ transform: 'translateY(100%)', opacity: 0 }))
+        ])
+      ])
+  ]
 })
 export class LoginComponent {
   date = new Date();
@@ -17,7 +31,7 @@ export class LoginComponent {
   mensaje: string = '';
   userImages: { [key: string]: string } = {};
 
-  constructor(public service: AuthService, private router: Router, private auth: AngularFireAuth,private storage: AngularFireStorage) {}
+  constructor(public service: AuthService, private router: Router, private logService:LogService) {}
 
   ngOnInit(): void {
     const users = [
@@ -41,8 +55,8 @@ export class LoginComponent {
 
   login() {
     this.service.login(this.email, this.clave).then((userCredential) => {
-      const date: Date = new Date();
-      this.service.subirLog(this.email, date.toLocaleString());
+      //const date: Date = new Date();
+      this.logService.subirLog(this.email);
       console.log("usuario logueado correctamente");
       this.router.navigate(['home']);
     }).catch((error) => {

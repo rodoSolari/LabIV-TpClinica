@@ -80,7 +80,8 @@
   </div>
 
   <div *ngIf="userData?.tipo === 'paciente'" class="d-flex justify-content-center my-3">
-    <button class="btn btn-info" (click)="abrirModalHistoriaClinica()">Ver Historial Clínico</button>
+    <button class="btn btn-info" style="margin-right: 10px;" (click)="abrirModalHistoriaClinica()">Ver Historial Clínico</button>
+    <button class="btn btn-info" (click)="generarPDFHistoriaClinica()">Generar PDF de Historia Clinica</button>
   </div>
 
 

@@ -1,0 +1,28 @@
+<body>
+  <div class="container">
+    <h2>Estadísticas</h2>
+    <div>
+      <h3>Log de Ingresos</h3>
+      <table class="table table-striped table-dark table-bordered">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Día</th>
+            <th>Horario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of logs">
+            <td>{{ log.email }}</td>
+            <td>{{ log.fechaHora | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ log.fechaHora | date: 'HH:mm:ss' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <button class="btn btn-light" style="margin-right: 10px;" (click)="anterior()" [disabled]="historial.length <= 1">Atrás</button>
+        <button class="btn btn-light" (click)="siguiente()" [disabled]="!hayMas">Siguiente</button>
+      </div>
+    </div>
+  </div>
+</body>

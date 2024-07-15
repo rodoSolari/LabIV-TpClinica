@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { TurnosService } from 'src/app/services/turnos.service';
 import Swal from 'sweetalert2';
 import { HistoriaClinicaComponent } from '../historia-clinica/historia-clinica.component';
 import { HistoriaClinicaService } from 'src/app/services/historia-clinica.service';
+import { FiltroTurnosService } from 'src/app/services/filtro-turnos.service';
 
 @Component({
   selector: 'app-mis-turnos-especialista',
@@ -12,12 +13,11 @@ import { HistoriaClinicaService } from 'src/app/services/historia-clinica.servic
   styleUrls: ['./mis-turnos-especialista.component.scss']
 })
 export class MisTurnosEspecialistaComponent {
+  @ViewChild('historiaClinicaModal') historiaClinicaModal!: ElementRef;
+  historiaClinica: any;
   turnos: any[] = [];
   turnosFiltrados: any[] = [];
-  especialidades: string[] = [];
   pacientes: string[] = [];
-  filtroEspecialidad: string = '';
-  filtroPaciente: string = '';
   userData: any;
   selectedTurno: any;
   cancelacionForm!: FormGroup;
@@ -28,25 +28,23 @@ export class MisTurnosEspecialistaComponent {
   mostrarModalRechazo: boolean = false;
   mostrarModalResenia: boolean = false;
   mostrarModalHistoriaClinica: boolean = false;
-  searchText: string = '';
-  historiaClinica: any[] = [];
+  historiasClinicas: any[] = [];
+
+  searchTerm: string = '';
 
   constructor(
     private authService: AuthService,
     private turnosService: TurnosService,
     private historiaClinicaService: HistoriaClinicaService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private filtroTurnosService: FiltroTurnosService
   ) {}
 
   ngOnInit(): void {
-    console.log(this.selectedTurno);
     this.authService.userLogged().subscribe(user => {
       if (user) {
         this.userData = user;
         this.cargarTurnos();
-        this.historiaClinicaService.obtenerHistoriaClinica(this.userData.email).subscribe((historiaClinica: any[]) => {
-          this.historiaClinica = historiaClinica;
-        });
       }
     });
 
@@ -72,47 +70,21 @@ export class MisTurnosEspecialistaComponent {
   }
 
   cargarTurnos() {
-    if (this.userData && this.userData.email) {
+    //if (this.userData && this.userData.email) {
       this.turnosService.traerTurnosPorEspecialista(this.userData.email).subscribe(turnos => {
         this.turnos = turnos;
-        this.turnosFiltrados = turnos;
-        this.extraerEspecialidadesYPacientes();
+        this.aplicarFiltros();
       });
-    }
+
+      this.historiaClinicaService.obtenerHistoriasClinicas().subscribe(historiasClinicas => {
+        this.historiasClinicas = historiasClinicas;
+        this.aplicarFiltros();
+      });
+  //  }
   }
 
-  filtrarHistoriaClinica(email: string, searchText: string): boolean {
-    const historia = this.historiaClinica.find(historia => historia.pacienteEmail === email);
-    if (!historia) return false;
-    return Object.keys(historia).some(key =>
-      historia[key].toString().toLowerCase().includes(searchText)
-    );
-  }
-
-  filtrarTurnos(turnos: any[], searchText: string): any[] {
-    if (!turnos || !searchText) {
-      return turnos;
-    }
-    searchText = searchText.toLowerCase();
-    return turnos.filter(turno =>
-      Object.keys(turno).some(key =>
-        turno[key].toString().toLowerCase().includes(searchText)
-      ) || this.filtrarHistoriaClinica(turno.pacienteEmail, searchText)
-    );
-  }
-
-
-  extraerEspecialidadesYPacientes() {
-    const especialidadesSet = new Set<string>();
-    const pacientesSet = new Set<string>();
-
-    this.turnos.forEach(turno => {
-      especialidadesSet.add(turno.especialidad);
-      pacientesSet.add(turno.pacienteNombre);
-    });
-
-    this.especialidades = Array.from(especialidadesSet);
-    this.pacientes = Array.from(pacientesSet);
+  async aplicarFiltros(): Promise<void> {
+    this.turnosFiltrados = this.filtroTurnosService.filterTurnos(this.turnos,this.historiasClinicas, this.searchTerm);
   }
 
   abrirModalCancelar(turno: any) {
@@ -250,10 +222,19 @@ export class MisTurnosEspecialistaComponent {
 
   addDatoDinamico(): void {
     const datosDinamicos = this.historiaClinicaForm.get('datosDinamicos') as FormArray;
-    datosDinamicos.push(this.fb.group({
-      clave: ['', Validators.required],
-      valor: ['', Validators.required]
-    }));
+    if (datosDinamicos.length < 3) {
+      datosDinamicos.push(this.fb.group({
+        clave: ['', Validators.required],
+        valor: ['', Validators.required]
+      }));
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Límite alcanzado',
+        text: 'No se pueden agregar más de 3 datos dinámicos.',
+        confirmButtonText: 'Entendido'
+      });
+    }
   }
 
   removeDatoDinamico(index: number): void {
@@ -267,5 +248,18 @@ export class MisTurnosEspecialistaComponent {
 
   puedeCargarHistoriaClinica(turno: any): boolean {
     return turno.estado === 'realizado' && !turno.historiaClinica;
+  }
+
+  verHistoriaClinica(turno: any) {
+    this.historiaClinica = this.historiasClinicas.find(hc => hc.turnoId === turno.turnoId);
+    if (this.historiaClinica) {
+      const modalElement = this.historiaClinicaModal.nativeElement;
+      modalElement.style.display = 'block';
+    }
+  }
+
+  closeModal(): void {
+    const modalElement = this.historiaClinicaModal.nativeElement;
+    modalElement.style.display = 'none';
   }
 }

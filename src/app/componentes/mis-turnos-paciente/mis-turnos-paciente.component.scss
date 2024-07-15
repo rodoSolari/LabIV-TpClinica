@@ -24,9 +24,7 @@ body {
   color: black;
 }
 
-.btn-primary, .btn-outline-primary {
-  border-radius: 20px;
-}
+
 
 h2 {
   margin-top: 20px;
@@ -57,7 +55,6 @@ select {
   border: 1px solid #ccc;
   padding: 10px;
   margin-bottom: 10px;
-  border-radius: 5px;
 }
 
 button {
@@ -66,16 +63,16 @@ button {
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  border-radius: 5px;
   margin-top: 10px;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
 
 .modal.show.d-block {
   display: flex !important;
   align-items: center;
   justify-content: center;
+}
+
+.btn{
+  margin-left: 10px;
 }

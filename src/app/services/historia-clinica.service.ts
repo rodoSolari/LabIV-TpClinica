@@ -28,13 +28,23 @@ export class HistoriaClinicaService {
       .then(() => {
         const turnoDoc = doc(this.firestore, `Turnos/${turnoId}`);
         return updateDoc(turnoDoc, { historiaClinica: true
-
         });
       })
       .catch((error) => {
         console.error('Error al agregar la historia clínica: ', error);
         throw error;
       });
+  }
+
+  obtenerHistoriaClinicaPorTurno(turnoId: string): Observable<any[]> {
+    const historiasRef = collection(this.firestore, 'HistoriasClinicas');
+    const q = query(historiasRef, where('turnoId', '==', turnoId));
+    return collectionData(q);
+  }
+
+  obtenerHistoriasClinicas(): Observable<any[]> {
+    const historiasRef = collection(this.firestore, 'HistoriasClinicas');
+    return collectionData(historiasRef);
   }
 
 }
