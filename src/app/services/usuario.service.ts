@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Firestore,collection, collectionData, deleteDoc, doc  } from '@angular/fire/firestore';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map } from 'rxjs';
 import { addDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'

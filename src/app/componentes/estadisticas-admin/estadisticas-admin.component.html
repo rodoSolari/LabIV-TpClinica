@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let log of logs">
+          <tr *ngFor="let log of logsPaginados">
             <td>{{ log.email }}</td>
             <td>{{ log.fechaHora | date: 'yyyy-MM-dd' }}</td>
             <td>{{ log.fechaHora | date: 'HH:mm:ss' }}</td>
@@ -20,9 +20,10 @@
         </tbody>
       </table>
       <div class="pagination">
-        <button class="btn btn-light" style="margin-right: 10px;" (click)="anterior()" [disabled]="historial.length <= 1">Atrás</button>
-        <button class="btn btn-light" (click)="siguiente()" [disabled]="!hayMas">Siguiente</button>
+        <button class="btn btn-light" style="margin-right: 10px;" (click)="anterior()" [disabled]="paginaActual === 0">Atrás</button>
+        <button class="btn btn-light" (click)="siguiente()" [disabled]="(paginaActual + 1) * tamanoPagina >= logs.length">Siguiente</button>
       </div>
     </div>
   </div>
+
 </body>

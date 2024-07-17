@@ -9,46 +9,38 @@ import { LogService } from 'src/app/services/log.service';
 })
 export class EstadisticasAdminComponent implements OnInit{
   logs: any[] = [];
-  ultimoVisible: QueryDocumentSnapshot | null = null;
+  logsPaginados: any[] = [];
   tamanoPagina: number = 10;
-  hayMas: boolean = false;
-  historial: QueryDocumentSnapshot[] = [];
+  paginaActual: number = 0;
 
   constructor(private logService: LogService) {}
 
   ngOnInit(): void {
     this.cargarLogs();
-
   }
 
   async cargarLogs(): Promise<void> {
-    const logs = await this.logService.obtenerLogsOrdenados(this.ultimoVisible, this.tamanoPagina);
-    if (logs.length < this.tamanoPagina) {
-      this.hayMas = false;
-    }
-    //this.logs = logs.map(doc => doc.data());
-    this.logs = logs.map(doc => {
-      const data = doc.data();
-      data.fechaHora = new Date(data.fechaHora);
-      return data;
-    });
-    if (this.ultimoVisible) {
-      this.historial.push(this.ultimoVisible);
-    }
-    this.ultimoVisible = logs.length > 0 ? logs[logs.length - 1] : null;
+    this.logs = await this.logService.obtenerTodosLosLogs();
+    this.actualizarLogsPaginados();
   }
 
-  async siguiente(): Promise<void> {
-    if (this.hayMas) {
-      await this.cargarLogs();
+  actualizarLogsPaginados(): void {
+    const inicio = this.paginaActual * this.tamanoPagina;
+    const fin = inicio + this.tamanoPagina;
+    this.logsPaginados = this.logs.slice(inicio, fin);
+  }
+
+  siguiente(): void {
+    if ((this.paginaActual + 1) * this.tamanoPagina < this.logs.length) {
+      this.paginaActual++;
+      this.actualizarLogsPaginados();
     }
   }
 
-  async anterior(): Promise<void> {
-    if (this.historial.length > 1) {
-      this.historial.pop(); // Eliminar la última entrada
-      this.ultimoVisible = this.historial.length > 0 ? this.historial.pop()! : null; // Obtener la entrada anterior
-      await this.cargarLogs();
+  anterior(): void {
+    if (this.paginaActual > 0) {
+      this.paginaActual--;
+      this.actualizarLogsPaginados();
     }
   }
 }

@@ -15,13 +15,13 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 export class AuthService {
   constructor(private auth: AngularFireAuth, private firestore: Firestore, private storage:AngularFireStorage) {}
 
-  public async subirLog(email: string, date: string): Promise<void> {
+ /* public async subirLog(email: string, date: string): Promise<void> {
     const col = collection(this.firestore, 'logs');
     await addDoc(col, {
       email: email,
       date: date
     });
-  }
+  }*/
 
   addAdmin(adminData: any, imagen: File, uid: string): Promise<void> {
     const col = collection(this.firestore, 'Usuarios');

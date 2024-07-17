@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +27,8 @@ import { HistoriaClinicaComponent } from './componentes/historia-clinica/histori
 import { PacientesComponent } from './componentes/pacientes/pacientes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EstadisticasAdminComponent } from './componentes/estadisticas-admin/estadisticas-admin.component';
+import { GraficosAdminComponent } from './componentes/graficos-admin/graficos-admin.component';
+import { ChartistModule } from 'ng-chartist';
 
 
 @NgModule({
@@ -45,7 +47,8 @@ import { EstadisticasAdminComponent } from './componentes/estadisticas-admin/est
     MiPerfilComponent,
     HistoriaClinicaComponent,
     PacientesComponent,
-    EstadisticasAdminComponent
+    EstadisticasAdminComponent,
+    GraficosAdminComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ import { EstadisticasAdminComponent } from './componentes/estadisticas-admin/est
     HttpClientModule,
     AngularFireModule,
     ReactiveFormsModule,
+    ChartistModule,
     NgxCaptchaModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
@@ -62,6 +66,7 @@ import { EstadisticasAdminComponent } from './componentes/estadisticas-admin/est
     provideStorage(() => getStorage())
   ],
   providers: [{provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig}],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

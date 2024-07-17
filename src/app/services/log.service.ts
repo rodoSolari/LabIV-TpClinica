@@ -25,6 +25,13 @@ export class LogService {
     });
   }
 
+  async obtenerTodosLosLogs(): Promise<any[]> {
+    const coleccionLogs = collection(this.firestore, 'logs');
+    const consulta = query(coleccionLogs, orderBy('fechaHora', 'desc'));
+    const resultado = await getDocs(consulta);
+    return resultado.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  }
+
   async obtenerLogsOrdenados(ultimoVisible: QueryDocumentSnapshot | null, tamanioPagina: number): Promise<any[]> {
     const coleccionLogs = collection(this.firestore, 'logs');
     let consulta;
@@ -34,7 +41,6 @@ export class LogService {
     } else {
       consulta = query(coleccionLogs, orderBy('fechaHora', 'desc'), limit(tamanioPagina));
     }
-
 
     const resultado = await getDocs(consulta);
     return resultado.docs;

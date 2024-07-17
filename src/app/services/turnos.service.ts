@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { DocumentReference, addDoc, collection, doc, query, updateDoc, where } from 'firebase/firestore';
+import { DocumentReference, addDoc, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { collectionData } from 'rxfire/firestore';
 import { Observable, map } from 'rxjs';
 
@@ -117,5 +117,24 @@ export class TurnosService {
   actualizarTurno(turnoId: string, data: any): Promise<void> {
     const turnoDoc = doc(this.firestore, `Turnos/${turnoId}`);
     return updateDoc(turnoDoc, data);
+  }
+
+  async obtenerCantidadTurnosPorEspecialidad(): Promise<any> {
+    const coleccionTurnos = collection(this.firestore, 'turnos');
+    const snapshot = await getDocs(coleccionTurnos);
+    const turnos = snapshot.docs.map(doc => doc.data());
+
+    const cantidadPorEspecialidad: { [key: string]: number } = {};
+
+    turnos.forEach(turno => {
+      const especialidad = turno['especialidad'];
+      if (cantidadPorEspecialidad[especialidad]) {
+        cantidadPorEspecialidad[especialidad]++;
+      } else {
+        cantidadPorEspecialidad[especialidad] = 1;
+      }
+    });
+
+    return cantidadPorEspecialidad;
   }
 }
