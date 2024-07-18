@@ -120,7 +120,7 @@ export class TurnosService {
   }
 
   async obtenerCantidadTurnosPorEspecialidad(): Promise<any> {
-    const coleccionTurnos = collection(this.firestore, 'turnos');
+    const coleccionTurnos = collection(this.firestore, 'Turnos');
     const snapshot = await getDocs(coleccionTurnos);
     const turnos = snapshot.docs.map(doc => doc.data());
 
@@ -136,5 +136,24 @@ export class TurnosService {
     });
 
     return cantidadPorEspecialidad;
+  }
+
+  async obtenerCantidadTurnosPorDia(): Promise<any> {
+    const coleccionTurnos = collection(this.firestore, 'Turnos');
+    const snapshot = await getDocs(coleccionTurnos);
+    const turnos = snapshot.docs.map(doc => doc.data());
+
+    const cantidadPorDia: { [key: string]: number } = {};
+
+    turnos.forEach(turno => {
+      const dia = turno['dia'];
+      if (cantidadPorDia[dia]) {
+        cantidadPorDia[dia]++;
+      } else {
+        cantidadPorDia[dia] = 1;
+      }
+    });
+
+    return cantidadPorDia;
   }
 }

@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~chartist/dist/chartist.min.css';
+
+.ct-label {
+  fill: #000 !important;
+  font-weight: bolder !important;
+  font-size: 20px !important;
+  text-anchor: middle !important;
+}
+
+.ct-horizontal .ct-label {
+  font-weight: bolder !important;
+  font-size: 20px !important;
+}
+
+.ct-vertical .ct-label {
+  font-weight: bolder !important;
+  font-size: 20px !important;
+}

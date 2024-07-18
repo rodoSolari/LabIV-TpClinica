@@ -30,8 +30,8 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/chartist/dist/chartist.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/chartist/dist/chartist.min.css"
             ],
             "scripts": []
           },
@@ -94,8 +94,8 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/chartist/dist/chartist.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/chartist/dist/chartist.min.css"
             ],
             "scripts": []
           }

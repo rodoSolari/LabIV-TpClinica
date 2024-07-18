@@ -1,4 +1,5 @@
 export const environment = {
+  production: false, //agregado
   firebaseConfig : {
     apiKey: "AIzaSyAnZTNGTgy7F_rJS3MQcDgRVocUNmoQGRM",
     authDomain: "tpclinica-8805b.firebaseapp.com",

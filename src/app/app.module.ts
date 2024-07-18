@@ -1,20 +1,14 @@
-import { NgModule,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { RegistroComponent } from './componentes/registro/registro.component';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { environment } from '../environments/environment';
-import { provideAuth,getAuth } from '@angular/fire/auth';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-import { AngularFireModule, FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { HomeComponent } from './componentes/home/home.component';
-import { provideStorage,getStorage } from '@angular/fire/storage';
 import { BotonesDirective } from './directivas/botones.directive';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
 import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
@@ -22,14 +16,24 @@ import { MisTurnosPacienteComponent } from './componentes/mis-turnos-paciente/mi
 import { MisTurnosEspecialistaComponent } from './componentes/mis-turnos-especialista/mis-turnos-especialista.component';
 import { TurnosAdministradorComponent } from './componentes/turnos-administrador/turnos-administrador.component';
 import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
-import { NgxCaptchaModule } from 'ngx-captcha';
 import { HistoriaClinicaComponent } from './componentes/historia-clinica/historia-clinica.component';
 import { PacientesComponent } from './componentes/pacientes/pacientes.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EstadisticasAdminComponent } from './componentes/estadisticas-admin/estadisticas-admin.component';
-import { GraficosAdminComponent } from './componentes/graficos-admin/graficos-admin.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
 import { ChartistModule } from 'ng-chartist';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { environment } from '../environments/environment';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideStorage, getStorage } from '@angular/fire/storage';
+import { GraficosModule } from './graficos/graficos.module';
 
+const firebaseConfig = AngularFireModule.initializeApp(environment.firebaseConfig);
 
 @NgModule({
   declarations: [
@@ -47,8 +51,7 @@ import { ChartistModule } from 'ng-chartist';
     MiPerfilComponent,
     HistoriaClinicaComponent,
     PacientesComponent,
-    EstadisticasAdminComponent,
-    GraficosAdminComponent
+    EstadisticasAdminComponent
   ],
   imports: [
     BrowserModule,
@@ -56,17 +59,21 @@ import { ChartistModule } from 'ng-chartist';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    AngularFireModule,
     ReactiveFormsModule,
     ChartistModule,
     NgxCaptchaModule,
+    firebaseConfig,
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireStorageModule,
+    GraficosModule
+  ],
+  providers: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage())
   ],
-  providers: [{provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig}],
-  bootstrap: [AppComponent],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

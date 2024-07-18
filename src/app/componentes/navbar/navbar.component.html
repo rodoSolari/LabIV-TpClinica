@@ -26,6 +26,9 @@
         <li class="nav-item" *ngIf="isAdmin">
           <a class="nav-link" routerLink="estadisticas-admin">ESTADISTICAS ADMIN</a>
         </li>
+        <li class="nav-item" *ngIf="isAdmin">
+          <a class="nav-link" routerLink="graficos">GRAFICOS ADMIN</a>
+        </li>
       </ul>
     </div>
     <ul class="navbar-nav" *ngIf="usuariologeado; else Login">

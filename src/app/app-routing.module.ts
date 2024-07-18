@@ -4,7 +4,6 @@ import { HomeComponent } from './componentes/home/home.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { RegistroComponent } from './componentes/registro/registro.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
-import { AuthGuard } from './auth.guard';
 import { MisTurnosPacienteComponent } from './componentes/mis-turnos-paciente/mis-turnos-paciente.component';
 import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
 import { MisTurnosEspecialistaComponent } from './componentes/mis-turnos-especialista/mis-turnos-especialista.component';
@@ -27,6 +26,7 @@ const routes: Routes = [
   { path: 'mi-perfil', component: MiPerfilComponent },
   { path: 'pacientes', component: PacientesComponent },
   { path: 'estadisticas-admin', component: EstadisticasAdminComponent },
+  { path: 'graficos', loadChildren: () => import('./graficos/graficos.module').then(m => m.GraficosModule) },
   { path: '**', redirectTo: 'home' }
 ];
 

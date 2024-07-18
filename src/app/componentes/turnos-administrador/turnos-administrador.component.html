@@ -52,7 +52,8 @@
         <tr *ngFor="let turno of turnosFiltrados">
           <td>{{ turno.especialidad }}</td>
           <td>{{ turno.especialista }}</td>
-          <td>{{ turno.dia | date: 'yyyy-MM-dd' }} {{ convertirHora(turno.horario) | date: 'hh:mm a' }}</td>
+          <!--<td>{{ turno.dia | date: 'yyyy-MM-dd' }} {{ convertirHora(turno.horario) | date: 'hh:mm a' }}</td>-->
+          <td>{{  turno.horario }}</td>
           <td>{{ turno.pacienteNombre }} {{ turno.pacienteApellido }}</td>
           <td>{{ turno.estado }}</td>
           <td>
