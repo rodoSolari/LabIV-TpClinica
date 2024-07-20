@@ -251,7 +251,7 @@ export class MisTurnosEspecialistaComponent {
   }
 
   verHistoriaClinica(turno: any) {
-    this.historiaClinica = this.historiasClinicas.find(hc => hc.turnoId === turno.turnoId);
+    this.historiaClinica = this.historiasClinicas.find(hc => hc.turnoId === turno.id);
     if (this.historiaClinica) {
       const modalElement = this.historiaClinicaModal.nativeElement;
       modalElement.style.display = 'block';

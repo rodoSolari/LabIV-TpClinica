@@ -10,7 +10,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   templateUrl: './grafico-turnos-por-medico.component.html',
   styleUrls: ['./grafico-turnos-por-medico.component.scss']
 })
-export class GraficoTurnosPorMedicoComponent {
+export class GraficoTurnosPorMedicoComponent implements OnInit {
   @ViewChild('chart') chartElement!: ElementRef;
   especialistas: any[] = [];
   turnos: any[] = [];
@@ -34,12 +34,12 @@ export class GraficoTurnosPorMedicoComponent {
 
   filterTurnosByDateRange() {
     const filteredTurnos = this.turnos.filter(turno => {
-      const turnoDate = new Date(turno.fecha);
+      const turnoDate = turno.dia;
       return turnoDate >= this.startDate && turnoDate <= this.endDate;
     });
-
+    console.log(filteredTurnos)
     const turnosPorMedico = filteredTurnos.reduce((acc, turno) => {
-      const medico = turno.especialista;
+      const medico = `${turno.especialista} (${turno.especialidad})`;
       if (!acc[medico]) {
         acc[medico] = 0;
       }
@@ -47,33 +47,42 @@ export class GraficoTurnosPorMedicoComponent {
       return acc;
     }, {});
 
+
     this.drawChart(turnosPorMedico);
   }
 
-  drawChart(data: any) {
+  drawChart(data: { [key: string]: number }) {
     const labels = Object.keys(data);
-    const series = Object.values(data);
+    const series = [Object.values(data)];
 
     const chartData = {
       labels: labels,
-      series: [series]
+      series: series
     };
 
     const options = {
       axisX: {
-        showGrid: false
+        showGrid: true
       },
       axisY: {
         onlyInteger: true
       },
-      height: '400px',
-      width: '600px',
+      height: '500px',
+      width: '1000px',
       chartPadding: {
-        right: 40
+        left: 0
       },
-      seriesBarDistance: 15
+      seriesBarDistance: 20
     };
 
-   // new Chartist.Bar(this.chartElement.nativeElement, chartData, options);
+    const chart = new Chartist.BarChart(this.chartElement.nativeElement, chartData, options);
+
+    chart.on('draw', function(data) {
+      if (data.type === 'bar') {
+        data.element.attr({
+          style: 'stroke-width: 30px; stroke: green;' // Ajustar el grosor y color de las barras
+        });
+      }
+    });
   }
 }

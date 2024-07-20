@@ -1,11 +1,11 @@
 
 .chart-container {
-  background-color: #fff; /* Fondo blanco */
-  padding: 20px; /* Espacio alrededor del gráfico */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para darle un poco de profundidad */
-  max-width: 600px; /* Ancho máximo del contenedor */
-  margin: 0 auto; /* Centrar el contenedor */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,21 +26,6 @@
   fill: #3498db !important;
 }
 
-.ct-series-a .ct-slice-pie {
-  fill: #3498db !important; /* Azul claro */
-}
-
-.ct-series-b .ct-slice-pie {
-  fill: #9b59b6 !important; /* Púrpura claro */
-}
-
-.ct-series-c .ct-slice-pie {
-  fill: #e74c3c !important; /* Rojo claro */
-}
-
-.ct-series-d .ct-slice-pie {
-  fill: #f1c40f !important; /* Amarillo claro */
-}
 
 .ct-label {
   fill: #000 !important; /* Color del texto */

@@ -1,1 +1,15 @@
-<p>grafico-turnos-por-medico works!</p>
+<div class="chart-container">
+  <h4 class="chart-title">Cantidad de turnos solicitados por médico</h4>
+  <div class="date-picker-container row mb-3">
+    <div class="col">
+      <label for="startDate" class="form-label">Fecha de inicio:</label>
+      <input type="date" id="startDate" [(ngModel)]="startDate" class="form-control">
+    </div>
+    <div class="col">
+      <label for="endDate" class="form-label">Fecha de fin:</label>
+      <input type="date" id="endDate" [(ngModel)]="endDate" class="form-control">
+    </div>
+  </div>
+  <button class="btn btn-primary" style="margin: 5px;" (click)="filterTurnosByDateRange()">Filtrar</button>
+  <div #chart class="ct-chart mt-4" style="margin-top: 50px;"></div>
+</div>
