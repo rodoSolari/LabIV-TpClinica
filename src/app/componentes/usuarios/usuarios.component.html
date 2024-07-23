@@ -188,16 +188,16 @@
         </thead>
         <tbody>
           <tr *ngFor="let paciente of listadoPacientes">
-            <td>{{ paciente.nombre }} {{ paciente.apellido }}</td>
+            <td>{{ paciente.nombre | primeraLetraMayuscula}} {{ paciente.apellido | primeraLetraMayuscula}}</td>
             <td>{{ paciente.edad }}</td>
             <td>{{ paciente.email }}</td>
-            <td>{{ paciente.dni }}</td>
+            <td>{{ paciente.dni | formatDni}}</td>
             <td>{{ paciente.tipo }}</td>
             <td>
               <button class="btn btn-danger btn-sm" (click)="cancelar(paciente.id)">Eliminar</button>
               <button class="btn btn-primary btn-sm" (click)="descargarDatosUsuario(paciente)">Descargar Datos</button>
 
-              <button (click)="verHistoriaClinica(paciente)" class="btn btn-primary">Ver Historia Clínica</button>
+              <button (click)="verHistoriaClinica(paciente)" class="btn btn-primary btn-sm">Ver Historia Clínica</button>
 
 
               <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#historiaClinicaModal" (click)="setPacienteEmail(paciente.email)">
@@ -250,7 +250,7 @@
             <td>{{ admin.nombre }} {{ admin.apellido }}</td>
             <td>{{ admin.edad }}</td>
             <td>{{ admin.email }}</td>
-            <td>{{ admin.dni }}</td>
+            <td>{{ admin.dni | formatDni}}</td>
             <td>{{ admin.tipo }}</td>
             <td>
               <button class="btn btn-danger btn-sm" (click)="cancelar(admin.id)">Eliminar</button>

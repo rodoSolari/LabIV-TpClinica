@@ -5,28 +5,28 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink=''>Home</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" appStyleLinks>
           <a class="nav-link" *ngIf="isPaciente" routerLink="solicitar-turno">Solicitar Turno</a>
         </li>
-        <li class="nav-item" *ngIf="isPaciente">
+        <li class="nav-item" *ngIf="isPaciente" appStyleLinks>
           <a class="nav-link" routerLink="mis-turnos-paciente">Mis Turnos como paciente</a>
         </li>
-        <li class="nav-item" *ngIf="isEspecialista">
+        <li class="nav-item" *ngIf="isEspecialista" appStyleLinks>
           <a class="nav-link" routerLink="mis-turnos-especialista">Mis Turnos como especialista</a>
         </li>
-        <li class="nav-item" *ngIf="isEspecialista">
+        <li class="nav-item" *ngIf="isEspecialista" appStyleLinks>
           <a class="nav-link" routerLink="pacientes">Mis pacientes</a>
         </li>
-        <li class="nav-item" *ngIf="isAdmin">
+        <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
           <a class="nav-link" routerLink="usuarios">Usuarios</a>
         </li>
-        <li class="nav-item" *ngIf="isAdmin">
+        <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
           <a class="nav-link" routerLink="turnos-administrador">TURNOS ADMIN</a>
         </li>
-        <li class="nav-item" *ngIf="isAdmin">
+        <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
           <a class="nav-link" routerLink="estadisticas-admin">ESTADISTICAS ADMIN</a>
         </li>
-        <li class="nav-item" *ngIf="isAdmin">
+        <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
           <a class="nav-link" routerLink="graficos">GRAFICOS ADMIN</a>
         </li>
       </ul>

@@ -1,8 +1,9 @@
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { TurnosService } from 'src/app/services/turnos.service';
-
 import * as Chartist from 'chartist';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import * as XLSX from 'xlsx';
+import 'jspdf-autotable';
 
 
 @Component({
@@ -16,6 +17,9 @@ export class GraficoTurnosPorMedicoComponent implements OnInit {
   turnos: any[] = [];
   startDate: Date = new Date();
   endDate: Date = new Date();
+  turnosPorMedico: { [key: string]: number } = {};
+  descargarDisponible : boolean = false;
+
 
   constructor(
     private turnosService: TurnosService,
@@ -47,7 +51,8 @@ export class GraficoTurnosPorMedicoComponent implements OnInit {
       return acc;
     }, {});
 
-
+    this.turnosPorMedico = turnosPorMedico;
+    this.descargarDisponible = true;
     this.drawChart(turnosPorMedico);
   }
 
@@ -80,9 +85,22 @@ export class GraficoTurnosPorMedicoComponent implements OnInit {
     chart.on('draw', function(data) {
       if (data.type === 'bar') {
         data.element.attr({
-          style: 'stroke-width: 30px; stroke: green;' // Ajustar el grosor y color de las barras
+          style: 'stroke-width: 30px; stroke: green;'
         });
       }
     });
   }
+
+  exportarAExcel(): void {
+    const dataToExport = Object.keys(this.turnosPorMedico).map(key => ({
+      Medico: key,
+      Turnos: this.turnosPorMedico[key]
+    }));
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Turnos Por Medico': worksheet }, SheetNames: ['Turnos Por Medico'] };
+    XLSX.writeFile(workbook, 'Turnos_Por_Medico.xlsx');
+  }
+
+
 }

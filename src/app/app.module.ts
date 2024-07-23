@@ -32,6 +32,11 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { GraficosModule } from './graficos/graficos.module';
+import { PrimeraLetraMayusculaPipe } from './Pipes/primera-letra-mayuscula.pipe';
+import { FormatTimePipe } from './Pipes/format-time.pipe';
+
+import { FormatDniPipe } from './Pipes/format-dni.pipe';
+import { StyleLinksDirective } from './directivas/style-links.directive';
 
 const firebaseConfig = AngularFireModule.initializeApp(environment.firebaseConfig);
 
@@ -42,7 +47,7 @@ const firebaseConfig = AngularFireModule.initializeApp(environment.firebaseConfi
     RegistroComponent,
     NavbarComponent,
     HomeComponent,
-    BotonesDirective,
+    //BotonesDirective,
     UsuariosComponent,
     SolicitarTurnoComponent,
     MisTurnosPacienteComponent,
@@ -51,7 +56,11 @@ const firebaseConfig = AngularFireModule.initializeApp(environment.firebaseConfi
     MiPerfilComponent,
     HistoriaClinicaComponent,
     PacientesComponent,
-    EstadisticasAdminComponent
+    EstadisticasAdminComponent,
+    PrimeraLetraMayusculaPipe,
+    FormatTimePipe,
+    FormatDniPipe,
+    StyleLinksDirective
   ],
   imports: [
     BrowserModule,

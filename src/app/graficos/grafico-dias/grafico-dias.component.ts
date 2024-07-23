@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { TurnosService } from 'src/app/services/turnos.service';
 import * as Chartist from 'chartist';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-grafico-dias',
@@ -10,6 +11,7 @@ import * as Chartist from 'chartist';
 export class GraficoDiasComponent {
   @ViewChild('chart') chartElement!: ElementRef;
   legendLabels: string[] = [];
+  data: any;
 
   constructor(private turnosService: TurnosService) { }
 
@@ -22,10 +24,10 @@ export class GraficoDiasComponent {
   }
 
   async cargarDatos(): Promise<void> {
-    const data = await this.turnosService.obtenerCantidadTurnosPorDia();
+    this.data = await this.turnosService.obtenerCantidadTurnosPorDia();
 
-    const labels: string[] = Object.keys(data).sort(); // Ordenar los días
-    const series: number[] = Object.values(data).map(value => Number(value));
+    const labels: string[] = Object.keys(this.data).sort(); // Ordenar los días
+    const series: number[] = Object.values(this.data).map(value => Number(value));
 
     this.legendLabels = labels;
 
@@ -65,5 +67,16 @@ export class GraficoDiasComponent {
     } else {
       console.log('No hay datos suficientes para mostrar el gráfico de días');
     }
+  }
+
+  exportarAExcel(): void {
+    const dataToExport = Object.keys(this.data).map(key => ({
+      Fecha: key,
+      Turnos: this.data[key]
+    }));
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Turnos Por Día': worksheet }, SheetNames: ['Turnos Por Día'] };
+    XLSX.writeFile(workbook, 'Turnos_Por_Dia.xlsx');
   }
 }

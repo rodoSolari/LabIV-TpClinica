@@ -11,5 +11,6 @@
     </div>
   </div>
   <button class="btn btn-primary" style="margin: 5px;" (click)="filterTurnosByDateRange()">Filtrar</button>
+  <button *ngIf="this.descargarDisponible" (click)="exportarAExcel()" class="btn btn-success ms-2">Exportar a Excel</button>
   <div #chart class="ct-chart mt-4" style="margin-top: 50px;"></div>
 </div>

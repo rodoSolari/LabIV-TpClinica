@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { TurnosService } from 'src/app/services/turnos.service';
 import * as Chartist from 'chartist';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-grafico-turnos-finalizados-por-medico',
@@ -14,6 +15,8 @@ export class GraficoTurnosFinalizadosPorMedicoComponent {
   turnos: any[] = [];
   startDate: Date = new Date();
   endDate: Date = new Date();
+  turnosPorMedico: { [key: string]: number } = {};
+  descargarDisponible : boolean = false;
 
   constructor(
     private turnosService: TurnosService,
@@ -44,7 +47,8 @@ export class GraficoTurnosFinalizadosPorMedicoComponent {
       acc[medico]++;
       return acc;
     }, {});
-
+    this.descargarDisponible = true;
+    this.turnosPorMedico = turnosPorMedico;
     this.drawChart(turnosPorMedico);
   }
 
@@ -82,5 +86,17 @@ export class GraficoTurnosFinalizadosPorMedicoComponent {
       }
     });
 
+  }
+
+
+  exportarAExcel(): void {
+    const dataToExport = Object.keys(this.turnosPorMedico).map(key => ({
+      Medico: key,
+      Turnos: this.turnosPorMedico[key]
+    }));
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Turnos Finalizados Por Medico': worksheet }, SheetNames: ['Turnos Finalizados Por Medico'] };
+    XLSX.writeFile(workbook, 'Turnos_Finalizados_Por_Medico.xlsx');
   }
 }

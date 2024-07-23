@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { TurnosService } from 'src/app/services/turnos.service';
 import * as Chartist from 'chartist';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-grafico-especialidades',
@@ -10,6 +11,7 @@ import * as Chartist from 'chartist';
 export class GraficoEspecialidadesComponent {
   @ViewChild('chart') chartElement!: ElementRef;
   legendLabels: string[] = [];
+  data: any;
 
   constructor(private turnosService: TurnosService) { }
 
@@ -22,9 +24,9 @@ export class GraficoEspecialidadesComponent {
   }
 
   async cargarDatos(): Promise<void> {
-    const data = await this.turnosService.obtenerCantidadTurnosPorEspecialidad();
-    const labels: string[] = Object.keys(data).map(especialidad => `${especialidad} (${data[especialidad]})`);
-    const series: number[] = Object.values(data).map(value => Number(value));
+    this.data = await this.turnosService.obtenerCantidadTurnosPorEspecialidad();
+    const labels: string[] = Object.keys(this.data).map(especialidad => `${especialidad} (${this.data[especialidad]})`);
+    const series: number[] = Object.values(this.data).map(value => Number(value));
 
     if (labels.length > 0 && series.length > 0) {
       const chartData = {
@@ -42,5 +44,16 @@ export class GraficoEspecialidadesComponent {
     } else {
       console.log('No hay datos suficientes para mostrar el gráfico');
     }
+  }
+
+  exportarAExcel(): void {
+    const dataToExport = Object.keys(this.data).map(key => ({
+      especialidad: key,
+      Turnos: this.data[key]
+    }));
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Turnos Por Especialidad': worksheet }, SheetNames: ['Turnos Por Especialidad'] };
+    XLSX.writeFile(workbook, 'Turnos_Por_Especialidad.xlsx');
   }
 }

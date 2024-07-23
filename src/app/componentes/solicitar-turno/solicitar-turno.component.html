@@ -42,7 +42,7 @@
                         [ngClass]="{'active': horarioSeleccionado?.dia === dia && horarioSeleccionado?.horario === horario}"
                         [disabled]="horariosReservados[dia] && horariosReservados[dia].includes(horario)"
                         (click)="selectHorario(dia, horario)">
-                  {{horario}}
+                  {{dia}} {{horario | formatTime}}
                 </button>
               </div>
             </div>
