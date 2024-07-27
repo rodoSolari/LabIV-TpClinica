@@ -39,7 +39,7 @@ export class MisTurnosPacienteComponent {
   ) {}
 
   ngOnInit(): void {
-    console.log("TURNO: " + this.selectedTurno)
+   // console.log("TURNO: " + this.selectedTurno)
     this.authService.userLogged().subscribe(user => {
       if (user) {
         this.userData = user;
@@ -62,7 +62,6 @@ export class MisTurnosPacienteComponent {
   }
 
   cargarTurnos() {
-   // if (this.userData && this.userData.email) {
       this.turnosService.traerTurnosPorPaciente(this.userData.email).subscribe(turnos => {
         this.turnos = turnos;
         this.aplicarFiltros();
@@ -72,7 +71,6 @@ export class MisTurnosPacienteComponent {
         this.historiasClinicas = historiasClinicas;
         this.aplicarFiltros();
       });
-   // }
   }
 
   async aplicarFiltros(): Promise<void> {

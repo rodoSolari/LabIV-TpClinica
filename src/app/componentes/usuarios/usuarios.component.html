@@ -190,7 +190,7 @@
           <tr *ngFor="let paciente of listadoPacientes">
             <td>{{ paciente.nombre | primeraLetraMayuscula}} {{ paciente.apellido | primeraLetraMayuscula}}</td>
             <td>{{ paciente.edad }}</td>
-            <td>{{ paciente.email }}</td>
+            <td appCopiar>{{ paciente.email }}</td>
             <td>{{ paciente.dni | formatDni}}</td>
             <td>{{ paciente.tipo }}</td>
             <td>
@@ -199,12 +199,6 @@
 
               <button (click)="verHistoriaClinica(paciente)" class="btn btn-primary btn-sm">Ver Historia Clínica</button>
 
-
-              <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#historiaClinicaModal" (click)="setPacienteEmail(paciente.email)">
-                Ver Historia Clínica
-              </button>
-
-              <app-historia-clinica [pacienteEmail]="this.emailDelPaciente"></app-historia-clinica>-->
             </td>
           </tr>
         </tbody>

@@ -6,8 +6,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Storage, ref, uploadBytes, listAll, getDownloadURL } from '@angular/fire/storage';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import {BotonesDirective} from '../../directivas/botones.directive'
+
 import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -22,12 +23,14 @@ export class RegistroComponent {
   mensaje: string = '';
   siteKey : string = '6LegtgAqAAAAAMlArl43xxDmD7G3Ub9txQ78_hH1';
   loading: boolean = false;
+  captchaHabilitado = false;
+  generatedCaptcha: string = '';
+  captchaTextoIngresado = '';
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private usuarioService: UsuarioService,
-    private router: Router,
 
   ) {
     this.formGroup = this.fb.group({
@@ -42,7 +45,8 @@ export class RegistroComponent {
       nuevaEspecialidad:[''],
       imagen1: [null, Validators.required],
       imagen2: [null],
-      recaptcha: ['', Validators.required]
+      recaptcha: ['', Validators.required],
+      captcha: ['', Validators.required]
     });
   }
 
@@ -51,7 +55,26 @@ export class RegistroComponent {
     this.usuarioService.traerEspecialidades().subscribe(especialidades => {
       this.especialidades = especialidades;
     });
+
+
   }
+
+  handleCaptcha(captchaText: string) {
+    console.log('Generated Captcha: ', captchaText);
+    this.generatedCaptcha = captchaText;
+  }
+
+  toggleCaptcha() {
+    this.captchaHabilitado = !this.captchaHabilitado;
+    if (!this.captchaHabilitado) {
+      this.formGroup.get('captcha')?.reset();
+      this.formGroup.get('captcha')?.clearValidators();
+    } else {
+      this.formGroup.get('captcha')?.setValidators([Validators.required]);
+    }
+    this.formGroup.get('captcha')?.updateValueAndValidity();
+  }
+
 
   onEspecialidadChange(event: any): void {
     if (event.target.value === 'otro') {
@@ -75,6 +98,14 @@ export class RegistroComponent {
   }
 
   register(): void {
+    console.log('Generated Captcha in register: ', this.generatedCaptcha);
+    if (this.captchaHabilitado && this.captchaTextoIngresado !== this.generatedCaptcha) {
+      alert('Captcha incorrecto: ' + this.captchaTextoIngresado + ' != ' + this.generatedCaptcha);
+      return;
+    } else {
+
+
+
     this.loading = true;
     const { email, password, nombre, apellido, edad, dni, obraSocial, especialidad } = this.formGroup.value;
     const tipo = this.tipo;
@@ -84,22 +115,12 @@ export class RegistroComponent {
 
     this.authService.register(email, password).then(userCredential => {
       const uid = userCredential.user?.uid;
-
-     /* if (tipo === 'administrador') {
-        this.authService.addAdmin(usuarioData).then(() => {
-          this.mensaje = 'Administrador registrado exitosamente.';
-          this.limpiarFormulario();
-        }).catch((error: any) => {
-          this.mensaje = 'Error al registrar el administrador: ' + error.message;
-        });
-      } else {*/
         if (tipo === 'paciente') {
           this.usuarioService.addPaciente(usuarioData, imagen1, imagen2, uid!).then(() => {
             this.authService.confirmarMail(userCredential.user).then(() => {
               this.mensaje = 'Paciente registrado exitosamente. Por favor, verifique su correo electrónico.';
               this.limpiarFormulario();
               this.loading = false;
-              //this.authService.logout();
             }).catch((error: any) => {
               this.mensaje = 'Error al enviar el correo de verificación: ' + error.message;
               this.loading = false;
@@ -118,7 +139,6 @@ export class RegistroComponent {
               this.mensaje = 'Especialista registrado exitosamente. Por favor, verifique su correo electrónico, luego aguarde a que su cuenta sea aprobada por un administrador.';
               this.limpiarFormulario();
               this.loading = false;
-              //this.authService.logout();
             }).catch((error: any) => {
               this.mensaje = 'Error al enviar el correo de verificación: ' + error.message;
               this.loading = false;
@@ -128,11 +148,11 @@ export class RegistroComponent {
             this.loading = false;
           });
         }
-     // }
     }).catch((error: any) => {
       this.mensaje = 'Error al registrar el usuario: ' + error.message;
       this.loading = false;
     });
+    }
   }
 
   limpiarFormulario(): void {
@@ -155,4 +175,6 @@ export class RegistroComponent {
       imagen2: file
     });
   }
+
+
 }

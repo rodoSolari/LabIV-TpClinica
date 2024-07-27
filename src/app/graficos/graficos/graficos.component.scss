@@ -11,13 +11,40 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  overflow-y: auto; /* Permitir desplazamiento vertical */
-  padding-top: 100px;
+  overflow-y: auto;
+  padding-top: 150px;
 }
 
 .graficos-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px; /* Espacio entre los gráficos */
+  gap: 40px;
+}
+
+.graficos-container {
+	-webkit-animation: slide-top 0.8s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+	        animation: slide-top 0.8s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+}
+
+
+ @-webkit-keyframes graficos-container {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-100px);
+            transform: translateY(-100px);
+  }
+}
+@keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-100px);
+            transform: translateY(-100px);
+  }
 }

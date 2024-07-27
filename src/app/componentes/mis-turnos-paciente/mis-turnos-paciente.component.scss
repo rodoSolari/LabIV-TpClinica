@@ -57,14 +57,6 @@ select {
   margin-bottom: 10px;
 }
 
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin-top: 10px;
-}
 
 
 .modal.show.d-block {
@@ -75,4 +67,36 @@ button {
 
 .btn{
   margin-left: 10px;
+}
+
+
+.container {
+	-webkit-animation: tilt-in-top-1 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: tilt-in-top-1 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+
+ @-webkit-keyframes container {
+  0% {
+    -webkit-transform: rotateY(30deg) translateY(-300px) skewY(-30deg);
+            transform: rotateY(30deg) translateY(-300px) skewY(-30deg);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotateY(0deg) translateY(0) skewY(0deg);
+            transform: rotateY(0deg) translateY(0) skewY(0deg);
+    opacity: 1;
+  }
+}
+@keyframes tilt-in-top-1 {
+  0% {
+    -webkit-transform: rotateY(30deg) translateY(-300px) skewY(-30deg);
+            transform: rotateY(30deg) translateY(-300px) skewY(-30deg);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotateY(0deg) translateY(0) skewY(0deg);
+            transform: rotateY(0deg) translateY(0) skewY(0deg);
+    opacity: 1;
+  }
 }

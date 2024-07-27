@@ -29,8 +29,11 @@ export class MisTurnosEspecialistaComponent {
   mostrarModalResenia: boolean = false;
   mostrarModalHistoriaClinica: boolean = false;
   historiasClinicas: any[] = [];
-
   searchTerm: string = '';
+
+  rango : number = 0;
+  cuadroTextoNumerico: string = '';
+  switch: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -65,7 +68,13 @@ export class MisTurnosEspecialistaComponent {
       peso: ['', Validators.required],
       temperatura: ['', Validators.required],
       presion: ['', Validators.required],
-      datosDinamicos: this.fb.array([])
+      datosDinamicos: this.fb.array([]),
+      rangoKey: ['', Validators.required],
+      rangoValue: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      cuadroTextoNumericoKey: ['', Validators.required],
+      cuadroTextoNumericoValue: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      switchKey: ['', Validators.required],
+      switchValue: [false, Validators.required]
     });
   }
 
@@ -172,18 +181,26 @@ export class MisTurnosEspecialistaComponent {
 
   confirmarHistoriaClinica() {
     if (this.historiaClinicaForm.valid && this.selectedTurno && this.selectedTurno.id) {
+      const formValue = this.historiaClinicaForm.value;
+      const datosDinamicosNuevos = [
+        { clave: formValue.rangoKey, valor: formValue.rangoValue },
+        { clave: formValue.cuadroTextoNumericoKey, valor: formValue.cuadroTextoNumericoValue },
+        { clave: formValue.switchKey, valor: formValue.switchValue }
+      ];
+
       const historiaClinica = {
         altura: this.historiaClinicaForm.value.altura,
         peso: this.historiaClinicaForm.value.peso,
         temperatura: this.historiaClinicaForm.value.temperatura,
         presion: this.historiaClinicaForm.value.presion,
         datosDinamicos: this.historiaClinicaForm.value.datosDinamicos,
+        datosDinamicosNuevos : datosDinamicosNuevos,
         historiaClinica : true,
         turnoId : this.selectedTurno.id,
         pacienteEmail : this.selectedTurno.pacienteEmail,
         especialistaEmail : this.selectedTurno.especialistaEmail
       };
-
+      console.log(historiaClinica);
       this.historiaClinicaService.agregarHistoriaClinica(historiaClinica,this.selectedTurno.id).then(() => {
         this.cargarTurnos();
         this.cerrarModal('historiaClinica');

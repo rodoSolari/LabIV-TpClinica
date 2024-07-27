@@ -7,19 +7,12 @@
     <title>Clinica</title>
 </head>
 <body>
-  <div class="botones">
-    <button appBotones class="btn btn-primary" (click)="tipo='paciente'"> <img src="../../../assets/pacienteForm.png" width="90px">Paciente</button>
-    <button appBotones class="btn btn-primary" (click)="tipo='especialista'"><img src="../../../assets/MedicoForm.png" width="90px">Especialista</button>
+  <div class="container-botones">
+  <div class="botones justify-content-center">
+    <button class="btn btn-primary" (click)="tipo='paciente'"> <img src="../../../assets/pacienteForm.png" width="90px">Paciente</button>
+    <button class="btn btn-primary" (click)="tipo='especialista'"><img src="../../../assets/MedicoForm.png" width="90px">Especialista</button>
   </div>
-
-  <!--<div class="botones">
-    <button appBotones class="btn btn-primary" (click)="mostrarFormPaciente()">
-      <img src="../../../assets/pacienteForm.png" width="90px">Paciente
-    </button>
-    <button appBotones class="btn btn-primary" (click)="mostrarFormEspecialista()">
-      <img src="../../../assets/MedicoForm.png" width="90px">Medico
-    </button>
-  </div>-->
+</div>
 
 
   <main *ngIf="tipo">
@@ -79,8 +72,28 @@
                 [siteKey]="siteKey"
                 formControlName="recaptcha">
             </ngx-recaptcha2>
-            <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid">Registrar</button>
 
+            <!-- Control para habilitar/deshabilitar el captcha -->
+            <div class=" d-flex">
+              <div class="form-check" style="flex: 0 0 5%;">
+                <input class="form-check-input" type="checkbox" id="captchaToggle" (change)="toggleCaptcha()">
+                <label class="form-check-label" for="captchaToggle">Habilitar Captcha</label>
+              </div>
+            </div>
+            <div *ngIf="captchaHabilitado">
+              <div class="captcha-container" style="flex: 1;">
+                <div appCaptcha (captchaGenerated)="handleCaptcha($event)"></div>
+              </div>
+              <div class="form-group">
+                <label for="captchaInput">Ingrese el texto del captcha</label>
+                <input type="text" id="captchaInput" class="form-control" formControlName="captcha" [(ngModel)]="captchaTextoIngresado" required>
+                <div *ngIf="formGroup.get('captcha')?.invalid && formGroup.get('captcha')?.touched" class="text-danger">
+                  El captcha es requerido.
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary justify-content-center" [disabled]="formGroup.invalid">Registrar</button>
           </form>
 
 

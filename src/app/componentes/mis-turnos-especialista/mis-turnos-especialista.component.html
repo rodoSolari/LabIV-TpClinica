@@ -22,13 +22,13 @@
             <td>{{ turno.pacienteNombre }}</td>
             <td>{{ turno.estado }}</td>
             <td>
-              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-success" (click)="aceptarTurno(turno)"             >Aceptar Turno</button>
-              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalRechazo(turno)"         >Rechazar Turno</button>
-              <button *ngIf="turno.estado !== 'realizado' && turno.estado !== 'cancelado' && turno.estado !== 'rechazado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)">Cancelar Turno</button>
-              <button *ngIf="turno.estado === 'aceptado'" class="btn btn-primary" (click)="abrirModalResenia(turno)"         >Finalizar Turno</button>
-              <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)"                                 >Ver Reseña</button>
-              <button *ngIf="turno.estado === 'realizado' && !turno.historiaClinica" class="btn btn-primary" (click)="abrirModalHistoriaClinica(turno)">Cargar historia clinica</button>
-              <button *ngIf="turno.historiaClinica" class="btn btn-info" (click)="verHistoriaClinica(turno)">Ver Historia Clínica</button>
+              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-success" (click)="aceptarTurno(turno)"             appButtonStyle>Aceptar Turno</button>
+              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalRechazo(turno)"         appButtonStyle>Rechazar Turno</button>
+              <button *ngIf="turno.estado !== 'realizado' && turno.estado !== 'cancelado' && turno.estado !== 'rechazado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)" appButtonStyle>Cancelar Turno</button>
+              <button *ngIf="turno.estado === 'aceptado'" class="btn btn-primary" (click)="abrirModalResenia(turno)"       appButtonStyle  >Finalizar Turno</button>
+              <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)"                                 appButtonStyle>Ver Reseña</button>
+              <button *ngIf="turno.estado === 'realizado' && !turno.historiaClinica" class="btn btn-primary" (click)="abrirModalHistoriaClinica(turno)" appButtonStyle>Cargar historia clinica</button>
+              <button *ngIf="turno.historiaClinica" class="btn btn-info" (click)="verHistoriaClinica(turno)" appButtonStyle>Ver Historia Clínica</button>
             </td>
           </tr>
         </tbody>
@@ -136,6 +136,32 @@
               <label for="presion" class="form-label">Presión</label>
               <input id="presion" class="form-control" formControlName="presion">
             </div>
+
+            <div class="mb-3">
+              <label for="rangoKey" class="form-label">Clave para Control de rango</label>
+              <input type="text" id="rangoKey" class="form-control" formControlName="rangoKey" required>
+              <label for="rangoValue" class="form-label">Control de rango (0-100)</label>
+              <input type="range" id="rangoValue" class="form-control" formControlName="rangoValue" min="0" max="100" required>
+              <!--<span>{{ historiaClinicaForm.get('rangoValue')?.value }}</span>-->
+            </div>
+
+            <div class="mb-3">
+              <label for="cuadroTextoNumericoKey" class="form-label">Clave para Cuadro de texto numérico</label>
+              <input type="text" id="cuadroTextoNumericoKey" class="form-control" formControlName="cuadroTextoNumericoKey" required>
+              <label for="cuadroTextoNumericoValue" class="form-label">Cuadro de texto numérico</label>
+              <input type="number" id="cuadroTextoNumericoValue" class="form-control" formControlName="cuadroTextoNumericoValue" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="switchKey" class="form-label">Clave para Switch</label>
+              <input type="text" id="switchKey" class="form-control" formControlName="switchKey" required>
+              <label for="switchValue" class="form-label">Switch (Sí/No)</label>
+              <div class="form-check form-switch">
+                <input type="checkbox" id="switchValue" class="form-check-input" formControlName="switchValue">
+                <!--<label class="form-check-label" for="switchValue">{{ historiaClinicaForm.get('switchValue')?.value ? 'Sí' : 'No' }}</label>-->
+              </div>
+            </div>
+
             <div formArrayName="datosDinamicos">
               <div *ngFor="let dato of datosDinamicos.controls; let i = index" [formGroupName]="i">
                 <div class="mb-3">
@@ -173,6 +199,9 @@
           <p><strong>Presión:</strong> {{ historiaClinica?.presion }}</p>
           <p><strong>Temperatura:</strong> {{ historiaClinica?.temperatura }}</p>
           <div *ngFor="let dato of historiaClinica?.datosDinamicos">
+            <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
+          </div>
+          <div *ngFor="let dato of historiaClinica?.datosDinamicosNuevos">
             <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
           </div>
         </div>
