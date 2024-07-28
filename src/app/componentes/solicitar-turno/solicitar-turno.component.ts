@@ -66,9 +66,11 @@ export class SolicitarTurnoComponent {
 
   selectEspecialidad(especialidad: any) {
     this.especialidadSeleccionada = especialidad;
+    console.log("Especialidad seleccionada: " + this.especialidadSeleccionada.nombre)
     this.solicitarTurnoForm.patchValue({ especialidad: especialidad.nombre });
     this.diasDisponibles.forEach(dia => {
       this.obtenerHorariosReservados(dia, this.especialidadSeleccionada.nombre, this.especialistaSeleccionado.nombre);
+      console.log("Dias disponibles de : " + this.especialidadSeleccionada.nombre + " " + this.diasDisponibles)
     });
     this.cdr.detectChanges();
   }
@@ -108,8 +110,8 @@ export class SolicitarTurnoComponent {
   generarHorariosDisponibles(dia: string): string[] {
     const horarios = [];
     const diaSemana = moment(dia).day();
-    const disponibilidad = this.especialistaSeleccionado?.horariosDisponibles?.find((d: any) => this.getDayName(diaSemana) === d.dia);
-
+    const disponibilidad = this.especialistaSeleccionado?.horariosDisponibles?.find((d: any) => this.getDayName(diaSemana) === d.dia && d.especialidad === this.especialidadSeleccionada.nombre);
+    //console.log("disponibilidad: " + disponibilidad);
     if (disponibilidad) {
       let horaInicio = moment(disponibilidad.horarioInicio, 'HH:mm');
       const horaFin = moment(disponibilidad.horarioFin, 'HH:mm');

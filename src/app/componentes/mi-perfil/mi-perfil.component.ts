@@ -8,6 +8,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { autoTable, RowInput } from 'jspdf-autotable';
 import * as moment from 'moment';
 
 
@@ -46,7 +47,6 @@ export class MiPerfilComponent {
     this.authService.userLogged().subscribe(user => {
       if (user && user.email) {
         this.cargarDatosUsuario(user.email);
-        console.log("Historia: " + this.historiaClinica);
       }
     });
     this.generarHorasDisponibles();
@@ -57,6 +57,7 @@ export class MiPerfilComponent {
     if (this.userData && this.userData.email) {
       this.historiaClinicaService.obtenerHistoriaClinica(this.userData.email).subscribe((historiaClinica: any[]) => {
         this.historiaClinica = historiaClinica;
+        console.log("Historia: " + this.historiaClinica.length);
       });
     }
   }
@@ -241,38 +242,51 @@ export class MiPerfilComponent {
     input.click();
   }
 
+
   generarPDFHistoriaClinica(): void {
     const nombreApellido = this.userData.nombre + ' ' + this.userData.apellido;
-    console.log(this.userData)
     const doc = new jsPDF();
     doc.setFontSize(18);
     doc.text('Informe de Historia Clínica de '+nombreApellido, 11, 8);
     doc.setFontSize(11);
     doc.text(`Fecha de emisión: ${moment().format('YYYY-MM-DD HH:mm:ss')}`, 11, 14);
     doc.addImage('../../assets/favicon-3.png', 'PNG', 150, 5, 40, 20);
+    let startY = 30;
 
+    this.historiaClinica.forEach((historia, index) => {
+      const datos = [
+        ['Especialidad', historia.especialidad],
+        ['Email de especialista', historia.especialistaEmail],
+        ['Altura', historia.altura],
+        ['Peso', historia.peso],
+        ['Temperatura', historia.temperatura],
+        ['Presión', historia.presion],
+      ];
 
+      historia.datosDinamicos.forEach((dato: any) => {
+        datos.push([dato.clave, dato.valor]);
+      });
+      if(historia.datosDinamicosNuevos){
+          historia.datosDinamicosNuevos.forEach((dato: any) => {
+            datos.push([dato.clave, dato.valor]);
+          });
+      }
+      (doc as any).autoTable({
+        head: [['Campo', 'Valor']],
+        body: datos,
+        startY: startY,
+        theme: 'striped'
+      });
 
-    const datos = [
-      ['Nombre', this.userData.nombre],
-      ['Apellido', this.userData.apellido],
-      ['Email', this.userData.email],
-      ['Altura', this.historiaClinica[0].altura],
-      ['Peso', this.historiaClinica[0].peso],
-      ['Temperatura', this.historiaClinica[0].temperatura],
-      ['Presión', this.historiaClinica[0].presion],
-    ];
+      startY = (doc as any).lastAutoTable.finalY + 10;
 
-    this.historiaClinica[0].datosDinamicos.forEach((dato: any) => {
-      datos.push([dato.clave, dato.valor]);
-    });
-
-    (doc as any).autoTable({
-      head: [''],
-      body: datos,
-      startY: 22,
+      if (index < this.historiaClinica.length - 1) {
+        doc.addPage();
+        startY = 30;
+      }
     });
 
     doc.save(`HistoriaClinica_${this.userData.nombre}_${this.userData.apellido}.pdf`);
   }
+
 }

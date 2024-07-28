@@ -100,7 +100,7 @@ export class RegistroComponent {
   register(): void {
     console.log('Generated Captcha in register: ', this.generatedCaptcha);
     if (this.captchaHabilitado && this.captchaTextoIngresado !== this.generatedCaptcha) {
-      alert('Captcha incorrecto: ' + this.captchaTextoIngresado + ' != ' + this.generatedCaptcha);
+      Swal.fire('Error', 'Captcha Incorrecto', 'error');
       return;
     } else {
 

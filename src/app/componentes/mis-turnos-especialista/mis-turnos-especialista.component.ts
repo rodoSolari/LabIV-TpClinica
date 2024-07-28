@@ -189,6 +189,7 @@ export class MisTurnosEspecialistaComponent {
       ];
 
       const historiaClinica = {
+        especialidad : this.selectedTurno.especialidad, //Agrego nombre especialidad
         altura: this.historiaClinicaForm.value.altura,
         peso: this.historiaClinicaForm.value.peso,
         temperatura: this.historiaClinicaForm.value.temperatura,

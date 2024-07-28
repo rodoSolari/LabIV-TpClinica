@@ -8,11 +8,15 @@
         </div>
         <div class="modal-body">
           <div *ngFor="let historia of historiaClinica">
+            <p><strong>Especialidad:</strong>{{ historia.especialidad}}  </p>
             <p><strong>Altura:</strong> {{ historia.altura }}</p>
             <p><strong>Peso:</strong> {{ historia.peso }}</p>
             <p><strong>Temperatura:</strong> {{ historia.temperatura }}</p>
             <p><strong>Presión:</strong> {{ historia.presion }}</p>
             <div *ngFor="let dato of historia.datosDinamicos">
+              <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
+            </div>
+            <div *ngFor="let dato of historia.datosDinamicosNuevos">
               <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
             </div>
             <hr>
