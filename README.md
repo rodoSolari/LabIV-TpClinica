@@ -29,11 +29,16 @@ Para iniciar sesión, haz clic en "Loguearse" en la parte superior derecha. Ingr
 
 ### 4. Solicitar Turno
 ![Solicitar Turno](./src/assets/FotoReadme4.jpg)
+![Solicitar Turno](./src/assets/FotoReadme5.jpg)
 Aquí es donde los pacientes pueden reservar sus citas. Elige una especialidad, selecciona un especialista y escoge el horario que más te convenga.
 Después de iniciar sesión como paciente, selecciona "Solicitar Turno" en la barra de navegación superior. Elige tu especialidad, especialista y horario.
 
 ### 5. Mis Turnos
-![Mis Turnos](./src/assets/FotoReadme5.jpg)
+![Mis Turnos](./src/assets/FotoReadme6.jpg)
 Puedes revisar tus turnos, Filtra por especialidad y especialista, y si necesitas cancelar una cita, también puedes hacerlo desde aquí.
 Después de iniciar sesión como paciente, selecciona "Mis Turnos como paciente" en la barra de navegación superior. Aquí puedes ver todas tus citas, filtrarlas y cancelarlas si es necesario.
+
+### 6. Mi Perfil
+![Mis Turnos](./src/assets/FotoReadme7.jpg)
+Puedes revisar en tu perfil tus datos e imagenes de perfil para modificarlos, también podrás ver tu historia clínica y/o descargarla en formato PDF.
 

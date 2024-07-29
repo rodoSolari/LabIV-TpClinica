@@ -260,7 +260,7 @@ export class MiPerfilComponent {
         ['Altura', historia.altura],
         ['Peso', historia.peso],
         ['Temperatura', historia.temperatura],
-        ['Presión', historia.presion],
+        ['Presión', historia.presion]
       ];
 
       historia.datosDinamicos.forEach((dato: any) => {
