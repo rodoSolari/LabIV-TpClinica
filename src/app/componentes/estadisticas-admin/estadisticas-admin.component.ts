@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { LogService } from 'src/app/services/log.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-estadisticas-admin',
@@ -42,5 +43,16 @@ export class EstadisticasAdminComponent implements OnInit{
       this.paginaActual--;
       this.actualizarLogsPaginados();
     }
+  }
+
+  exportarLogsAExcel(): void {
+    const dataToExport = this.logs.map(log => ({
+      Email: log.email,
+      FechaHora: log.fechaHora
+    }));
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Logs': worksheet }, SheetNames: ['Logs'] };
+    XLSX.writeFile(workbook, 'Logs.xlsx');
   }
 }

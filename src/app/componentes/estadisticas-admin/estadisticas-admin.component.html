@@ -24,6 +24,7 @@
         <button class="btn btn-light" (click)="siguiente()" [disabled]="(paginaActual + 1) * tamanoPagina >= logs.length">Siguiente</button>
       </div>
     </div>
+    <button (click)="exportarLogsAExcel()" class="btn btn-success">Exportar a Excel</button>
   </div>
 
 </body>
