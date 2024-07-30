@@ -17,8 +17,14 @@
       <label class="btn btn-primary" (click)="toggleForm('especialistas')">
         Especialistas
       </label>
-      <label class="btn btn-success" (click)="descargarDatosTodosUsuario()">
-        Descargar datos de todos los usuarios
+      <label class="btn btn-success" (click)="descargarDatosTodosPacientes()">
+        Descargar datos PACIENTES
+      </label>
+      <label class="btn btn-success" (click)="descargarDatosTodosUsuarios()">
+        Descargar datos USUARIOS
+      </label>
+      <label class="btn btn-success" (click)="descargarDatosTodosEspecialistas()">
+        Descargar datos ESPECIALISTAS
       </label>
     </div>
 
@@ -195,10 +201,8 @@
             <td>{{ paciente.tipo }}</td>
             <td>
               <button class="btn btn-danger btn-sm" (click)="cancelar(paciente.id)">Eliminar</button>
-              <button class="btn btn-primary btn-sm" (click)="descargarDatosUsuario(paciente)">Descargar Datos</button>
-
-              <button (click)="verHistoriaClinica(paciente)" class="btn btn-primary btn-sm">Ver Historia Clínica</button>
-
+              <button class="btn btn-primary btn-sm" (click)="descargarTurnosUsuario(paciente)">Descargar Turnos</button>
+              <button class="btn btn-primary btn-sm" (click)="verHistoriaClinica(paciente)" class="btn btn-primary btn-sm">Ver Historia Clínica</button>
             </td>
           </tr>
         </tbody>
@@ -279,7 +283,7 @@
           <td>
             <button *ngIf="!usuario.estadoAprobadoPorAdmin" class="btn btn-success btn-sm" (click)="aceptar(usuario)">Habilitar</button>
             <button class="btn btn-danger btn-sm" (click)="cancelar(usuario.id)">Eliminar</button>
-            <button class="btn btn-primary btn-sm" (click)="descargarDatosUsuario(usuario)">Descargar Datos</button>
+            <!--<button class="btn btn-primary btn-sm" (click)="descargarDatosUsuario(usuario)">Descargar Datos</button>-->
           </td>
         </tr>
       </tbody>

@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { TurnosService } from 'src/app/services/turnos.service';
+
 import * as Chartist from 'chartist';
 import * as XLSX from 'xlsx';
 
@@ -42,28 +43,49 @@ export class GraficoDiasComponent {
 
       const options = {
         axisX: {
-          showGrid: false
+          showGrid: true,
+          labelInterpolationFnc: (value: string) => value.split('-').reverse().join('/')
         },
         axisY: {
-          onlyInteger: true
+          onlyInteger: true,
+          offset: 60
         },
         height: '500px',
         width: '1000px',
         chartPadding: {
-          right: 40
+          right: 40,
+          left: 20
         },
         seriesBarDistance: 20
       };
 
       const chart = new Chartist.BarChart(this.chartElement.nativeElement, chartData, options);
 
-      chart.on('draw', function(data) {
+      chart.on('draw', (data: any) => {
         if (data.type === 'bar') {
           data.element.attr({
-            style: 'stroke-width: 30px; stroke: blue;' // Ajustar el grosor y color de las barras
+            style: 'stroke-width: 50px; stroke: #3498db;'
           });
         }
       });
+
+      chart.on('created', (data: any) => {
+        const yAxisLabel = new Chartist.Svg('text');
+        yAxisLabel.text('Cantidad de turnos');
+        yAxisLabel.addClass('ct-label');
+        yAxisLabel.attr({
+          x: data['chartRect'].x1 - 50,
+          y: data['chartRect'].y1 - data['chartRect'].height() / 2,
+          'text-anchor': 'middle',
+          'font-size': '14px',
+          'font-weight': 'bold',
+          'fill': '#000',
+          'transform': 'rotate(-90 ' + (data['chartRect'].x1 - 50) + ',' + (data['chartRect'].y1 - data['chartRect'].height() / 2) + ')'
+        });
+
+        data.svg.append(yAxisLabel);
+      });
+
     } else {
       console.log('No hay datos suficientes para mostrar el gráfico de días');
     }

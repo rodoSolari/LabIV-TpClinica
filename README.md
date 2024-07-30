@@ -35,7 +35,7 @@ Después de iniciar sesión como paciente, selecciona "Solicitar Turno" en la ba
 
 ### 5. Mis Turnos
 ![Mis Turnos](./src/assets/FotoReadme6.jpg)
-Puedes revisar tus turnos, Filtra por especialidad y especialista, y si necesitas cancelar una cita, también puedes hacerlo desde aquí.
+Puedes revisar tus turnos, Filtra por cualquier campo del turno, incluyendo la historia clínica, y si necesitas cancelar una cita, también puedes hacerlo desde aquí.
 Después de iniciar sesión como paciente, selecciona "Mis Turnos como paciente" en la barra de navegación superior. Aquí puedes ver todas tus citas, filtrarlas y cancelarlas si es necesario.
 
 ### 6. Mi Perfil

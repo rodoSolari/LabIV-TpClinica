@@ -53,10 +53,10 @@ export class GraficoTurnosPorMedicoComponent implements OnInit {
 
     this.turnosPorMedico = turnosPorMedico;
     this.descargarDisponible = true;
-    this.drawChart(turnosPorMedico);
+    this.cargarDatos(turnosPorMedico);
   }
 
-  drawChart(data: { [key: string]: number }) {
+  cargarDatos(data: { [key: string]: number }) {
     const labels = Object.keys(data);
     const series = [Object.values(data)];
 
@@ -73,9 +73,10 @@ export class GraficoTurnosPorMedicoComponent implements OnInit {
         onlyInteger: true
       },
       height: '500px',
-      width: '1000px',
+      width: '1100px',
       chartPadding: {
-        left: 0
+        right: 40,
+          left: 20
       },
       seriesBarDistance: 20
     };
@@ -85,10 +86,28 @@ export class GraficoTurnosPorMedicoComponent implements OnInit {
     chart.on('draw', function(data) {
       if (data.type === 'bar') {
         data.element.attr({
-          style: 'stroke-width: 30px; stroke: green;'
+          style: 'stroke-width: 50px; stroke: #3498db;'
         });
       }
     });
+
+    chart.on('created', (data: any) => {
+      const yAxisLabel = new Chartist.Svg('text');
+      yAxisLabel.text('Cantidad de turnos');
+      yAxisLabel.addClass('ct-label');
+      yAxisLabel.attr({
+        x: data.chartRect.x1 - 30,
+        y: data.chartRect.y1 - (data.chartRect.height() / 2),
+        'text-anchor': 'middle',
+        'font-size': '14px',
+        'font-weight': 'bold',
+        'fill': '#000',
+        'transform': `rotate(-90, ${data.chartRect.x1 - 30}, ${data.chartRect.y1 - (data.chartRect.height() / 2)})`
+      });
+
+      data.svg.append(yAxisLabel);
+    });
+
   }
 
   exportarAExcel(): void {

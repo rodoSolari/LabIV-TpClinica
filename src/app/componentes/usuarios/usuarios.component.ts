@@ -350,7 +350,7 @@ export class UsuariosComponent implements OnInit{
     this.showEspecialistas = table === 'especialistas';
   }
 
-  descargarDatosUsuario(usuario: any): void {
+  descargarTurnosUsuario(usuario: any): void {
     this.usuarioService.obtenerTurnosUsuario(usuario.email).subscribe(turnos => {
       const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(turnos);
       const workbook: XLSX.WorkBook = { Sheets: { 'Turnos': worksheet }, SheetNames: ['Turnos'] };
@@ -358,7 +358,23 @@ export class UsuariosComponent implements OnInit{
     });
   }
 
-  descargarDatosTodosUsuario(): void {
+  descargarDatosTodosPacientes(): void {
+    this.usuarioService.traerCamposEspecificosPacientes().subscribe(user => {
+      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(user);
+      const workbook: XLSX.WorkBook = { Sheets: { 'Pacientes': worksheet }, SheetNames: ['Pacientes'] };
+      XLSX.writeFile(workbook, `Pacientes.xlsx`);
+    });
+  }
+
+  descargarDatosTodosEspecialistas(): void {
+    this.usuarioService.traerCamposEspecificosEspecialistas().subscribe(user => {
+      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(user);
+      const workbook: XLSX.WorkBook = { Sheets: { 'Especialistas': worksheet }, SheetNames: ['Especialistas'] };
+      XLSX.writeFile(workbook, `Especialistas.xlsx`);
+    });
+  }
+
+  descargarDatosTodosUsuarios(): void {
     this.usuarioService.traerCamposEspecificosUsuarios().subscribe(user => {
       const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(user);
       const workbook: XLSX.WorkBook = { Sheets: { 'Usuarios': worksheet }, SheetNames: ['Usuarios'] };
