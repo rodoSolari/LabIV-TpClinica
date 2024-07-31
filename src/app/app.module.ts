@@ -10,10 +10,6 @@ import { RegistroComponent } from './componentes/registro/registro.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { HomeComponent } from './componentes/home/home.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
-import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
-import { MisTurnosPacienteComponent } from './componentes/mis-turnos-paciente/mis-turnos-paciente.component';
-import { MisTurnosEspecialistaComponent } from './componentes/mis-turnos-especialista/mis-turnos-especialista.component';
-import { TurnosAdministradorComponent } from './componentes/turnos-administrador/turnos-administrador.component';
 import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
 import { HistoriaClinicaComponent } from './componentes/historia-clinica/historia-clinica.component';
 import { PacientesComponent } from './componentes/pacientes/pacientes.component';
@@ -38,6 +34,7 @@ import { StyleLinksDirective } from './directivas/style-links.directive';
 import { ButtonStyleDirective } from './directivas/button-style.directive';
 import { CopiarDirective } from './directivas/copiar.directive';
 import { CaptchaDirective } from './directivas/captcha.directive';
+import { TurnosModule } from './componentes/turnos/turnos.module';
 
 const firebaseConfig = AngularFireModule.initializeApp(environment.firebaseConfig);
 
@@ -49,19 +46,13 @@ const firebaseConfig = AngularFireModule.initializeApp(environment.firebaseConfi
     NavbarComponent,
     HomeComponent,
     UsuariosComponent,
-    SolicitarTurnoComponent,
-    MisTurnosPacienteComponent,
-    MisTurnosEspecialistaComponent,
-    TurnosAdministradorComponent,
     MiPerfilComponent,
     HistoriaClinicaComponent,
     PacientesComponent,
     EstadisticasAdminComponent,
     PrimeraLetraMayusculaPipe,
-    FormatTimePipe,
     FormatDniPipe,
     StyleLinksDirective,
-    ButtonStyleDirective,
     CopiarDirective,
     CaptchaDirective
   ],
@@ -78,7 +69,8 @@ const firebaseConfig = AngularFireModule.initializeApp(environment.firebaseConfi
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    GraficosModule
+    GraficosModule,
+    TurnosModule
   ],
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

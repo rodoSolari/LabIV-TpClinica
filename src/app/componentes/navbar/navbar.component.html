@@ -6,13 +6,13 @@
           <a class="nav-link active" aria-current="page" routerLink='' appStyleLinks>Home</a>
         </li>
         <li class="nav-item" *ngIf="isPaciente" appStyleLinks>
-          <a class="nav-link" routerLink="solicitar-turno">Solicitar Turno</a>
+          <a class="nav-link" routerLink="turnos/solicitar-turno">Solicitar Turno</a>
         </li>
         <li class="nav-item" *ngIf="isPaciente" appStyleLinks>
-          <a class="nav-link" routerLink="mis-turnos-paciente">Mis Turnos como paciente</a>
+          <a class="nav-link" routerLink="turnos/mis-turnos-paciente">Mis Turnos como paciente</a>
         </li>
         <li class="nav-item" *ngIf="isEspecialista" appStyleLinks>
-          <a class="nav-link" routerLink="mis-turnos-especialista">Mis Turnos como especialista</a>
+          <a class="nav-link" routerLink="turnos/mis-turnos-especialista">Mis Turnos como especialista</a>
         </li>
         <li class="nav-item" *ngIf="isEspecialista" appStyleLinks>
           <a class="nav-link" routerLink="pacientes">Mis pacientes</a>
@@ -21,7 +21,7 @@
           <a class="nav-link" routerLink="usuarios">Usuarios</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
-          <a class="nav-link" routerLink="turnos-administrador">TURNOS ADMIN</a>
+          <a class="nav-link" routerLink="turnos/turnos-administrador">TURNOS ADMIN</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
           <a class="nav-link" routerLink="estadisticas-admin">ESTADISTICAS ADMIN</a>

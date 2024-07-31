@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { TurnosService } from 'src/app/services/turnos.service';
 import Swal from 'sweetalert2';
-import { HistoriaClinicaComponent } from '../historia-clinica/historia-clinica.component';
+import { HistoriaClinicaComponent } from '../../historia-clinica/historia-clinica.component';
 import { HistoriaClinicaService } from 'src/app/services/historia-clinica.service';
 import { FiltroTurnosService } from 'src/app/services/filtro-turnos.service';
 

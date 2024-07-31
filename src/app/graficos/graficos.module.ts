@@ -21,10 +21,7 @@ import { GraficosComponent } from './graficos/graficos.component';
   imports: [
     CommonModule,
     FormsModule,
-    GraficosRoutingModule/*,
-    MatDatepickerModule,
-    MatInputModule,
-    MatNativeDateModule*/
+    GraficosRoutingModule
   ],
   exports: [
     GraficoEspecialidadesComponent,

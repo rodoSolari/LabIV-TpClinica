@@ -202,7 +202,10 @@
             <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
           </div>
           <div *ngFor="let dato of historiaClinica?.datosDinamicosNuevos">
-            <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
+            <p><strong>{{ dato.clave }}:</strong> <span *ngIf="dato.valor === true">Sí</span>
+                                                  <span *ngIf="dato.valor === false">No</span>
+                                                  <span *ngIf="dato.valor !== true && dato.valor !== false">{{ dato.valor }}</span>
+                                                </p>
           </div>
         </div>
         <div class="modal-footer">

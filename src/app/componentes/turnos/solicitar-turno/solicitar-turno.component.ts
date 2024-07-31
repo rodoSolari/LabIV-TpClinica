@@ -27,11 +27,11 @@ export class SolicitarTurnoComponent {
   userData: any;
 
   especialidadImagenes: { [key: string]: string } = {
-    'oftalmologia': '../../../assets/oftalmologia.jpg',
-    'traumatologia': '../../../assets/traumatologia.jpg',
-    'odontologia': '../../../assets/odontologia.jpg',
-    'radiologia': '../../../assets/radiologia.jpg',
-    'default': '../../../assets/default-specialty.jpg'
+    'oftalmologia': '../../../../assets/oftalmologia.jpg',
+    'traumatologia': '../../../../assets/traumatologia.jpg',
+    'odontologia': '../../../../assets/odontologia.jpg',
+    'radiologia': '../../../../assets/radiologia.jpg',
+    'default': '../../../../assets/default-specialty.jpg'
   };
 
   constructor(

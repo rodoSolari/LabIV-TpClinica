@@ -125,6 +125,9 @@
           <div *ngFor="let dato of historiaClinica?.datosDinamicos">
             <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
           </div>
+          <div *ngFor="let dato of historiaClinica?.datosDinamicosNuevos">
+            <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
