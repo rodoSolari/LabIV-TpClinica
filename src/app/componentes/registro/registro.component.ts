@@ -118,7 +118,11 @@ export class RegistroComponent {
         if (tipo === 'paciente') {
           this.usuarioService.addPaciente(usuarioData, imagen1, imagen2, uid!).then(() => {
             this.authService.confirmarMail(userCredential.user).then(() => {
-              this.mensaje = 'Paciente registrado exitosamente. Por favor, verifique su correo electrónico.';
+              Swal.fire({
+                icon: 'success',
+                title: 'Paciente registrado exitosamente',
+                text: ' Por favor, verifique su correo electrónico.'
+              });
               this.limpiarFormulario();
               this.loading = false;
             }).catch((error: any) => {
@@ -136,7 +140,12 @@ export class RegistroComponent {
           }
           this.usuarioService.addEspecialista(usuarioData, imagen1, uid!).then(() => {
             this.authService.confirmarMail(userCredential.user).then(() => {
-              this.mensaje = 'Especialista registrado exitosamente. Por favor, verifique su correo electrónico, luego aguarde a que su cuenta sea aprobada por un administrador.';
+              this.mensaje = 'Especialista registrado exitosamente. ';
+              Swal.fire({
+                icon: 'success',
+                title: 'Especialista registrado exitosamente',
+                text: 'Por favor, verifique su correo electrónico, luego aguarde a que su cuenta sea aprobada por un administrador.'
+              });
               this.limpiarFormulario();
               this.loading = false;
             }).catch((error: any) => {

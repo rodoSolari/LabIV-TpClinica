@@ -33,6 +33,7 @@
       </div>
       <div class="modal-body">
         <div *ngFor="let historia of this.historiaClinica">
+          <p>Especialidad: {{ historia.especialidad }}
           <p>Altura: {{ historia.altura }} cm</p>
           <p>Peso: {{ historia.peso }} kg</p>
           <p>Temperatura: {{ historia.temperatura }} °C</p>
@@ -43,6 +44,7 @@
           <div *ngFor="let dato of historia.datosDinamicosNuevos">
             <p>{{ dato.clave }}: {{ dato.valor }}</p>
           </div>
+          <hr>
         </div>
       </div>
       <div class="modal-footer">

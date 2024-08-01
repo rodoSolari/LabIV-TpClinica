@@ -194,10 +194,10 @@
           <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
         </div>
         <div class="modal-body">
-          <p><strong>Altura:</strong> {{ historiaClinica?.altura }}</p>
-          <p><strong>Peso:</strong> {{ historiaClinica?.peso }}</p>
+          <p><strong>Altura:</strong> {{ historiaClinica?.altura }} Cm</p>
+          <p><strong>Peso:</strong> {{ historiaClinica?.peso }} Kg</p>
           <p><strong>Presión:</strong> {{ historiaClinica?.presion }}</p>
-          <p><strong>Temperatura:</strong> {{ historiaClinica?.temperatura }}</p>
+          <p><strong>Temperatura:</strong> {{ historiaClinica?.temperatura }} C°</p>
           <div *ngFor="let dato of historiaClinica?.datosDinamicos">
             <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
           </div>
@@ -207,6 +207,7 @@
                                                   <span *ngIf="dato.valor !== true && dato.valor !== false">{{ dato.valor }}</span>
                                                 </p>
           </div>
+          <hr>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
