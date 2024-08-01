@@ -40,6 +40,7 @@ export class PacientesComponent {
 
   verHistoriaClinica(paciente: any) {
     this.pacienteSeleccionado = paciente;
+
     console.log(this.pacienteSeleccionado);
     this.historiaClinicaService.obtenerHistoriaClinica(this.pacienteSeleccionado.pacienteEmail).subscribe((historiaClinica : any[]) => {
       this.historiaClinica = historiaClinica;

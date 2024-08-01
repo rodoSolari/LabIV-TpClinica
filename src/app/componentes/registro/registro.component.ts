@@ -26,6 +26,7 @@ export class RegistroComponent {
   captchaHabilitado = false;
   generatedCaptcha: string = '';
   captchaTextoIngresado = '';
+  mostrarEspecialidad2 = false; //
 
   constructor(
     private fb: FormBuilder,
@@ -43,6 +44,7 @@ export class RegistroComponent {
       especialidad: [''],
       obraSocial: [''],
       nuevaEspecialidad:[''],
+     // especialidad2: [''],
       imagen1: [null, Validators.required],
       imagen2: [null],
       recaptcha: ['', Validators.required],
@@ -58,6 +60,8 @@ export class RegistroComponent {
 
 
   }
+
+
 
   handleCaptcha(captchaText: string) {
     console.log('Generated Captcha: ', captchaText);
@@ -184,6 +188,19 @@ export class RegistroComponent {
       imagen2: file
     });
   }
-
+agregarEspecialidad2() {
+    const especialidad2 = this.formGroup.get('especialidad2')?.value;
+    if (especialidad2) {
+      this.usuarioService.verificarEspecialidad(especialidad2).subscribe(existe => {
+        if (existe) {
+          alert('La especialidad ya existe.');
+        } else {
+          this.mostrarEspecialidad2 = true;
+        }
+      });
+    } else {
+      this.mostrarEspecialidad2 = true;
+    }
+  }
 
 }

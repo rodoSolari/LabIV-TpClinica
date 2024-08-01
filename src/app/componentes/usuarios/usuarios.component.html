@@ -245,9 +245,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let admin of listadoAdministradores">
-            <td>{{ admin.nombre }} {{ admin.apellido }}</td>
+            <td>{{ admin.nombre | primeraLetraMayuscula }} {{ admin.apellido | primeraLetraMayuscula}}</td>
             <td>{{ admin.edad }}</td>
-            <td>{{ admin.email }}</td>
+            <td appCopiar>{{ admin.email }}</td>
             <td>{{ admin.dni | formatDni}}</td>
             <td>{{ admin.tipo }}</td>
             <td>
@@ -274,11 +274,11 @@
         </thead>
       <tbody>
         <tr *ngFor="let usuario of listadoEspecialistas">
-          <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+          <td>{{ usuario.nombre | primeraLetraMayuscula}} {{ usuario.apellido | primeraLetraMayuscula}}</td>
           <td>{{ usuario.edad }}</td>
           <td>{{ usuario.especialidad }}</td>
-          <td>{{ usuario.email }}</td>
-          <td>{{ usuario.dni }}</td>
+          <td appCopiar>{{ usuario.email }}</td>
+          <td>{{ usuario.dni | formatDni}}</td>
           <td>{{ usuario.estadoAprobadoPorAdmin }}</td>
           <td>
             <button *ngIf="!usuario.estadoAprobadoPorAdmin" class="btn btn-success btn-sm" (click)="aceptar(usuario)">Habilitar</button>

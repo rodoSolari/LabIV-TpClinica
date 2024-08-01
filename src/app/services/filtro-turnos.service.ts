@@ -26,7 +26,8 @@ export class FiltroTurnosService {
                historiaClinica.peso.toLowerCase().includes(term) ||
                historiaClinica.presion.toLowerCase().includes(term) ||
                historiaClinica.temperatura.toLowerCase().includes(term) ||
-               historiaClinica.datosDinamicos.some((dato: any) => dato.clave.toLowerCase().includes(term) || dato.valor.toLowerCase().includes(term))
+               historiaClinica.datosDinamicos.some((dato: any) => dato.clave.toLowerCase().includes(term) || dato.valor.toLowerCase().includes(term)) ||
+               historiaClinica?.datosDinamicosNuevos?.some((dato: any) => dato.clave.toLowerCase().includes(term) || String(dato.valor).toLowerCase().includes(term))
              ));
     });
   }

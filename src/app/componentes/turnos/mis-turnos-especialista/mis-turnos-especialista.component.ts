@@ -185,7 +185,7 @@ export class MisTurnosEspecialistaComponent {
       const datosDinamicosNuevos = [
         { clave: formValue.rangoKey, valor: formValue.rangoValue },
         { clave: formValue.cuadroTextoNumericoKey, valor: formValue.cuadroTextoNumericoValue },
-        { clave: formValue.switchKey, valor: formValue.switchValue }
+        { clave: formValue.switchKey, valor: formValue.switchValue  ? "Sí" : "No"}
       ];
 
       const historiaClinica = {

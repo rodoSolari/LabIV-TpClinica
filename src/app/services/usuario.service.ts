@@ -164,4 +164,11 @@ export class UsuarioService {
     ) as Observable<any[]>;
   }
 
+  verificarEspecialidad(especialidad: string): Observable<boolean> {
+    const especialidadesRef = collection(this.firestore, 'especialidades');
+    const q = query(especialidadesRef, where('nombre', '==', especialidad));
+    return collectionData(q).pipe(
+      map(especialidades => especialidades.length > 0)
+    );
+  }
 }
