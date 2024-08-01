@@ -44,11 +44,10 @@ export class RegistroComponent {
       especialidad: [''],
       obraSocial: [''],
       nuevaEspecialidad:[''],
-     // especialidad2: [''],
       imagen1: [null, Validators.required],
       imagen2: [null],
       recaptcha: ['', Validators.required],
-      captcha: ['', Validators.required]
+      captcha: ['']
     });
   }
 
@@ -144,7 +143,7 @@ export class RegistroComponent {
           }
           this.usuarioService.addEspecialista(usuarioData, imagen1, uid!).then(() => {
             this.authService.confirmarMail(userCredential.user).then(() => {
-              this.mensaje = 'Especialista registrado exitosamente. ';
+              //this.mensaje = 'Especialista registrado exitosamente. ';
               Swal.fire({
                 icon: 'success',
                 title: 'Especialista registrado exitosamente',
