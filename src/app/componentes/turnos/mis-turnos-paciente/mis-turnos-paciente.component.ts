@@ -128,6 +128,12 @@ export class MisTurnosPacienteComponent {
       const encuesta = this.encuestaForm.value.encuesta;
       if (this.selectedTurno && this.selectedTurno.id) {
         this.turnosService.completarEncuesta(this.selectedTurno.id, encuesta).then(() => {
+          Swal.fire({
+            title: 'Encuesta del Turno',
+            text: "encuesta enviada con exito!",
+            icon: 'success',
+            confirmButtonText: 'Cerrar'
+          });
           this.cargarTurnos();
           this.cerrarModal('encuesta');
         }).catch((error) => {
@@ -151,6 +157,12 @@ export class MisTurnosPacienteComponent {
       const { calificacion, comentarios } = this.calificacionForm.value;
       if (this.selectedTurno && this.selectedTurno.id) {
         this.turnosService.calificarAtencion(this.selectedTurno.id, calificacion, comentarios).then(() => {
+          Swal.fire({
+            title: 'calificacion del Turno',
+            text: "calificacion enviada con exito!",
+            icon: 'success',
+            confirmButtonText: 'Cerrar'
+          });
           this.cargarTurnos();
           this.cerrarModal('calificacion');
         }).catch((error) => {
