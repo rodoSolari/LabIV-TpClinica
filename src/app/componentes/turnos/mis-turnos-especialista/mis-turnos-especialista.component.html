@@ -1,17 +1,17 @@
 <body>
   <div class="container" style="padding-top: 60px;">
-    <h2>Mis Turnos</h2>
+    <h2>{{'MisTurnos' | translate}}</h2>
     <div>
       <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar..." class="form-control mb-3" (input)="aplicarFiltros()" />
       <table class="table table-striped table-dark table-bordered">
         <thead class="thead-dark">
           <tr>
-            <th>Especialidad</th>
-            <th>Especialista</th>
-            <th>Fecha y Hora</th>
-            <th>Paciente</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+            <th>{{'Especialidad' | translate}}</th>
+            <th>{{'Especialista' | translate}}</th>
+            <th>{{'FechaHora' | translate}}</th>
+            <th>{{'Paciente' | translate}}</th>
+            <th>{{'Estado' | translate}}</th>
+            <th>{{'acciones' | translate}}</th>
           </tr>
         </thead>
         <tbody>
@@ -22,13 +22,13 @@
             <td>{{ turno.pacienteNombre }}</td>
             <td>{{ turno.estado }}</td>
             <td>
-              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-success" (click)="aceptarTurno(turno)"             appButtonStyle>Aceptar Turno</button>
-              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalRechazo(turno)"         appButtonStyle>Rechazar Turno</button>
-              <button *ngIf="turno.estado !== 'realizado' && turno.estado !== 'cancelado' && turno.estado !== 'rechazado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)" appButtonStyle>Cancelar Turno</button>
-              <button *ngIf="turno.estado === 'aceptado'" class="btn btn-primary" (click)="abrirModalResenia(turno)"       appButtonStyle  >Finalizar Turno</button>
-              <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)"                                 appButtonStyle>Ver Reseña</button>
-              <button *ngIf="turno.estado === 'realizado' && !turno.historiaClinica" class="btn btn-primary" (click)="abrirModalHistoriaClinica(turno)" appButtonStyle>Cargar historia clinica</button>
-              <button *ngIf="turno.historiaClinica" class="btn btn-info" (click)="verHistoriaClinica(turno)" appButtonStyle>Ver Historia Clínica</button>
+              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-success" (click)="aceptarTurno(turno)"             appButtonStyle>{{'AceptarTurno' | translate}}</button>
+              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalRechazo(turno)"         appButtonStyle>{{'RechazarTurno' | translate}}</button>
+              <button *ngIf="turno.estado !== 'realizado' && turno.estado !== 'cancelado' && turno.estado !== 'rechazado'" class="btn btn-danger" (click)="abrirModalCancelar(turno)" appButtonStyle>{{'CancelarTurno' | translate}}Cancelar Turno</button>
+              <button *ngIf="turno.estado === 'aceptado'" class="btn btn-primary" (click)="abrirModalResenia(turno)"       appButtonStyle  >{{'FinalizarTurno' | translate}} </button>
+              <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)"                                 appButtonStyle>{{'VerReseña' | translate}}</button>
+              <button *ngIf="turno.estado === 'realizado' && !turno.historiaClinica" class="btn btn-primary" (click)="abrirModalHistoriaClinica(turno)" appButtonStyle>{{'CargarHistoriaClinica' | translate}}</button>
+              <button *ngIf="turno.historiaClinica" class="btn btn-info" (click)="verHistoriaClinica(turno)" appButtonStyle>{{'verHistoriaClinica' | translate}}</button>
             </td>
           </tr>
         </tbody>
@@ -41,21 +41,21 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalCancelarLabel" style="color: black;">Cancelar Turno</h5>
+          <h5 class="modal-title" id="modalCancelarLabel" style="color: black;">{{'cancelarTurno' | translate}}Cancelar Turno</h5>
           <button type="button" class="btn-close" (click)="cerrarModal('cancelar')" aria-label="Close"></button>
         </div>
         <div class="modal-body" style="color: black;">
           <form [formGroup]="cancelacionForm">
             <div class="mb-3">
-              <label for="comentario" class="form-label">Motivo de la Cancelación</label>
+              <label for="comentario" class="form-label">{{'motivoCancelacion' | translate}}</label>
               <textarea id="comentario" class="form-control" formControlName="comentario" rows="3" required></textarea>
             </div>
           </form>
-          <p>¿Estás seguro de que deseas cancelar este turno?</p>
+          <p>{{'confirmarCancelacion' | translate}}</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="cerrarModal('cancelar')">Cerrar</button>
-          <button type="button" class="btn btn-danger" [disabled]="!cancelacionForm.valid" (click)="confirmarCancelarTurno()">Cancelar Turno</button>
+          <button type="button" class="btn btn-danger" [disabled]="!cancelacionForm.valid" (click)="confirmarCancelarTurno()">{{'CancelarTurno' | translate}}</button>
         </div>
       </div>
     </div>
@@ -66,21 +66,21 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalRechazoLabel" style="color: black;">Rechazar Turno</h5>
+          <h5 class="modal-title" id="modalRechazoLabel" style="color: black;">{{'RechazarTurno' | translate}}</h5>
           <button type="button" class="btn-close" (click)="cerrarModal('rechazo')" aria-label="Close"></button>
         </div>
         <div class="modal-body" style="color: black;">
           <form [formGroup]="rechazoForm">
             <div class="mb-3">
-              <label for="comentarioRechazo" class="form-label">Motivo del Rechazo</label>
+              <label for="comentarioRechazo" class="form-label">{{'MotivoRechazo' | translate}}</label>
               <textarea id="comentarioRechazo" class="form-control" formControlName="comentario" rows="3" required></textarea>
             </div>
           </form>
-          <p>¿Estás seguro de que deseas rechazar este turno?</p>
+          <p>{{'Especialidad' | translate}}¿Estás seguro de que deseas rechazar este turno?</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="cerrarModal('rechazo')">Cerrar</button>
-          <button type="button" class="btn btn-danger" [disabled]="!rechazoForm.valid" (click)="confirmarRechazoTurno()">Rechazar Turno</button>
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('rechazo')">{{'Cerrar' | translate}}</button>
+          <button type="button" class="btn btn-danger" [disabled]="!rechazoForm.valid" (click)="confirmarRechazoTurno()">{{'RechazarTurno' | translate}}</button>
         </div>
       </div>
     </div>
@@ -91,21 +91,21 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalReseniaLabel" style="color: black;">Finalizar Turno</h5>
+          <h5 class="modal-title" id="modalReseniaLabel" style="color: black;">{{'FinalizarTurno' | translate}}</h5>
           <button type="button" class="btn-close" (click)="cerrarModal('resenia')" aria-label="Close"></button>
         </div>
         <div class="modal-body" style="color: black;">
           <form [formGroup]="reseniaForm">
             <div class="mb-3">
-              <label for="resenia" class="form-label">Reseña</label>
+              <label for="resenia" class="form-label">{{'Reseña' | translate}}</label>
               <textarea id="resenia" class="form-control" formControlName="resenia" rows="3" required></textarea>
             </div>
           </form>
-          <p>¿Estás seguro de que deseas finalizar este turno?</p>
+          <p>{{'ConfirmacionFinalizarTurno' | translate}}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="cerrarModal('resenia')">Cerrar</button>
-          <button type="button" class="btn btn-primary" [disabled]="!reseniaForm.valid" (click)="confirmarResenia()">Finalizar Turno</button>
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('resenia')">{{'Especialidad' | translate}}</button>
+          <button type="button" class="btn btn-primary" [disabled]="!reseniaForm.valid" (click)="confirmarResenia()">{{'FinalizarTurnoModalTitle' | translate}}</button>
         </div>
       </div>
     </div>
@@ -115,47 +115,47 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Cargar Historia Clínica</h5>
+          <h5 class="modal-title">{{'CargarHistoriaClinica' | translate}}</h5>
           <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModal('historiaClinica')"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="historiaClinicaForm">
             <div class="mb-3">
-              <label for="altura" class="form-label">Altura</label>
+              <label for="altura" class="form-label">{{'AlturaDetalle' | translate}}</label>
               <input id="altura" class="form-control" formControlName="altura">
             </div>
             <div class="mb-3">
-              <label for="peso" class="form-label">Peso</label>
+              <label for="peso" class="form-label">{{'PesoDetalle' | translate}}</label>
               <input id="peso" class="form-control" formControlName="peso">
             </div>
             <div class="mb-3">
-              <label for="temperatura" class="form-label">Temperatura</label>
+              <label for="temperatura" class="form-label">{{'TemperaturaDetalle' | translate}}</label>
               <input id="temperatura" class="form-control" formControlName="temperatura">
             </div>
             <div class="mb-3">
-              <label for="presion" class="form-label">Presión</label>
+              <label for="presion" class="form-label">{{'PresionDetalle' | translate}}</label>
               <input id="presion" class="form-control" formControlName="presion">
             </div>
 
             <div class="mb-3">
-              <label for="rangoKey" class="form-label">Clave para Control de rango</label>
+              <label for="rangoKey" class="form-label">{{'ClaveControlRango' | translate}}</label>
               <input type="text" id="rangoKey" class="form-control" formControlName="rangoKey" required>
-              <label for="rangoValue" class="form-label">Control de rango (0-100)</label>
+              <label for="rangoValue" class="form-label">{{'ControlRango' | translate}}</label>
               <input type="range" id="rangoValue" class="form-control" formControlName="rangoValue" min="0" max="100" required>
               <!--<span>{{ historiaClinicaForm.get('rangoValue')?.value }}</span>-->
             </div>
 
             <div class="mb-3">
-              <label for="cuadroTextoNumericoKey" class="form-label">Clave para Cuadro de texto numérico</label>
+              <label for="cuadroTextoNumericoKey" class="form-label">{{'ClaveCuadroTextoNumerico' | translate}}</label>
               <input type="text" id="cuadroTextoNumericoKey" class="form-control" formControlName="cuadroTextoNumericoKey" required>
-              <label for="cuadroTextoNumericoValue" class="form-label">Cuadro de texto numérico</label>
+              <label for="cuadroTextoNumericoValue" class="form-label">{{'CuadroTextoNumerico' | translate}}</label>
               <input type="number" id="cuadroTextoNumericoValue" class="form-control" formControlName="cuadroTextoNumericoValue" required>
             </div>
 
             <div class="mb-3">
-              <label for="switchKey" class="form-label">Clave para Switch</label>
+              <label for="switchKey" class="form-label">{{'ClaveSwitch' | translate}}</label>
               <input type="text" id="switchKey" class="form-control" formControlName="switchKey" required>
-              <label for="switchValue" class="form-label">Switch (Sí/No)</label>
+              <label for="switchValue" class="form-label">{{'Switch' | translate}}</label>
               <div class="form-check form-switch">
                 <input type="checkbox" id="switchValue" class="form-check-input" formControlName="switchValue">
                 <!--<label class="form-check-label" for="switchValue">{{ historiaClinicaForm.get('switchValue')?.value ? 'Sí' : 'No' }}</label>-->
@@ -165,22 +165,22 @@
             <div formArrayName="datosDinamicos">
               <div *ngFor="let dato of datosDinamicos.controls; let i = index" [formGroupName]="i">
                 <div class="mb-3">
-                  <label for="clave" class="form-label">Clave</label>
+                  <label for="clave" class="form-label">{{'Clave' | translate}}</label>
                   <input id="clave" class="form-control" formControlName="clave">
                 </div>
                 <div class="mb-3">
-                  <label for="valor" class="form-label">Valor</label>
+                  <label for="valor" class="form-label">{{'Valor' | translate}}</label>
                   <input id="valor" class="form-control" formControlName="valor">
                 </div>
-                <button type="button" class="btn btn-danger" (click)="removeDatoDinamico(i)">Eliminar</button>
+                <button type="button" class="btn btn-danger" (click)="removeDatoDinamico(i)">{{'Eliminar' | translate}}</button>
               </div>
             </div>
-            <button type="button" class="btn btn-secondary" (click)="addDatoDinamico()">Agregar Dato Dinámico</button>
+            <button type="button" class="btn btn-secondary" (click)="addDatoDinamico()">{{'AgregarDatoDinámico' | translate}}</button>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="cerrarModal('historiaClinica')">Cerrar</button>
-          <button type="button" class="btn btn-primary" (click)="confirmarHistoriaClinica()">Guardar</button>
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('historiaClinica')">{{'cerrar' | translate}}</button>
+          <button type="button" class="btn btn-primary" (click)="confirmarHistoriaClinica()">{{'Guardar' | translate}}</button>
         </div>
       </div>
     </div>
@@ -190,7 +190,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Historia Clínica</h5>
+          <h5 class="modal-title">{{'historiaClinica' | translate}}</h5>
           <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
         </div>
         <div class="modal-body">
@@ -207,7 +207,7 @@
           <hr>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">{{'cerrar' | translate}}</button>
         </div>
       </div>
     </div>

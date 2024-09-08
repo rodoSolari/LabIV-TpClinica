@@ -3,16 +3,16 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Historial Clínico</h5>
+          <h5 class="modal-title">{{'HistorialClinico' | translate}}</h5>
           <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModalHistoriaClinica()"></button>
         </div>
         <div class="modal-body">
           <div *ngFor="let historia of historiaClinica">
-            <p><strong>Especialidad:</strong>{{ historia.especialidad}}  </p>
-            <p><strong>Altura:</strong> {{ historia.altura }}</p>
-            <p><strong>Peso:</strong> {{ historia.peso }}</p>
-            <p><strong>Temperatura:</strong> {{ historia.temperatura }}</p>
-            <p><strong>Presión:</strong> {{ historia.presion }}</p>
+            <p><strong>{{'Especialidad' | translate}}:</strong>{{ historia.especialidad}}  </p>
+            <p><strong>{{'Altura' | translate}}:</strong> {{ historia.altura }}</p>
+            <p><strong>{{'Peso' | translate}}:</strong> {{ historia.peso }}</p>
+            <p><strong>{{'Temperatura' | translate}}:</strong> {{ historia.temperatura }}</p>
+            <p><strong>{{'Presión' | translate}}:</strong> {{ historia.presion }}</p>
             <div *ngFor="let dato of historia.datosDinamicos">
               <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
             </div>
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="cerrarModalHistoriaClinica()">Cerrar</button>
+          <button type="button" class="btn btn-secondary" (click)="cerrarModalHistoriaClinica()">{{'CerrarModal' | translate}}</button>
         </div>
       </div>
     </div>
@@ -31,11 +31,11 @@
   <div class="container" *ngIf="userData">
     <form (ngSubmit)="actualizarPerfil()">
       <div class="form-group">
-        <label for="nombre">Nombre:</label>
+        <label for="nombre">{{'Nombre' | translate}}:</label>
         <input type="text" id="nombre" [(ngModel)]="userData.nombre" name="nombre" class="form-control"  [ngModelOptions]="{standalone: true}">
       </div>
       <div class="form-group">
-        <label for="apellido">Apellido:</label>
+        <label for="apellido">{{'Apellido' | translate}}:</label>
         <input type="text" id="apellido" [(ngModel)]="userData.apellido" name="apellido" class="form-control"  [ngModelOptions]="{standalone: true}">
       </div>
       <div class="form-group">
@@ -43,25 +43,25 @@
         <input type="email" id="email" [(ngModel)]="userData.email" name="email" class="form-control" readonly  [ngModelOptions]="{standalone: true}">
       </div>
       <div *ngIf="userData?.tipo === 'paciente'" class="form-group">
-        <label for="obraSocial">Obra Social:</label>
+        <label for="obraSocial">{{'ObraSocial' | translate}}:</label>
         <input type="text" id="obraSocial" [(ngModel)]="userData.obraSocial" name="obraSocial" class="form-control"  [ngModelOptions]="{standalone: true}">
       </div>
       <div class="form-group">
-        <label appToolTip="Imagen de Perfil" for="imagen1">Imagen de Perfil:</label>
+        <label appToolTip="Imagen de Perfil" for="imagen1">{{'ImagenDePerfil' | translate}}:</label>
         <input  type="file" id="imagen1" (change)="cargarImagen($event, 'imagen1')" class="form-control d-none">
         <img  *ngIf="userData.imagen1" [src]="userData.imagen1" alt="Imagen de Perfil" class="img-thumbnail mt-2 img-circular" width="150" (click)="clickImagen('imagen1')">
       </div>
       <div *ngIf="userData?.tipo === 'paciente'" class="form-group">
-        <label for="imagen2">Imagen Adicional:</label>
+        <label for="imagen2">{{'ImagenAdicional' | translate}}:</label>
         <input type="file" id="imagen2" (change)="cargarImagen($event, 'imagen2')" class="form-control d-none">
         <img *ngIf="userData.imagen2" [src]="userData.imagen2" alt="Imagen Adicional" class="img-thumbnail mt-2 img-circular" width="150" (click)="clickImagen('imagen2')">
       </div>
       <div *ngIf="userData?.tipo === 'especialista'" class="form-group">
-        <label for="especialidades">Especialidades:</label>
+        <label for="especialidades">{{'Especialidades' | translate}}</label>
         <input type="text" id="especialidades" [(ngModel)]="especialidadesString" name="especialidades" class="form-control" placeholder="Separadas con comas." [ngModelOptions]="{standalone: true}">
       </div>
       <div *ngIf="userData?.tipo === 'especialista'" class="horarios-container">
-        <h4>Horarios</h4>
+        <h4>{{'Horarios' | translate}}</h4>
         <div *ngFor="let especialidad of especialidades" style="margin-bottom: 20px;">
           <hr>
           <h4>{{ especialidad }}</h4>
@@ -79,13 +79,13 @@
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+      <button type="submit" class="btn btn-primary">{{'ActualizarPerfil' | translate}}</button>
     </form>
   </div>
 
   <div *ngIf="userData?.tipo === 'paciente'" class="d-flex justify-content-center my-3">
-    <button class="btn btn-info" style="margin-right: 10px;" (click)="abrirModalHistoriaClinica()">Ver Historial Clínico</button>
-    <button class="btn btn-info" (click)="generarPDFHistoriaClinica()">Generar PDF de Historia Clinica</button>
+    <button class="btn btn-info" style="margin-right: 10px;" (click)="abrirModalHistoriaClinica()">{{'VerHistorialClinico' | translate}}</button>
+    <button class="btn btn-info" (click)="generarPDFHistoriaClinica()">{{'GenerarPDFHistoriaClinica' | translate}}</button>
   </div>
 
 

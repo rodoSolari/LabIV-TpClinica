@@ -1,13 +1,13 @@
 <body>
   <div class="container">
-    <h2>Pacientes Atendidos</h2>
+    <h2>{{'PacientesAtendidos' | translate}}</h2>
     <table class="table table-striped table-dark table-bordered">
       <thead>
         <tr>
-          <th>Nombre</th>
-          <th>Apellido</th>
+          <th>{{'Nombre' | translate}}</th>
+          <th>{{'Apellido' | translate}}</th>
           <th>Email</th>
-          <th>Acciones</th>
+          <th>{{'acciones' | translate}}</th>
         </tr>
       </thead>
       <tbody>
@@ -16,7 +16,7 @@
           <td>{{ paciente.pacienteApellido }}</td>
           <td>{{ paciente.pacienteEmail }}</td>
           <td>
-            <button (click)="verHistoriaClinica(paciente)" class="btn btn-primary btn-sm">Ver Historia Clínica</button>
+            <button (click)="verHistoriaClinica(paciente)" class="btn btn-primary btn-sm">{{'VerHistoriaClinica' | translate}}</button>
           </td>
         </tr>
       </tbody>
@@ -28,16 +28,16 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="historiaClinicaModalLabel">Historia Clínica de {{ pacienteSeleccionado?.pacienteNombre }} {{ pacienteSeleccionado?.pacienteApellido }}</h5>
+        <h5 class="modal-title" id="historiaClinicaModalLabel">{{'HistoriaClinicaDe' | translate}} {{ pacienteSeleccionado?.pacienteNombre }} {{ pacienteSeleccionado?.pacienteApellido }}</h5>
         <button type="button" class="btn-close" (click)="cerrarModal('historiaClinicaModal')" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div *ngFor="let historia of this.historiaClinica">
-          <p>Especialidad: {{ historia.especialidad }}
-          <p>Altura: {{ historia.altura }} cm</p>
-          <p>Peso: {{ historia.peso }} kg</p>
-          <p>Temperatura: {{ historia.temperatura }} °C</p>
-          <p>Presión: {{ historia.presion }}</p>
+          <p>{{'Especialidad' | translate}}: {{ historia.especialidad }}
+          <p>{{'Altura' | translate}}: {{ historia.altura }} cm</p>
+          <p>{{'Peso' | translate}}: {{ historia.peso }} kg</p>
+          <p>{{'Temperatura' | translate}}: {{ historia.temperatura }} °C</p>
+          <p>{{'Presión' | translate}}: {{ historia.presion }}</p>
           <div *ngFor="let dato of historia.datosDinamicos">
             <p>{{ dato.clave }}: {{ dato.valor }}</p>
           </div>
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="cerrarModal('historiaClinicaModal')">Cerrar</button>
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal('historiaClinicaModal')">{{'Cerrar' | translate}}Cerrar</button>
       </div>
     </div>
   </div>

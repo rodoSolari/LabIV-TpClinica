@@ -6,38 +6,46 @@
           <a class="nav-link active" aria-current="page" routerLink='' appStyleLinks>Home</a>
         </li>
         <li class="nav-item" *ngIf="isPaciente" appStyleLinks>
-          <a class="nav-link" routerLink="turnos/solicitar-turno">Solicitar Turno</a>
+          <a class="nav-link" routerLink="turnos/solicitar-turno">{{'SolicitarTurno' | translate}}</a>
         </li>
         <li class="nav-item" *ngIf="isPaciente" appStyleLinks>
-          <a class="nav-link" routerLink="turnos/mis-turnos-paciente">Mis Turnos como paciente</a>
+          <a class="nav-link" routerLink="turnos/mis-turnos-paciente">{{'MisTurnosPaciente' | translate}}</a>
         </li>
         <li class="nav-item" *ngIf="isEspecialista" appStyleLinks>
-          <a class="nav-link" routerLink="turnos/mis-turnos-especialista">Mis Turnos como especialista</a>
+          <a class="nav-link" routerLink="turnos/mis-turnos-especialista">{{'MisTurnosEspecialista' | translate}}</a>
+        </li>
+        <li class="nav-item" *ngIf="isPaciente" appStyleLinks>
+          <a class="nav-link" routerLink="encuesta-atencion">Encuesta de atencion</a>
         </li>
         <li class="nav-item" *ngIf="isEspecialista" appStyleLinks>
-          <a class="nav-link" routerLink="pacientes">Mis pacientes</a>
+          <a class="nav-link" routerLink="pacientes">{{'MisPacientes' | translate}}</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
-          <a class="nav-link" routerLink="usuarios">Usuarios</a>
+          <a class="nav-link" routerLink="usuarios">{{'Usuarios' | translate}}</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
-          <a class="nav-link" routerLink="turnos/turnos-administrador">TURNOS ADMIN</a>
+          <a class="nav-link" routerLink="turnos/turnos-administrador">{{'TurnosAdmin' | translate}}</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
-          <a class="nav-link" routerLink="estadisticas-admin">ESTADISTICAS ADMIN</a>
+          <a class="nav-link" routerLink="estadisticas-admin">{{'EstadisticasAdmin' | translate}}</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin" appStyleLinks>
-          <a class="nav-link" routerLink="graficos">GRAFICOS ADMIN</a>
+          <a class="nav-link" routerLink="graficos">{{'GraficosAdmin' | translate}}</a>
         </li>
       </ul>
+      <div class="lenguajes"> Cambiar idioma
+        <img src="https://flagcdn.com/w40/us.png" srcset="https://flagcdn.com/w80/us.png 2x" width="40" height="27" alt="English" (click)="changeLanguage('en')" class="flag-icon">
+        <img src="https://flagcdn.com/w40/es.png" srcset="https://flagcdn.com/w80/es.png 2x" width="40" height="27" alt="Español" (click)="changeLanguage('es')" class="flag-icon">
+        <img src="https://flagcdn.com/w40/pt.png" srcset="https://flagcdn.com/w80/pt.png 2x" width="40" height="27" alt="Portugal" (click)="changeLanguage('po')" class="flag-icon">
+      </div>
     </div>
     <ul class="navbar-nav" *ngIf="usuariologeado; else Login">
       <li class="nav-item" *ngIf="!isAdmin" appStyleLinks>
-        <a class="nav-link" routerLink="mi-perfil">Mi perfil</a>
+        <a class="nav-link" routerLink="mi-perfil">{{'MiPerfil' | translate}}</a>
       </li>
       <li class="nav-item d-flex align-items-center">
         <img [src]="imagenPerfil" alt="Perfil" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;">
-        <h5 style="color: #0e0f11; padding: 0 15px;">Hola {{usuariologeado.displayName || usuariologeado.email}}!</h5>
+        <h5 style="color: #0e0f11; padding: 0 15px;">{{'HolaUsuario' | translate}} {{usuariologeado.displayName || usuariologeado.email}}!</h5>
       </li>
       <li class="nav-item">
         <button class="btn btn-light" (click)="logout()">Log Out</button>
@@ -47,10 +55,10 @@
       <ng-template #Login>
         <ul class="navbar-nav mb-12 mb-lg-0">
           <li class="nav-item">
-            <a class="btn btn-light" style="margin-right: 10px;" routerLink="login">Loguearse</a>
+            <a class="btn btn-light" style="margin-right: 10px;" routerLink="login">{{'Loguearse' | translate}}</a>
           </li>
           <li class="nav-item">
-            <a class="btn btn-light" routerLink="registro">Sos nuevo? Haz click aqui para Registrarse</a>
+            <a class="btn btn-light" routerLink="registro">{{'Registro' | translate}}</a>
           </li>
         </ul>
       </ng-template>

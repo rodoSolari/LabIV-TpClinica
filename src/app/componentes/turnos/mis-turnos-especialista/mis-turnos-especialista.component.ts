@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { HistoriaClinicaComponent } from '../../historia-clinica/historia-clinica.component';
 import { HistoriaClinicaService } from 'src/app/services/historia-clinica.service';
 import { FiltroTurnosService } from 'src/app/services/filtro-turnos.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-mis-turnos-especialista',
@@ -40,8 +41,11 @@ export class MisTurnosEspecialistaComponent {
     private turnosService: TurnosService,
     private historiaClinicaService: HistoriaClinicaService,
     private fb: FormBuilder,
-    private filtroTurnosService: FiltroTurnosService
-  ) {}
+    private filtroTurnosService: FiltroTurnosService,
+
+  ) {
+  }
+
 
   ngOnInit(): void {
     this.authService.userLogged().subscribe(user => {

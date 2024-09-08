@@ -7,6 +7,8 @@ import { GraficoTurnosFinalizadosPorMedicoComponent } from './grafico-turnos-fin
 import { FormsModule } from '@angular/forms';
 import { GraficosRoutingModule } from './graficos-routing.module';
 import { GraficosComponent } from './graficos/graficos.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { GraficoVisitasClinicaComponent } from './grafico-visitas-clinica/grafico-visitas-clinica.component';
 
 
 
@@ -16,12 +18,14 @@ import { GraficosComponent } from './graficos/graficos.component';
     GraficoDiasComponent,
     GraficoTurnosPorMedicoComponent,
     GraficoTurnosFinalizadosPorMedicoComponent,
-    GraficosComponent
+    GraficosComponent,
+    GraficoVisitasClinicaComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    GraficosRoutingModule
+    GraficosRoutingModule,
+    TranslateModule
   ],
   exports: [
     GraficoEspecialidadesComponent,

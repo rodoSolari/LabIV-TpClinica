@@ -1,16 +1,16 @@
 <div class="chart-container">
-  <h4 class="chart-title">Cantidad de turnos solicitados por médico</h4>
+  <h4 class="chart-title">{{'cantidadDeTurnosSolicitadosPorMedico' | translate}}</h4>
   <div class="date-picker-container row mb-3">
     <div class="col">
-      <label for="startDate" class="form-label">Fecha de inicio:</label>
+      <label for="startDate" class="form-label">{{'fechaDeInicio' | translate}}:</label>
       <input type="date" id="startDate" [(ngModel)]="startDate" class="form-control">
     </div>
     <div class="col">
-      <label for="endDate" class="form-label">Fecha de fin:</label>
+      <label for="endDate" class="form-label">{{'fechaDeFin' | translate}}:</label>
       <input type="date" id="endDate" [(ngModel)]="endDate" class="form-control">
     </div>
   </div>
-  <button class="btn btn-primary" style="margin: 5px;" (click)="filterTurnosByDateRange()">Filtrar</button>
-  <button *ngIf="this.descargarDisponible" (click)="exportarAExcel()" class="btn btn-success ms-2">Exportar a Excel</button>
+  <button class="btn btn-primary" style="margin: 5px;" (click)="filterTurnosByDateRange()">{{'filtrar' | translate}}</button>
+  <button *ngIf="this.descargarDisponible" (click)="exportarAExcel()" class="btn btn-success ms-2">{{'ExportarExcel' | translate}}</button>
   <div #chart class="ct-chart mt-4" style="margin-top: 50px;"></div>
 </div>

@@ -8,6 +8,11 @@ import { MisTurnosEspecialistaComponent } from './mis-turnos-especialista/mis-tu
 import { FormatTimePipe } from 'src/app/Pipes/format-time.pipe';
 import { TurnosRoutingModule } from './turnos-routing.module';
 import { ButtonStyleDirective } from 'src/app/directivas/button-style.directive';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpLoaderFactory } from 'src/app/app.module';
+
 
 
 
@@ -24,7 +29,8 @@ import { ButtonStyleDirective } from 'src/app/directivas/button-style.directive'
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    TurnosRoutingModule
+    TurnosRoutingModule,
+    TranslateModule
   ],
   exports: [
     TurnosAdministradorComponent,

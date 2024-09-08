@@ -1,14 +1,14 @@
 <body>
   <div class="container">
-    <h2>Estadísticas</h2>
+    <h2>{{'estadisticas' | translate}}</h2>
     <div>
-      <h3>Log de Ingresos</h3>
+      <h3>{{'logDeIngresos' | translate}}</h3>
       <table class="table table-striped table-dark table-bordered">
         <thead>
           <tr>
-            <th>Usuario</th>
-            <th>Día</th>
-            <th>Horario</th>
+            <th>{{'usuario' | translate}}</th>
+            <th>{{'Día' | translate}}</th>
+            <th>{{'horario' | translate}}</th>
           </tr>
         </thead>
         <tbody>
@@ -20,11 +20,11 @@
         </tbody>
       </table>
       <div class="pagination">
-        <button class="btn btn-light" style="margin-right: 10px;" (click)="anterior()" [disabled]="paginaActual === 0">Atrás</button>
-        <button class="btn btn-light" (click)="siguiente()" [disabled]="(paginaActual + 1) * tamanoPagina >= logs.length">Siguiente</button>
+        <button class="btn btn-light" style="margin-right: 10px;" (click)="anterior()" [disabled]="paginaActual === 0">{{'atras' | translate}}</button>
+        <button class="btn btn-light" (click)="siguiente()" [disabled]="(paginaActual + 1) * tamanoPagina >= logs.length">{{'siguiente' | translate}}</button>
       </div>
     </div>
-    <button (click)="exportarLogsAExcel()" class="btn btn-success">Exportar a Excel</button>
+    <button (click)="exportarLogsAExcel()" class="btn btn-success">{{'ExportarExcel' | translate}}</button>
   </div>
 
 </body>

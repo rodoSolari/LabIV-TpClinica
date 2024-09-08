@@ -1,15 +1,15 @@
 <body>
   <div class="container mt-5">
-    <h1>Turnos</h1>
+    <h1>{{'Turnos' | translate}}Turnos</h1>
     <div class="row mb-3">
       <div class="col">
-        <button (click)="quitarFiltros()" class="btn btn-info m-1">Quitar Filtros</button>
+        <button (click)="quitarFiltros()" class="btn btn-info m-1">{{'quitarFiltros' | translate}}Quitar Filtros</button>
       </div>
     </div>
     <!-- Filtros -->
     <div class="row">
       <div class="col">
-        <h3>Especialidades</h3>
+        <h3>{{'especialidades' | translate}}Especialidades</h3>
         <div>
           <button
             *ngFor="let especialidad of especialidades"
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="col">
-        <h3>Especialistas</h3>
+        <h3>{{'especialistas' | translate}}Especialistas</h3>
         <div>
           <button
             *ngFor="let especialista of especialistas"
@@ -40,12 +40,12 @@
     <table class="table table-dark table-striped mt-3">
       <thead>
         <tr>
-          <th>Especialidad</th>
-          <th>Especialista</th>
-          <th>Fecha y Hora</th>
-          <th>Paciente</th>
-          <th>Estado</th>
-          <th>Acciones</th>
+          <th>{{'especialidad' | translate}}Especialidad</th>
+          <th>{{'especialistas' | translate}}Especialista</th>
+          <th>{{'fechaYHora' | translate}}Fecha y Hora</th>
+          <th>{{'paciente' | translate}}Paciente</th>
+          <th>{{'estado' | translate}}Estado</th>
+          <th>{{'acciones' | translate}}Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -61,7 +61,7 @@
               *ngIf="puedeCancelar(turno)"
               (click)="abrirModalCancelar(turno)"
               class="btn btn-danger">
-              Cancelar Turno
+              {{'cancelarTurno' | translate}}Cancelar Turno
             </button>
           </td>
         </tr>
@@ -74,18 +74,18 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Cancelar Turno</h5>
+          <h5 class="modal-title">{{'cancelarTurno' | translate}}Cancelar Turno</h5>
           <button type="button" class="close" (click)="cerrarModal()">
             <span>&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>¿Estás seguro de que deseas cancelar este turno?</p>
+          <p>{{'confirmarCancelacion' | translate}}¿Estás seguro de que deseas cancelar este turno?</p>
           <textarea [(ngModel)]="comentarioCancelacion" class="form-control" rows="3" placeholder="Motivo de la cancelación"></textarea>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
-          <button type="button" class="btn btn-danger" (click)="cancelarTurno()">Cancelar Turno</button>
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal()">{{'cerrar' | translate}}Cerrar</button>
+          <button type="button" class="btn btn-danger" (click)="cancelarTurno()">{{'cancelarTurno' | translate}}Cancelar Turno</button>
         </div>
       </div>
     </div>

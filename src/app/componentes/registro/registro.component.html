@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinica</title>
+    <title>{{'ClinicaMedica' | translate}}</title>
 </head>
 <body>
   <div class="container-botones">
   <div class="botones justify-content-center">
-    <button class="btn btn-primary" (click)="tipo='paciente'"> <img src="../../../assets/pacienteForm.png" width="90px">Paciente</button>
-    <button class="btn btn-primary" (click)="tipo='especialista'"><img src="../../../assets/MedicoForm.png" width="90px">Especialista</button>
+    <button class="btn btn-primary" (click)="tipo='paciente'"> <img src="../../../assets/pacienteForm.png" width="90px">{{'Paciente' | translate}}</button>
+    <button class="btn btn-primary" (click)="tipo='especialista'"><img src="../../../assets/MedicoForm.png" width="90px">{{'Especialista' | translate}}</button>
   </div>
 </div>
 
@@ -21,53 +21,53 @@
         <div class="form-container">
           <form [formGroup]="formGroup" (ngSubmit)="register()">
             <input name="nombre" placeholder="Nombre" type="text" class="form-control" id="nombre" formControlName="nombre">
-            <small class="invalid" style="color: red;" *ngIf="formGroup.get('nombre')?.errors?.['required'] && formGroup.get('nombre')?.touched">Nombre requerido</small>
+            <small class="invalid" style="color: red;" *ngIf="formGroup.get('nombre')?.errors?.['required'] && formGroup.get('nombre')?.touched">{{'NombreRequerido' | translate}}</small>
 
             <input name="apellido" placeholder="Apellido" type="text" class="form-control" id="apellido" formControlName="apellido">
-            <small class="invalid" style="color: red;" *ngIf="formGroup.get('apellido')?.errors?.['required'] && formGroup.get('apellido')?.touched">Apellido requerido</small>
+            <small class="invalid" style="color: red;" *ngIf="formGroup.get('apellido')?.errors?.['required'] && formGroup.get('apellido')?.touched">{{'ApellidoRequerido' | translate}}</small>
 
             <input name="email" placeholder="Email" type="text" class="form-control" id="email" formControlName="email">
-            <small class="invalid" style="color: red;" *ngIf="formGroup.get('email')?.errors?.['required'] && formGroup.get('email')?.touched">Email requerido</small>
-            <small class="invalid" style="color: red;" *ngIf="formGroup.get('email')?.errors?.['email'] && formGroup.get('email')?.touched">Formato de email no válido</small>
+            <small class="invalid" style="color: red;" *ngIf="formGroup.get('email')?.errors?.['required'] && formGroup.get('email')?.touched">{{'EmailRequerido' | translate}}</small>
+            <small class="invalid" style="color: red;" *ngIf="formGroup.get('email')?.errors?.['email'] && formGroup.get('email')?.touched">{{'FormatoEmailNoValido' | translate}}</small>
 
             <input name="edad" placeholder="Edad" type="number" class="form-control" id="edad" formControlName="edad">
-            <small class="invalid" style="color: red;" *ngIf="formGroup.get('edad')?.errors?.['required'] && formGroup.get('edad')?.touched">Edad requerida</small>
-            <small class="invalid" style="color: red;" *ngIf="(formGroup.get('edad')?.errors?.['min'] || formGroup.get('edad')?.errors?.['max']) && formGroup.get('edad')?.touched">Edad entre 18 y 99 años</small>
+            <small class="invalid" style="color: red;" *ngIf="formGroup.get('edad')?.errors?.['required'] && formGroup.get('edad')?.touched">{{'EdadRequerida' | translate}}</small>
+            <small class="invalid" style="color: red;" *ngIf="(formGroup.get('edad')?.errors?.['min'] || formGroup.get('edad')?.errors?.['max']) && formGroup.get('edad')?.touched">{{'EdadEntre' | translate}}</small>
 
             <input name="dni" placeholder="DNI" type="number" class="form-control" id="dni" formControlName="dni">
-            <small class="invalid" style="color: red;" *ngIf="(formGroup.get('dni')?.errors?.['min'] || formGroup.get('dni')?.errors?.['max']) && formGroup.get('dni')?.touched">DNI incorrecto</small>
-            <small class="invalid" style="color: red;" *ngIf="(formGroup.get('dni')?.errors?.['minLength'] || formGroup.get('dni')?.errors?.['maxLength']) && formGroup.get('dni')?.touched">DNI incorrecto</small>
+            <small class="invalid" style="color: red;" *ngIf="(formGroup.get('dni')?.errors?.['min'] || formGroup.get('dni')?.errors?.['max']) && formGroup.get('dni')?.touched">{{'DNIIncorrecto' | translate}}</small>
+            <small class="invalid" style="color: red;" *ngIf="(formGroup.get('dni')?.errors?.['minLength'] || formGroup.get('dni')?.errors?.['maxLength']) && formGroup.get('dni')?.touched">{{'DNIIncorrecto' | translate}}</small>
 
             <div *ngIf="tipo === 'paciente'">
               <input name="obraSocial" placeholder="Obra Social" type="text" class="form-control" id="obraSocial" formControlName="obraSocial">
-              <small class="invalid" style="color: red;" *ngIf="formGroup.get('obraSocial')?.errors?.['required'] && formGroup.get('obraSocial')?.touched">Obra Social requerida</small>
+              <small class="invalid" style="color: red;" *ngIf="formGroup.get('obraSocial')?.errors?.['required'] && formGroup.get('obraSocial')?.touched">{{'ObraSocialRequerida' | translate}}</small>
             </div>
 
             <div *ngIf="tipo === 'especialista'">
-              <label>Especialidad: </label>
+              <label>{{'Especialidad' | translate}}: </label>
               <select name="especialidad" id="especialidad" formControlName="especialidad" (change)="onEspecialidadChange($event)">
-                <option value="">Seleccione su especialidad</option>
+                <option value="">{{'seleccionarSuEspecialidad' | translate}}</option>
                 <option *ngFor="let especialidad of especialidades" [value]='especialidad'>{{especialidad}}</option>
                 <option value="otro">Otro</option>
               </select>
-              <small class="invalid" style="color: red;" *ngIf="formGroup.get('especialidad')?.errors?.['required'] && formGroup.get('especialidad')?.touched">Especialidad requerida</small>
+              <small class="invalid" style="color: red;" *ngIf="formGroup.get('especialidad')?.errors?.['required'] && formGroup.get('especialidad')?.touched">{{'EspecialidadRequerida' | translate}}</small>
 
               <div *ngIf="formGroup.get('especialidad')?.value == 'otro'">
-                <label class="custom-control-label" for="nuevaEspecialidad">Otra especialidad</label>
+                <label class="custom-control-label" for="nuevaEspecialidad">{{'OtraEspecialidad' | translate}}</label>
                 <input name="nuevaEspecialidad" placeholder="Especialidad" type="text" class="form-control" id="nuevaEspecialidad" formControlName="nuevaEspecialidad" (input)="validateEspecialidad()">
-                <small class="invalid" style="color: red;" *ngIf="formGroup.get('nuevaEspecialidad')?.errors?.['especialidadExistente'] && formGroup.get('nuevaEspecialidad')?.touched">La especialidad ya existe</small>
+                <small class="invalid" style="color: red;" *ngIf="formGroup.get('nuevaEspecialidad')?.errors?.['especialidadExistente'] && formGroup.get('nuevaEspecialidad')?.touched">{{'EspecialidadExiste' | translate}}</small>
               </div>
             </div>
 
             <input name="password" placeholder="Password" type="password" class="form-control" id="password" formControlName="password">
-            <small class="invalid" style="color: red;" *ngIf="formGroup.get('password')?.errors?.['required'] && formGroup.get('password')?.touched">Password requerida</small>
-            <small class="invalid" style="color: red;" *ngIf="formGroup.get('password')?.errors?.['minlength'] && formGroup.get('password')?.touched">Password debe tener mínimo 6 caracteres</small>
+            <small class="invalid" style="color: red;" *ngIf="formGroup.get('password')?.errors?.['required'] && formGroup.get('password')?.touched">{{'PasswordRequerida' | translate}}</small>
+            <small class="invalid" style="color: red;" *ngIf="formGroup.get('password')?.errors?.['minlength'] && formGroup.get('password')?.touched">{{'PasswordCaracteres' | translate}}</small>
 
             <input type="file" class="form-control" (change)="cargarImagen1($event)" accept="image/*">
-            <small class="invalid" style="color: red;" *ngIf="formGroup.get('imagen1')?.errors?.['required'] && formGroup.get('imagen1')?.touched">Imagen requerida</small>
+            <small class="invalid" style="color: red;" *ngIf="formGroup.get('imagen1')?.errors?.['required'] && formGroup.get('imagen1')?.touched">{{'ImagenRequerida' | translate}}</small>
 
             <input *ngIf="tipo === 'paciente'" type="file" class="form-control" (change)="cargarImagen2($event)" accept="image/*">
-            <small class="invalid" style="color: red;" *ngIf="formGroup.get('imagen2')?.errors?.['required'] && formGroup.get('imagen2')?.touched">Imagen requerida</small>
+            <small class="invalid" style="color: red;" *ngIf="formGroup.get('imagen2')?.errors?.['required'] && formGroup.get('imagen2')?.touched">{{'ImagenRequerida' | translate}}</small>
             <ngx-recaptcha2 #captchaElem
                 [siteKey]="siteKey"
                 formControlName="recaptcha">
@@ -77,7 +77,7 @@
             <div class=" d-flex">
               <div class="form-check" style="flex: 0 0 5%;">
                 <input class="form-check-input" type="checkbox" id="captchaToggle" (change)="toggleCaptcha()">
-                <label class="form-check-label" for="captchaToggle">Habilitar Captcha</label>
+                <label class="form-check-label" for="captchaToggle">{{'HabilitarCaptcha' | translate}}</label>
               </div>
             </div>
             <div *ngIf="captchaHabilitado">
@@ -85,15 +85,15 @@
                 <div appCaptcha (captchaGenerated)="handleCaptcha($event)"></div>
               </div>
               <div class="form-group">
-                <label for="captchaInput">Ingrese el texto del captcha</label>
+                <label for="captchaInput">{{'IngreseTextoCaptcha' | translate}}</label>
                 <input type="text" id="captchaInput" class="form-control" formControlName="captcha" [(ngModel)]="captchaTextoIngresado" required>
                 <div *ngIf="formGroup.get('captcha')?.invalid && formGroup.get('captcha')?.touched" class="text-danger">
-                  El captcha es requerido.
+                  {{'captchaRequerido' | translate}}.
                 </div>
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary justify-content-center" [disabled]="formGroup.invalid">Registrar</button>
+            <button type="submit" class="btn btn-primary justify-content-center" [disabled]="formGroup.invalid">{{'Registrar' | translate}}</button>
           </form>
 
 

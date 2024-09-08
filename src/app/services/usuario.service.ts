@@ -171,4 +171,15 @@ export class UsuarioService {
       map(especialidades => especialidades.length > 0)
     );
   }
+
+  guardarEncuesta(encuesta: any) {
+    const encuestasRef = collection(this.firestore, 'encuestas');
+    return addDoc(encuestasRef, encuesta);
+  }
+
+  obtenerVisitas(): Observable<any[]> {
+    const visitasRef = collection(this.firestore, 'visitas');
+    return collectionData(visitasRef, { idField: 'id' });
+  }
+
 }

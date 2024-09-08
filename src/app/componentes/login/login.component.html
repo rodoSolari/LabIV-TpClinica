@@ -15,13 +15,13 @@
       <div class="row">
         <div class="colm-form">
           <div class="form-container">
-            <h2 style="text-align: center; text-shadow:  1px; color: black;">Loguearse</h2>
+            <h2 style="text-align: center; text-shadow:  1px; color: black;">{{'Loguearse' | translate}}</h2>
             <input type="text" placeholder="email" [(ngModel)]="this.email">
             <input type="password" placeholder="Password" [(ngModel)]="this.clave">
             <button class="btn-login" style="background-color: black;" (click)="login()">Login</button>
-            <button class="btn-new" (click)="fillUserData('beilubruffeutrei-5383@yopmail.com','123123')">Ingresar como usuario</button>
-            <button class="btn-new" (click)="fillUserDataEspecialista()">Ingresar como Especialista</button>
-            <button class="btn-new" (click)="fillUserDataAdmin()">Ingresar como Admin</button>
+            <button class="btn-new" (click)="fillUserData('beilubruffeutrei-5383@yopmail.com','123123')">{{'IngresarUsuario' | translate}}</button>
+            <button class="btn-new" (click)="fillUserDataEspecialista()">{{'IngresarEspecialista' | translate}}</button>
+            <button class="btn-new" (click)="fillUserDataAdmin()">{{'IngresarAdmin' | translate}}</button>
             <div [class.error-message]="mensaje !== ''">
               <p>{{this.mensaje}}</p>
             </div>
@@ -29,27 +29,27 @@
         </div>
       </div>
     </div>
-    <h5 style="text-align: center;">Botones De acceso rapido</h5>
+    <h5 style="text-align: center;">{{'BotonesAccesoRapido' | translate}}Botones De acceso rapido</h5>
     <div class="quick-access-buttons">
       <button class="btn btn-primary btn-access" (click)="fillUserData('kelurippaxeu-4746@yopmail.com', '123123')">
         <img [src]="userImages['kelurippaxeu-4746@yopmail.com']" alt="Paciente 1" class="button-img">
-        <div>Paciente 1</div>
+        <div>{{'Paciente' | translate}} 1</div>
       </button>
       <button class="btn btn-primary btn-access" (click)="fillUserData('wiyeisoittepei-4912@yopmail.com', '123123')">
         <img [src]="userImages['wiyeisoittepei-4912@yopmail.com']" alt="Paciente 2" class="button-img">
-        <div>Paciente 2</div>
+        <div>{{'Paciente' | translate}} 2</div>
       </button>
       <button class="btn btn-primary btn-access" (click)="fillUserData('youheddaujifa-1419@yopmail.com', '123123')">
         <img [src]="userImages['youheddaujifa-1419@yopmail.com']" alt="Paciente 3" class="button-img">
-        <div>Paciente 3</div>
+        <div>{{'Paciente' | translate}} 3</div>
       </button>
       <button class="btn btn-primary btn-access" (click)="fillUserData('wanneugoihoka-1312@yopmail.com', '123123')">
         <img [src]="userImages['wanneugoihoka-1312@yopmail.com']" alt="Especialista 1" class="button-img">
-        <div>Especialista 1</div>
+        <div>{{'Especialista' | translate}} 1</div>
       </button>
       <button class="btn btn-primary btn-access" (click)="fillUserData('quatreguhuce-3168@yopmail.com', '123123')">
         <img [src]="userImages['quatreguhuce-3168@yopmail.com']" alt="Especialista 2" class="button-img">
-        <div>Especialista 2</div>
+        <div>{{'Especialista' | translate}} 2</div>
       </button>
       <button class="btn btn-primary btn-access" (click)="fillUserData('adminprueba2@hotmail.com', '123123')">
         <img [src]="userImages['adminprueba2@hotmail.com']" alt="Admin" class="button-img">

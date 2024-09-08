@@ -4,20 +4,19 @@
   <div @enterLeaveAnimation>
   <div class="container">
     <div class="row">
-      <div class="col-md-12 text-center header-container">
-        <h2 class="animate-charcter">Clínica Médica</h2>
+      <div class="col-md-12 text-center schedule-container">
+        <h2 class="animate-charcter">{{'ClinicaMedica' | translate}}</h2>
       </div>
       <div class="col-md-12 text-center schedule-container">
-        <h3>Horarios de atención: Martes a Viernes: 09AM a 18PM</h3>
+        <h3>{{'HorariosAtencion' | translate}}</h3>
       </div>
     </div>
-
 
 
     <div class="row">
       <div class="col-md-12 text-center schedule-container">
         <p class="clinic-description">
-          Bienvenidos a la Clínica Médica, donde brindamos atención de calidad con un equipo profesional y comprometido con su salud.
+          {{'BienvenidosClinica' | translate}}
         </p>
       </div>
     </div>
@@ -27,24 +26,24 @@
       <div class="col-md-3 text-center">
         <div class="card service-card">
           <div class="card-body">
-            <h5 class="card-title">Consulta General</h5>
-            <p class="card-text">Atención primaria y diagnóstico general.</p>
+            <h5 class="card-title">  {{'ConsultaGeneral' | translate}}</h5>
+            <p class="card-text">  {{'ConsultaDescripcion' | translate}}</p>
           </div>
         </div>
       </div>
       <div class="col-md-3 text-center">
         <div class="card service-card">
           <div class="card-body">
-            <h5 class="card-title">Especialidades</h5>
-            <p class="card-text">Cardiología, Neurología, Pediatría y más.</p>
+            <h5 class="card-title">  {{'Especialidades' | translate}}</h5>
+            <p class="card-text">  {{'EspecialidadesDescripcion' | translate}}</p>
           </div>
         </div>
       </div>
       <div class="col-md-3 text-center">
         <div class="card service-card">
           <div class="card-body">
-            <h5 class="card-title">Laboratorio</h5>
-            <p class="card-text">Análisis clínicos y pruebas de laboratorio.</p>
+            <h5 class="card-title">  {{'Laboratorio' | translate}}</h5>
+            <p class="card-text">  {{'LaboratorioDescripcion' | translate}}</p>
           </div>
         </div>
       </div>
@@ -52,13 +51,13 @@
 
     <div class="row location-contact-container schedule-container justify-content-center">
       <div class="col-md-3 text-center" style="border: radius 10px; ">
-        <h5>Ubicación</h5>
-        <p>Calle Falsa 123, Ciudad, País</p>
+        <h5>  {{'Ubicacion' | translate}}</h5>
+        <p>Calle Falsa 123, Almagro (CABA), Argentina</p>
         <!-- Puedes usar un iframe de Google Maps aquí -->
       </div>
       <div class="col-md-3 text-center" style="border: radius 10px; ">
-        <h5>Contacto</h5>
-        <p>Teléfono: (123) 456-7890</p>
+        <h5>  {{ 'Contacto'| translate}}</h5>
+        <p>  {{ 'Telefono' | translate}} : (123) 456-7890</p>
         <p>Email: contacto@clinicamedica.com</p>
       </div>
     </div>

@@ -1,0 +1,5 @@
+<div class="chart-container">
+  <h4 class="chart-title">Cantidad de Visitas a la Clínica</h4>
+  <button *ngIf="this.descargarDisponible" (click)="exportarAExcel()" class="btn btn-success mb-3">Exportar a Excel</button>
+  <div #chart class="ct-chart mt-4"></div>
+</div>

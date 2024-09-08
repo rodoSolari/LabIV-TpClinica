@@ -8,6 +8,7 @@ import { SolicitarTurnoComponent } from './componentes/turnos/solicitar-turno/so
 import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
 import { PacientesComponent } from './componentes/pacientes/pacientes.component';
 import { EstadisticasAdminComponent } from './componentes/estadisticas-admin/estadisticas-admin.component';
+import { EncuestaAtencionComponent } from './componentes/encuesta-atencion/encuesta-atencion.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'mi-perfil', component: MiPerfilComponent },
   { path: 'pacientes', component: PacientesComponent },
   { path: 'estadisticas-admin', component: EstadisticasAdminComponent },
+  { path: 'encuesta-atencion', component: EncuestaAtencionComponent },
   { path: 'graficos', loadChildren: () => import('./graficos/graficos.module').then(m => m.GraficosModule) },
   { path: '**', redirectTo: 'home' }
 ];

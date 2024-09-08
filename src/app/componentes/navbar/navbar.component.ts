@@ -3,6 +3,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { AuthService } from 'src/app/services/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar',
@@ -19,8 +20,12 @@ export class NavbarComponent {
   constructor(
     public service: AuthService,
     private router: Router,
-    public firestore: Firestore
-  ) {}
+    public firestore: Firestore,
+    private translate: TranslateService
+  ) {
+    translate.setDefaultLang('es'); // Idioma predeterminado
+
+  }
 
   ngOnInit(): void {
     this.service.userLogged().subscribe(async usuario => {
@@ -39,21 +44,12 @@ export class NavbarComponent {
                   this.imagenPerfil = userData.imagen1; // Usamos imagen1 como la imagen de perfil
             }else{
               console.warn('El usuario no cumple con los requisitos de inicio de sesión.');
-              /*await this.logout();
-              this.usuariologeado = null;
-              this.router.navigate(['home']);*/
+
             }
-         // } else {
-         //   console.error('No se encontraron datos del usuario.');
-            /*await this.logout();
-            this.usuariologeado = null;
-            this.router.navigate(['home']);*/
-         // }
+
         } catch (error) {
           console.error('Error obteniendo los datos del usuario en navbar:', error);
-          /*await this.service.logout();
-          this.usuariologeado = null;*/
-          //this.router.navigate(['home']);
+
         }
       } else {
         this.usuariologeado = null;
@@ -66,5 +62,9 @@ export class NavbarComponent {
     console.log("cerrando sesion..");
     await this.service.logout();
     this.router.navigate(['home']);
+  }
+
+  changeLanguage(lang: string) {
+    this.translate.use(lang); // Cambia el idioma
   }
 }
