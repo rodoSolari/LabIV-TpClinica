@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore,collection, collectionData, deleteDoc, doc  } from '@angular/fire/firestore';
 import { Observable, map } from 'rxjs';
-import { addDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, getDocs, query, setDoc, Timestamp, updateDoc, where } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 @Injectable({
@@ -182,4 +182,42 @@ export class UsuarioService {
     return collectionData(visitasRef, { idField: 'id' });
   }
 
+
+  async agregarEncuesta(encuestaData: any): Promise<void> {
+    try {
+      await addDoc(collection(this.firestore, 'encuestas'), {
+        ...encuestaData,
+        fecha: Timestamp.fromDate(new Date()) // Añadimos la fecha actual
+      });
+      console.log('Encuesta guardada con éxito');
+    } catch (error) {
+      console.error('Error al guardar la encuesta: ', error);
+    }
+  }
+
+  // Función para obtener encuestas de los últimos 30 días
+  async obtenerEncuestasUltimos30Dias(): Promise<any[]> {
+    const treintaDiasAtras = new Date();
+    treintaDiasAtras.setDate(treintaDiasAtras.getDate() - 30);
+
+    const q = query(collection(this.firestore, 'encuestas'),where('fecha', '>=', Timestamp.fromDate(treintaDiasAtras)));
+    try {
+      const querySnapshot = await getDocs(q);
+      const encuestas = querySnapshot.docs.map(doc => doc.data());
+      return encuestas;
+    } catch (error) {
+      console.error('Error al obtener las encuestas: ', error);
+      return [];
+    }
+  }
+
+    // Obtener todos los usuarios que sean "especialistas"
+    async obtenerMedicosPorEspecialidad(): Promise<any> {
+      const coleccionUsuarios = collection(this.firestore, 'Usuarios');
+      const q = query(coleccionUsuarios, where('tipo', '==', 'especialista'));
+      const snapshot = await getDocs(q);
+
+      const usuarios = snapshot.docs.map(doc => doc.data());
+      return usuarios; // Retorna todos los médicos (usuarios con tipo "especialista")
+    }
 }

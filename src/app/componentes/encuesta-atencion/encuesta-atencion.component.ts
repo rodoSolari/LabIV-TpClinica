@@ -1,6 +1,9 @@
+import { query } from '@angular/animations';
 import { Component } from '@angular/core';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgxStarRatingModule } from 'ngx-star-rating';
 
 @Component({
   selector: 'app-encuesta-atencion',
@@ -8,41 +11,41 @@ import Swal from 'sweetalert2';
   styleUrls: ['./encuesta-atencion.component.scss']
 })
 export class EncuestaAtencionComponent {
-  encuesta = {
-    comentarios: '',
-    calificacion: 0,
-    recomendacion: '',
-    mejoras: {
-      atencion: false,
-      servicio: false,
-      instalaciones: false,
-    },
-    satisfaccion: 5
-  };
+  encuestaForm!: FormGroup;
 
-  stars = [1, 2, 3, 4, 5];
+  constructor(private fb: FormBuilder, private usuariosService: UsuarioService) {}
 
-  constructor(private usuarioService: UsuarioService) {}
+  ngOnInit(): void {
+    this.encuestaForm = this.fb.group({
+      comentario: [''],
+      calificacion: [0],
+      satisfaccion: this.fb.group({
+        respuesta: ['']
+      }),
+      puntualidad: [false],
+      empatia: [false],
+      tiempo_espera: [0]
+    });
 
-  submitEncuesta() {
-    console.log('Encuesta enviada:', this.encuesta);
+    this.cargarEncuestasUltimos30Dias();
+  }
 
-    this.usuarioService.guardarEncuesta(this.encuesta)
-      .then(() => {
-        Swal.fire({
-          title: '¡Encuesta enviada!',
-          text: 'Gracias por completar la encuesta.',
-          icon: 'success',
-          confirmButtonText: 'Aceptar'
-        });
-      })
-      .catch(error => {
-        Swal.fire({
-          title: 'Error',
-          text: 'Hubo un problema al enviar la encuesta. Por favor, inténtalo de nuevo.',
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        });
-      });
+  async onSubmit(): Promise<void> {
+    if (this.encuestaForm.valid) {
+      try {
+        await this.usuariosService.agregarEncuesta(this.encuestaForm.value);
+      } catch (error) {
+        console.error('Error al enviar la encuesta:', error);
+      }
+    }
+  }
+
+  async cargarEncuestasUltimos30Dias(): Promise<void> {
+    try {
+      const encuestas = await this.usuariosService.obtenerEncuestasUltimos30Dias();
+      console.log('Encuestas de los últimos 30 días:', encuestas);
+    } catch (error) {
+      console.error('Error al cargar encuestas:', error);
+    }
   }
 }

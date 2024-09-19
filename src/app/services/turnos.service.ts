@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { DocumentReference, addDoc, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import * as moment from 'moment';
 import { collectionData } from 'rxfire/firestore';
 import { Observable, map } from 'rxjs';
 
@@ -156,4 +157,42 @@ export class TurnosService {
 
     return cantidadPorDia;
   }
+
+  async obtenerTurnosUltimos30Dias(): Promise<any> {
+    const coleccionTurnos = collection(this.firestore, 'Turnos');
+    const treintaDiasAtras = moment().subtract(200, 'days').format('YYYY-MM-DD');
+
+    const q = query(coleccionTurnos, where('dia', '>=', treintaDiasAtras));
+    const snapshot = await getDocs(q);
+
+    const turnos = snapshot.docs.map(doc => doc.data());
+    return turnos;
+  }
+
+  async obtenerCantidadTurnosPorEspecialidadAgrupado(): Promise<any> {
+    const coleccionTurnos = collection(this.firestore, 'Turnos');
+    const snapshot = await getDocs(coleccionTurnos);
+    const turnos = snapshot.docs.map(doc => doc.data());
+
+    const especialidadesPorPaciente: { [especialidad: string]: Set<string> } = {};
+
+    turnos.forEach(turno => {
+      const especialidad = turno['especialidad'];
+      const pacienteEmail = turno['pacienteEmail'];
+
+      if (!especialidadesPorPaciente[especialidad]) {
+        especialidadesPorPaciente[especialidad] = new Set();
+      }
+
+      especialidadesPorPaciente[especialidad].add(pacienteEmail);
+    });
+
+    const cantidadPorEspecialidad: { [key: string]: number } = {};
+    Object.keys(especialidadesPorPaciente).forEach(especialidad => {
+      cantidadPorEspecialidad[especialidad] = especialidadesPorPaciente[especialidad].size;
+    });
+
+    return cantidadPorEspecialidad;
+  }
+
 }

@@ -32,8 +32,7 @@ export class GraficoDiasComponent {
 
     this.legendLabels = labels;
 
-    console.log('Labels (dias):', labels);
-    console.log('Series (dias):', series);
+
 
     if (labels.length > 0 && series.length > 0) {
       const chartData = {

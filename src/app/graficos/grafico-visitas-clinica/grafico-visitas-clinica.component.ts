@@ -1,97 +1,114 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import * as Chartist from 'chartist';
-import { UsuarioService } from 'src/app/services/usuario.service';  // Suponiendo que tienes un servicio para obtener visitas
-import * as XLSX from 'xlsx';
+import { Component, OnInit } from '@angular/core';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
+import * as moment from 'moment';
+import { TurnosService } from 'src/app/services/turnos.service';
+
 
 @Component({
   selector: 'app-grafico-visitas-clinica',
   templateUrl: './grafico-visitas-clinica.component.html',
   styleUrls: ['./grafico-visitas-clinica.component.scss']
 })
-export class GraficoVisitasClinicaComponent {
-  @ViewChild('chart') chartElement!: ElementRef;
-  visitas: any[] = [];
-  descargarDisponible: boolean = false;
+export class GraficoVisitasClinicaComponent  implements OnInit {
+  public lineChartOptions: ChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display:false
+        /*position: 'top',
+        labels: {
+          color: 'black'
+        }*/
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: 'black',
+          font: {
+            size: 18,
+            weight: 'bold'
+          },
+          maxTicksLimit: 5,
+          autoSkip: true,
+          maxRotation: 0,
+          minRotation: 0
+        },
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)'
+        }
+      },
+      y: {
+        ticks: {
+          color: 'black',
+          stepSize: 1,
+          font: {
+            size: 16
+          },
+        },
+        title: {
+          display: true,
+          text: 'Cantidad de visitas',
+          color: 'black',
+          font: {
+            size: 16,
+            weight: 'bold'
+          }
+        },
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)'
+        }
+      }
+    },
+    elements: {
+      line: {
+        borderWidth: 2
+      }
+    }
+  };
 
-  constructor(private visitasService: UsuarioService) { }
+
+
+  public lineChartType: ChartType = 'bar';
+  public lineChartLabels: string[] = [];
+  public lineChartLegend = true;
+  public lineChartData: ChartDataset<'line'>[] = [
+    { data: [], label: 'Cantidad de visitas a la clinica' }
+  ];
+
+  constructor(private turnosService: TurnosService) {}
 
   ngOnInit(): void {
-    this.visitasService.obtenerVisitas().subscribe(visitas => {
-      this.visitas = visitas;
-      this.drawChart(this.visitas);
-    });
+    this.cargarVisitas();
   }
 
-  drawChart(visitas: any[]): void {
-    const visitasPorDia = visitas.reduce((acc, visita) => {
-      const dia = new Date(visita.fecha).toLocaleDateString();
-      if (!acc[dia]) {
-        acc[dia] = 0;
-      }
-      acc[dia]++;
-      return acc;
-    }, {} as { [key: string]: number });
+  async cargarVisitas() {
+    const turnos = await this.turnosService.obtenerTurnosUltimos30Dias();
+    const visitasPorDia = this.filtrarTurnosRealizadosYAgrupar(turnos);
+    this.actualizarGrafico(visitasPorDia);
+  }
 
-    const labels = Object.keys(visitasPorDia);
-    const series: number[][] = [Object.values(visitasPorDia)];
+  // Filtrar turnos con estado "realizado" y agruparlos por día
+  filtrarTurnosRealizadosYAgrupar(turnos: any[]): { [key: string]: number } {
+    const visitasPorDia: { [key: string]: number } = {};
 
-    const chartData = {
-      labels: labels,
-      series: series
-    };
-
-    const options = {
-      axisX: {
-        showGrid: true
-      },
-      axisY: {
-        onlyInteger: true
-      },
-      height: '500px',
-      width: '1000px',
-      chartPadding: {
-        right: 40,
-        left: 20
-      },
-      seriesBarDistance: 20
-    };
-
-    const chart = new Chartist.BarChart(this.chartElement.nativeElement, chartData, options);
-
-    chart.on('draw', function(data) {
-      if (data.type === 'bar') {
-        data.element.attr({
-          style: 'stroke-width: 50px; stroke: blue;'
-        });
+    turnos.forEach(turno => {
+      if (turno['estado'] === 'realizado') {
+        const dia = moment(turno['dia'], 'YYYY-MM-DD').format('YYYY-MM-DD');
+        if (visitasPorDia[dia]) {
+          visitasPorDia[dia]++;
+        } else {
+          visitasPorDia[dia] = 1;
+        }
       }
     });
 
-    chart.on('created', (data: any) => {
-      const yAxisLabel = new Chartist.Svg('text');
-      yAxisLabel.text('Cantidad de Visitas');
-      yAxisLabel.addClass('ct-label');
-      yAxisLabel.attr({
-        x: data.chartRect.x1 - 30,
-        y: data.chartRect.y1 - (data.chartRect.height() / 2),
-        'text-anchor': 'middle',
-        'font-size': '14px',
-        'font-weight': 'bold',
-        'fill': '#000',
-        'transform': `rotate(-90, ${data.chartRect.x1 - 30}, ${data.chartRect.y1 - (data.chartRect.height() / 2)})`
-      });
-
-      data.svg.append(yAxisLabel);
-    });
+    return visitasPorDia;
   }
 
-  exportarAExcel(): void {
-    const dataToExport = this.visitas.map(visita => ({
-      Fecha: new Date(visita.fecha).toLocaleDateString(),
-      Visitas: visita.cantidad
-    }));
-
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
-    const workbook: XLSX.WorkBook = { Sheets: { 'Visitas Clinica': worksheet }, SheetNames: ['Visitas Clinica'] };
-    XLSX.writeFile(workbook, 'Visitas_Clinica.xlsx');
+  actualizarGrafico(visitasPorDia: { [key: string]: number }) {
+    this.lineChartLabels = Object.keys(visitasPorDia);
+    this.lineChartData[0].data = Object.values(visitasPorDia);
   }
+
 }

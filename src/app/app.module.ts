@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -35,6 +35,8 @@ import { TurnosModule } from './componentes/turnos/turnos.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { EncuestaAtencionComponent } from './componentes/encuesta-atencion/encuesta-atencion.component';
+import { NgxStarRatingModule } from 'ngx-star-rating';
+import { NgChartsModule } from 'ng2-charts';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -72,9 +74,11 @@ const firebaseConfig = AngularFireModule.initializeApp(environment.firebaseConfi
     ChartistModule,
     NgxCaptchaModule,
     firebaseConfig,
+    NgChartsModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
+    NgxStarRatingModule,
     GraficosModule,
     TurnosModule,
     TranslateModule.forRoot({
@@ -85,6 +89,7 @@ const firebaseConfig = AngularFireModule.initializeApp(environment.firebaseConfi
       }
     })
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),

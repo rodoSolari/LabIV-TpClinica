@@ -9,6 +9,11 @@ import { GraficosRoutingModule } from './graficos-routing.module';
 import { GraficosComponent } from './graficos/graficos.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { GraficoVisitasClinicaComponent } from './grafico-visitas-clinica/grafico-visitas-clinica.component';
+import { NgChartsModule } from 'ng2-charts';
+import { GraficoPacientesPorEspecialidadComponent } from './grafico-pacientes-por-especialidad/grafico-pacientes-por-especialidad.component';
+import { GraficoMedicosEspecialidadComponent } from './grafico-medicos-especialidad/grafico-medicos-especialidad.component';
+import { GraficoEncuestaComponent } from './grafico-encuesta/grafico-encuesta.component';
+import { GraficoTurnosPacienteComponent } from './grafico-turnos-paciente/grafico-turnos-paciente.component';
 
 
 
@@ -19,13 +24,18 @@ import { GraficoVisitasClinicaComponent } from './grafico-visitas-clinica/grafic
     GraficoTurnosPorMedicoComponent,
     GraficoTurnosFinalizadosPorMedicoComponent,
     GraficosComponent,
-    GraficoVisitasClinicaComponent
+    GraficoVisitasClinicaComponent,
+    GraficoPacientesPorEspecialidadComponent,
+    GraficoMedicosEspecialidadComponent,
+    GraficoEncuestaComponent,
+    GraficoTurnosPacienteComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     GraficosRoutingModule,
-    TranslateModule
+    TranslateModule,
+    NgChartsModule
   ],
   exports: [
     GraficoEspecialidadesComponent,
