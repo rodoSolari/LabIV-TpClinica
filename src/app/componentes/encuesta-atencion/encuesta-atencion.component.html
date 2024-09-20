@@ -3,27 +3,27 @@
     <form [formGroup]="encuestaForm" (ngSubmit)="onSubmit()">
       <!-- Cuadro de texto para comentarios -->
       <div class="form-group">
-        <label for="comentario">Comentarios sobre la atención:</label>
+        <label for="comentario">Comentarios sobre la atención:   * (obligatorio)</label>
         <textarea class="form-control" formControlName="comentario" id="comentario" placeholder="Escribe un comentario"></textarea>
       </div>
 
       <!-- Estrellas para calificar -->
       <div class="form-group">
-        <label for="calificacion">Calificación:</label>
+        <label for="calificacion">Calificación:  * (obligatorio)</label>
         <ngx-star-rating
-        [value]="encuestaForm.get('calificacion')?.value"
-        [starType]="'svg'"
-        [readOnly]="false"
-        [starSize]="30"
-        [activeColor]="'gold'"
-        [borderColor]="'grey'"
-        formControlName="calificacion">
-  </ngx-star-rating>
+          [value]="encuestaForm.get('calificacion')?.value"
+          [starType]="'svg'"
+          [readOnly]="false"
+          [starSize]="30"
+          [activeColor]="'gold'"
+          [borderColor]="'grey'"
+          formControlName="calificacion">
+        </ngx-star-rating>
       </div>
 
       <!-- Radio buttons -->
       <div class="form-group">
-        <label>¿Cómo calificarías la atención recibida?</label>
+        <label>¿Cómo calificarías la atención recibida?  * (obligatorio)</label>
         <div formGroupName="satisfaccion">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" formControlName="respuesta" value="muy_bueno">

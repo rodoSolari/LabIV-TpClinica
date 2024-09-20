@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collection,query, Firestore,collectionData, addDoc, QueryDocumentSnapshot, orderBy, startAfter, limit, getDocs } from '@angular/fire/firestore';
+import { collection,query, Firestore,collectionData, addDoc, QueryDocumentSnapshot, orderBy, startAfter, limit, getDocs, where } from '@angular/fire/firestore';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 
@@ -44,5 +44,14 @@ export class LogService {
 
     const resultado = await getDocs(consulta);
     return resultado.docs;
+  }
+
+  async obtenerLogsUltimos30Dias(): Promise<any[]> {
+    const coleccionLogs = collection(this.firestore, 'logs');
+    const treintaDiasAtras = moment().subtract(30, 'days').format('YYYY-MM-DD HH:mm:ss');
+
+    const consulta = query(coleccionLogs, where('fechaHora', '>=', treintaDiasAtras), orderBy('fechaHora', 'asc'));
+    const resultado = await getDocs(consulta);
+    return resultado.docs.map(doc => doc.data());
   }
 }

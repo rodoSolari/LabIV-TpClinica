@@ -2,7 +2,7 @@ import { query } from '@angular/animations';
 import { Component } from '@angular/core';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxStarRatingModule } from 'ngx-star-rating';
 
 @Component({
@@ -17,10 +17,10 @@ export class EncuestaAtencionComponent {
 
   ngOnInit(): void {
     this.encuestaForm = this.fb.group({
-      comentario: [''],
-      calificacion: [0],
+      comentario: ['', Validators.required],
+      calificacion: [0, Validators.required],
       satisfaccion: this.fb.group({
-        respuesta: ['']
+        respuesta: ['',Validators.required]
       }),
       puntualidad: [false],
       empatia: [false],
@@ -34,10 +34,21 @@ export class EncuestaAtencionComponent {
     if (this.encuestaForm.valid) {
       try {
         await this.usuariosService.agregarEncuesta(this.encuestaForm.value);
+        Swal.fire({
+          icon: 'success',
+          title: 'Encuesta enviada',
+          text: 'La encuesta se ha enviado exitosamente.'
+        });
       } catch (error) {
         console.error('Error al enviar la encuesta:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al Enviar encuesta. Por favor, inténtalo de nuevo.'
+        });
       }
     }
+    this.encuestaForm.reset();
   }
 
   async cargarEncuestasUltimos30Dias(): Promise<void> {

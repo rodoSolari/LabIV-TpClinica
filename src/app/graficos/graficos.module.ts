@@ -14,6 +14,7 @@ import { GraficoPacientesPorEspecialidadComponent } from './grafico-pacientes-po
 import { GraficoMedicosEspecialidadComponent } from './grafico-medicos-especialidad/grafico-medicos-especialidad.component';
 import { GraficoEncuestaComponent } from './grafico-encuesta/grafico-encuesta.component';
 import { GraficoTurnosPacienteComponent } from './grafico-turnos-paciente/grafico-turnos-paciente.component';
+import { GraficoVisitasLogsComponent } from './grafico-visitas-logs/grafico-visitas-logs.component';
 
 
 
@@ -28,7 +29,8 @@ import { GraficoTurnosPacienteComponent } from './grafico-turnos-paciente/grafic
     GraficoPacientesPorEspecialidadComponent,
     GraficoMedicosEspecialidadComponent,
     GraficoEncuestaComponent,
-    GraficoTurnosPacienteComponent
+    GraficoTurnosPacienteComponent,
+    GraficoVisitasLogsComponent
   ],
   imports: [
     CommonModule,
