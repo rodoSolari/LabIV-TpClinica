@@ -207,5 +207,6 @@
   "descargarTurnos": "Download Appointments",
   "administradores": "Administrators",
   "aprobado": "Approved",
-  "habilitar": "Enable"
+  "habilitar": "Enable",
+  "seleccionarMaximoDos":"Select a maximum of two specialties"
 }

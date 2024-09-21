@@ -207,5 +207,6 @@
   "descargarTurnos": "Baixar Compromissos",
   "administradores": "Administradores",
   "aprobado": "Aprovado",
-  "habilitar": "Habilitar"
+  "habilitar": "Habilitar",
+   "seleccionarMaximoDos":"Selecione no máximo duas especialidades"
 }

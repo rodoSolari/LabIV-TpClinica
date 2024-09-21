@@ -20,142 +20,85 @@ main {
   margin: 0 auto;
 }
 
+.container-botones {
+  margin-top: 70px;
+  text-align: center;
+  margin-bottom: 30px;
+
+  .btn {
+    margin: 10px;
+  }
+}
+
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+input, select {
+  margin-bottom: 15px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.invalid {
+  font-size: 12px;
+  color: red;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.captcha-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+label{
+  color: black;
+}
 .row {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  max-width: 1000px;
-  height: 900px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
 
-.colm-logo {
-  flex: 0 0 50%;
-  text-align: left;
+.col-md-6 {
+  flex: 0 0 48%;
+  max-width: 48%;
 }
 
-.colm-form {
-  flex: 0 0 40%;
-  text-align: center;
-}
-
-.colm-logo img {
-  max-width: 400px;
-}
-
-.colm-logo h2 {
-  font: 26px;
-  font-weight: 400;
-  padding: 0 30px;
-  line-height: 32px;
-}
-
-.colm-form .form-container {
-  background-color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
-  padding: 20px;
-  max-width: 400px;
-}
-
-.colm-form .form-container input, .colm-form .form-container .btn-login {
+input {
   width: 100%;
-  margin: 5px 0;
-  height: 45px;
-  vertical-align: middle;
-  font-size: 16px;
 }
-
-.colm-form .form-container input {
-  border: 1px solid #dddfe2;
-  color: #1d2129;
-  padding: 0 8px;
-  outline: none;
-}
-
-.colm-form .form-container input:focus {
-  border-color: #1877f2;
-  box-shadow: 0 0 0 2px #e7f3ff;
-}
-
-.colm-form .form-container .btn-login {
-  background-color: #1877f2;
-  border: none;
-  border-radius: 6px;
-  font-size: 20px;
-  padding: 0 16px;
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.colm-form .form-container a {
-  display: block;
-  color: #1877f2;
-  font-size: 14px;
-  text-decoration: none;
-  padding: 10px 0 20px;
-  border-bottom: 1px solid #dadde1;
-}
-
-.colm-form .form-container a:hover {
-  text-decoration: underline;
-}
-
-.colm-form .form-container .btn-new {
-  background-color: #42b72a;
-  border: none;
-  border-radius: 6px;
-  font-size: 17px;
-  line-height: 48px;
-  padding: 0 16px;
-  color: #ffffff;
-  font-weight: 700;
-  margin-top: 20px;
-}
-
-.colm-form p {
-  font-size: 14px;
-}
-
-.colm-form p a {
-  text-decoration: none;
-  color: #1c1e21;
-  font-weight: 600;
-}
-
-.colm-form p a:hover {
-  text-decoration: underline;
-}
-
-.btn {
-  font-size: 1.5em;
-  padding: 30px 30px;
-  display: flex;
-  align-items: center;
-}
-
-.btn img {
-  margin-right: 20px;
-}
-
-.botones button {
-  flex: 1;
-  margin: 10px;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100vh;
-}
-
 .spinner {
   border: 16px solid #f3f3f3;
   border-top: 16px solid #3498db;
@@ -166,51 +109,55 @@ main {
   margin: auto;
 }
 
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-.botones {
+.form-check {
   display: flex;
-  gap: 10px;
   align-items: center;
-  height: 300px;
-  max-width: 30%;
 }
 
-.botones button {
-  flex: 1;
-  margin-top: 70px;
+.form-check-input {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  margin-top: 5px;
 }
 
-.container-botones {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+.form-check-label {
+  font-weight: bold;
+  margin: 0;
 }
 
 .captcha-container {
   font-weight: bold;
   font-size: 25px;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-check-input {
-  width: 10px;
-  height: 10px;
-}
-
-.captcha-container {
+  color: black;
   margin-left: 10px;
 }
 
-.form-check-label{
-  font-weight: bold;
+
+.custom-checkbox {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid #000;
+  border-radius: 0.25rem;
 }
+
+
+.custom-checkbox:checked {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.custom-checkbox:checked::before {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
 
 .container-botones {
 	-webkit-animation: scale-up-center 0.8s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
@@ -240,16 +187,3 @@ main {
 }
 
 
-.btn-small {
-
-  padding:  10px;
-  font-size: 16px;
-  display: flex;
-  justify-content: center;
-}
-
-
-.center-button {
-  display: flex;
-  justify-content: center;
-}
