@@ -115,9 +115,18 @@ export class SolicitarTurnoComponent {
     if (disponibilidad) {
       let horaInicio = moment(disponibilidad.horarioInicio, 'HH:mm');
       const horaFin = moment(disponibilidad.horarioFin, 'HH:mm');
-
+/*
       while (horaInicio.isBefore(horaFin) || horaInicio.isSame(horaFin)) {
         horarios.push(horaInicio.format('HH:mm'));
+        horaInicio = horaInicio.clone().add(30, 'minutes');*/
+        const esHoy = moment(dia).isSame(moment(), 'day');
+        const horaActual = esHoy ? moment() : null;
+
+      while (horaInicio.isBefore(horaFin) || horaInicio.isSame(horaFin)) {
+
+        if (!esHoy || (horaActual && horaInicio.isAfter(horaActual))) {
+         horarios.push(horaInicio.format('HH:mm'));
+        }
         horaInicio = horaInicio.clone().add(30, 'minutes');
       }
     }

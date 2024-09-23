@@ -15,22 +15,17 @@ export class GraficoVisitasClinicaComponent  implements OnInit {
     plugins: {
       legend: {
         display:false
-        /*position: 'top',
-        labels: {
-          color: 'black'
-        }*/
       }
     },
     scales: {
       x: {
         ticks: {
+          autoSkip: false, // Para mostrar todas las etiquetas
+          maxTicksLimit: 12,
           color: 'black',
           font: {
-            size: 18,
-            weight: 'bold'
+            size: 16
           },
-          maxTicksLimit: 5,
-          autoSkip: true,
           maxRotation: 0,
           minRotation: 0
         },
@@ -43,8 +38,8 @@ export class GraficoVisitasClinicaComponent  implements OnInit {
           color: 'black',
           stepSize: 1,
           font: {
-            size: 16
-          },
+            size: 14
+          }
         },
         title: {
           display: true,
@@ -59,12 +54,9 @@ export class GraficoVisitasClinicaComponent  implements OnInit {
           color: 'rgba(0, 0, 0, 0.1)'
         }
       }
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      }
     }
+
+
   };
 
 
