@@ -228,5 +228,18 @@
   "BuscarTurnosPlaceholder": "Buscar turnos...",
   "BuscarPacientesPlaceholder": "Buscar pacientes...",
   "BuscarMedicosPlaceholder": "Buscar médicos...",
-  "Otro": "Otro"
+  "Otro": "Otro",
+  "ComentariosAtencion": "Comentarios sobre la atención * (obligatorio)",
+  "EscribeComentario": "Escribe un comentario",
+  "Calificacion": "Calificación * (obligatorio)",
+  "CalificariasAtencion": "¿Cómo calificarías la atención recibida? * (obligatorio)",
+  "MuyBueno": "Muy bueno",
+  "Bueno": "Bueno",
+  "Regular": "Regular",
+  "Malo": "Malo",
+  "AspectosAtencion": "¿Qué aspectos destacarías de la atención?",
+  "Puntualidad": "Puntualidad",
+  "Empatia": "Empatía",
+  "TiempoEspera": "Tiempo de espera (en minutos)",
+  "EnviarEncuesta": "Enviar Encuesta"
 }

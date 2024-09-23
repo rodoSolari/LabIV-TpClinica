@@ -228,5 +228,18 @@
   "BuscarTurnosPlaceholder": "Search appointments...",
   "BuscarPacientesPlaceholder": "Search patients...",
   "BuscarMedicosPlaceholder": "Search doctors...",
-  "Otro": "Other"
+  "Otro": "Other",
+  "ComentariosAtencion": "Comments about the service * (required)",
+  "EscribeComentario": "Write a comment",
+  "Calificacion": "Rating * (required)",
+  "CalificariasAtencion": "How would you rate the service received? * (required)",
+  "MuyBueno": "Very good",
+  "Bueno": "Good",
+  "Regular": "Fair",
+  "Malo": "Poor",
+  "AspectosAtencion": "What aspects would you highlight about the service?",
+  "Puntualidad": "Punctuality",
+  "Empatia": "Empathy",
+  "TiempoEspera": "Waiting time (in minutes)",
+  "EnviarEncuesta": "Submit Survey"
 }

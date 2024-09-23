@@ -3,13 +3,13 @@
     <form [formGroup]="encuestaForm" (ngSubmit)="onSubmit()">
       <!-- Cuadro de texto para comentarios -->
       <div class="form-group">
-        <label for="comentario">Comentarios sobre la atención:   * (obligatorio)</label>
-        <textarea class="form-control" formControlName="comentario" id="comentario" placeholder="Escribe un comentario"></textarea>
+        <label for="comentario">{{ 'ComentariosAtencion' | translate }}</label>
+        <textarea class="form-control" formControlName="comentario" id="comentario" [placeholder]="'EscribeComentario' | translate"></textarea>
       </div>
 
       <!-- Estrellas para calificar -->
       <div class="form-group">
-        <label for="calificacion">Calificación:  * (obligatorio)</label>
+        <label for="calificacion">{{ 'Calificacion' | translate }}</label>
         <ngx-star-rating
           [value]="encuestaForm.get('calificacion')?.value"
           [starType]="'svg'"
@@ -23,50 +23,50 @@
 
       <!-- Radio buttons -->
       <div class="form-group">
-        <label>¿Cómo calificarías la atención recibida?  * (obligatorio)</label>
+        <label>{{ 'CalificariasAtencion' | translate }}</label>
         <div formGroupName="satisfaccion">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" formControlName="respuesta" value="muy_bueno">
-            <label class="form-check-label">Muy bueno</label>
+            <label class="form-check-label">{{ 'MuyBueno' | translate }}</label>
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" formControlName="respuesta" value="bueno">
-            <label class="form-check-label">Bueno</label>
+            <label class="form-check-label">{{ 'Bueno' | translate }}</label>
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" formControlName="respuesta" value="regular">
-            <label class="form-check-label">Regular</label>
+            <label class="form-check-label">{{ 'Regular' | translate }}</label>
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" formControlName="respuesta" value="malo">
-            <label class="form-check-label">Malo</label>
+            <label class="form-check-label">{{ 'Malo' | translate }}</label>
           </div>
         </div>
       </div>
 
       <!-- Checkboxes -->
       <div class="form-group">
-        <label>¿Qué aspectos destacarías de la atención?</label>
+        <label>{{ 'AspectosAtencion' | translate }}</label>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" formControlName="puntualidad">
-          <label class="form-check-label">Puntualidad</label>
+          <label class="form-check-label">{{ 'Puntualidad' | translate }}</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" formControlName="empatia">
-          <label class="form-check-label">Empatía</label>
+          <label class="form-check-label">{{ 'Empatia' | translate }}</label>
         </div>
       </div>
 
       <!-- Control de rango -->
       <div class="form-group">
-        <label for="tiempo_espera">Tiempo de espera (en minutos):</label>
+        <label for="tiempo_espera">{{ 'TiempoEspera' | translate }}:</label>
         <input class="form-control-range" type="range" formControlName="tiempo_espera" id="tiempo_espera" min="0" max="60">
         <span>{{ encuestaForm.get('tiempo_espera')?.value }} min</span>
       </div>
 
       <!-- Botón para enviar la encuesta -->
       <div class="form-group">
-        <button type="submit" class="btn btn-primary" [disabled]="encuestaForm.invalid">Enviar Encuesta</button>
+        <button type="submit" class="btn btn-primary" [disabled]="encuestaForm.invalid">{{ 'EnviarEncuesta' | translate }}</button>
       </div>
     </form>
   </div>

@@ -228,6 +228,18 @@
   "BuscarTurnosPlaceholder": "Procurar consultas...",
   "BuscarPacientesPlaceholder": "Procurar pacientes...",
   "BuscarMedicosPlaceholder": "Procurar médicos...",
-  "Otro": "Outro"
-
+  "Otro": "Outro",
+  "ComentariosAtencion": "Comentários sobre o atendimento * (obrigatório)",
+  "EscribeComentario": "Escreva um comentário",
+  "Calificacion": "Classificação * (obrigatório)",
+  "CalificariasAtencion": "Como você avaliaria o atendimento recebido? * (obrigatório)",
+  "MuyBueno": "Muito bom",
+  "Bueno": "Bom",
+  "Regular": "Regular",
+  "Malo": "Ruim",
+  "AspectosAtencion": "Que aspectos você destacaria no atendimento?",
+  "Puntualidad": "Pontualidade",
+  "Empatia": "Empatia",
+  "TiempoEspera": "Tempo de espera (em minutos)",
+  "EnviarEncuesta": "Enviar Pesquisa"
 }
