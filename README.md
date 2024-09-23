@@ -42,3 +42,8 @@ Después de iniciar sesión como paciente, selecciona "Mis Turnos como paciente"
 ![Mis Turnos](./src/assets/FotoReadme7.jpg)
 Puedes revisar en tu perfil tus datos e imagenes de perfil para modificarlos, también podrás ver tu historia clínica y/o descargarla en formato PDF.
 
+### 7. Encuesta de atencion 
+![Encuesta](./src/assets/FotoReadme8.jpg)
+Puedes Ingresar a "Encuesta de atencion" el cual permite a los pacientes evaluar la calidad de atención recibida por parte de los profesionales de la clínica.
+Estos resultados son utilizados para generar informes sobre la calidad de atención de los profesionales de la clínica y asi permitir la mejora continua de la calidad del servicio brindado por los profesionales de la clínica.
+

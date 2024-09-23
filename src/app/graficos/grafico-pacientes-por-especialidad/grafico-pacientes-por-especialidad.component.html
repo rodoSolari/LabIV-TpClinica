@@ -1,5 +1,5 @@
 <div id="grafico-pacientes-especialidad" class="grafico-container">
-  <h3>Cantidad de pacientes por especialidad</h3>
+  <h3>{{ 'CantidadPacientesEspecialidad' | translate }}</h3>
   <div class="row">
     <div class="col">
       <canvas baseChart
@@ -14,6 +14,6 @@
 
 <div class="row mt-3" style="margin-bottom: 80px;">
   <div class="col text-center">
-    <button class="btn btn-dark" (click)="descargarPDF()">Descargar PDF de pacientes por especialidad</button>
+    <button class="btn btn-dark" (click)="descargarPDF()">{{ 'DescargarPDFPacientesEspecialidad' | translate }}</button>
   </div>
 </div>

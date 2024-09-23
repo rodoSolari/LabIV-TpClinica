@@ -2,7 +2,7 @@
   <div class="container" style="padding-top: 60px;">
     <h2>{{'MisTurnos' | translate}}</h2>
     <div>
-      <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar..." class="form-control mb-3" (input)="aplicarFiltros()" />
+      <input type="text" [(ngModel)]="searchTerm" [placeholder]="'BuscarTurnosPlaceholder' | translate" class="form-control mb-3" (input)="aplicarFiltros()" />
       <table class="table table-striped table-dark table-bordered">
         <thead class="thead-dark">
           <tr>
@@ -194,10 +194,10 @@
           <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
         </div>
         <div class="modal-body">
-          <p><strong>Altura:</strong> {{ historiaClinica?.altura }} Cm</p>
-          <p><strong>Peso:</strong> {{ historiaClinica?.peso }} Kg</p>
-          <p><strong>Presión:</strong> {{ historiaClinica?.presion }}</p>
-          <p><strong>Temperatura:</strong> {{ historiaClinica?.temperatura }} C°</p>
+          <p><strong>{{'altura' | translate}}:</strong> {{ historiaClinica?.altura }} Cm</p>
+          <p><strong>{{'peso' | translate}}:</strong> {{ historiaClinica?.peso }} Kg</p>
+          <p><strong>{{'presion' | translate}}:</strong> {{ historiaClinica?.presion }}</p>
+          <p><strong>{{'temperatura' | translate}}:</strong> {{ historiaClinica?.temperatura }} C°</p>
           <div *ngFor="let dato of historiaClinica?.datosDinamicos">
             <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
           </div>

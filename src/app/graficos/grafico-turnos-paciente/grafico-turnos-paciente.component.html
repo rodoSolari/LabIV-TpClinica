@@ -1,9 +1,9 @@
 <div class="grafico-container"  style="margin-top: 20px;">
   <div class="container" style="margin-top: 10px;">
-    <h3>Cantidad de turnos por paciente</h3>
+    <h3>{{ 'CantidadTurnosPaciente' | translate }}</h3>
 
     <div class="form-group">
-      <label for="paciente" style="color: black;font-weight: bold;">Seleccione un Paciente:</label>
+      <label for="paciente" style="color: black;font-weight: bold;">{{ 'SeleccionePaciente' | translate }}</label>
       <select id="paciente" class="form-control" [(ngModel)]="pacienteSeleccionado" (change)="cargarTurnosPaciente()">
         <option *ngFor="let paciente of pacientes" [ngValue]="paciente">{{ paciente.nombre }}  {{paciente.apellido}}</option>
       </select>

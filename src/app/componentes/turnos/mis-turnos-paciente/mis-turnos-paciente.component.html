@@ -1,17 +1,17 @@
 <body>
   <div class="container" style="padding-top: 60px;">
-    <h2>{{'' | translate}}Mis Turnos</h2>
+    <h2>{{'MisTurnos' | translate}}</h2>
     <div>
-      <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar turnos..." class="form-control mb-3" (input)="aplicarFiltros()">
+      <input type="text" [(ngModel)]="searchTerm" [placeholder]="'BuscarTurnosPlaceholder' | translate" class="form-control mb-3" (input)="aplicarFiltros()">
       <table class="table table-striped table-dark table-bordered">
         <thead class="thead-dark">
           <tr>
-            <th>{{'' | translate}}Especialidad</th>
-            <th>{{'' | translate}}Especialista</th>
-            <th>{{'' | translate}}Fecha y Hora</th>
-            <th>{{'' | translate}}Paciente</th>
-            <th>{{'' | translate}}Estado</th>
-            <th>{{'' | translate}}Acciones</th>
+            <th>{{'especialidad' | translate}}</th>
+            <th>{{'especialista' | translate}}</th>
+            <th>{{'fechaYHora' | translate}}</th>
+            <th>{{'paciente' | translate}}</th>
+            <th>{{'estado' | translate}}</th>
+            <th>{{'acciones' | translate}}</th>
           </tr>
         </thead>
         <tbody>
@@ -22,11 +22,11 @@
             <td>{{ turno.pacienteNombre }}</td>
             <td>{{ turno.estado }}</td>
             <td>
-              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalCancelar(turno)" appButtonStyle>{{'' | translate}}Cancelar Turno</button>
-            <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)" appButtonStyle>{{'' | translate}}Ver Reseña</button>
-            <button *ngIf="turno.estado === 'realizado'" class="btn btn-success" (click)="abrirModalEncuesta(turno)" appButtonStyle>{{'' | translate}}Completar Encuesta</button>
-            <button *ngIf="turno.estado === 'realizado'" class="btn btn-success" (click)="abrirModalCalificacion(turno)" appButtonStyle>{{'' | translate}}Calificar Atención</button>
-            <button *ngIf="turno.historiaClinica" class="btn btn-info" (click)="verHistoriaClinica(turno)" appButtonStyle>{{'' | translate}}Ver Historia Clínica</button>
+              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="abrirModalCancelar(turno)" appButtonStyle>{{'cancelarTurno' | translate}}</button>
+            <button *ngIf="turno.resenia" class="btn btn-info" (click)="verResenia(turno)" appButtonStyle>{{'VerReseña' | translate}}</button>
+            <button *ngIf="turno.estado === 'realizado'" class="btn btn-success" (click)="abrirModalEncuesta(turno)" appButtonStyle>{{'completarEncuesta' | translate}}</button>
+            <button *ngIf="turno.estado === 'realizado'" class="btn btn-success" (click)="abrirModalCalificacion(turno)" appButtonStyle>{{'calificarAtencion' | translate}}</button>
+            <button *ngIf="turno.historiaClinica" class="btn btn-info" (click)="verHistoriaClinica(turno)" appButtonStyle>{{'VerHistoriaClinica' | translate}}</button>
             </td>
           </tr>
         </tbody>
@@ -39,20 +39,20 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalCancelarLabel">{{'' | translate}}Cancelar Turno</h5>
+        <h5 class="modal-title" id="modalCancelarLabel">{{'CancelarTurno' | translate}}</h5>
         <button type="button" class="btn-close" (click)="cerrarModal('cancelar')" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="cancelacionForm">
           <div class="mb-3">
-            <label for="comentario" class="form-label">{{'' | translate}}Motivo de la cancelación</label>
+            <label for="comentario" class="form-label">{{'MotivoCancelación' | translate}}</label>
             <textarea id="comentario" class="form-control" formControlName="comentario" rows="3"></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="cerrarModal('cancelar')">{{'' | translate}}Cerrar</button>
-        <button type="button" class="btn btn-primary" (click)="confirmarCancelarTurno()">{{'' | translate}}Confirmar Cancelación</button>
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal('cancelar')">{{'cerrar' | translate}}</button>
+        <button type="button" class="btn btn-primary" (click)="confirmarCancelarTurno()">{{'confirmarCancelacion' | translate}}</button>
       </div>
     </div>
   </div>
@@ -63,20 +63,20 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEncuestaLabel">{{'' | translate}}Completar Encuesta</h5>
+          <h5 class="modal-title" id="modalEncuestaLabel">{{'completarEncuesta' | translate}}</h5>
           <button type="button" class="btn-close" (click)="cerrarModal('encuesta')" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="encuestaForm">
             <div class="mb-3">
-              <label for="encuesta" class="form-label">{{'' | translate}}Tu opinión</label>
+              <label for="encuesta" class="form-label">{{'tuOpinion' | translate}}</label>
               <textarea id="encuesta" class="form-control" formControlName="encuesta" rows="3"></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="cerrarModal('encuesta')">{{'' | translate}}Cerrar</button>
-          <button type="button" class="btn btn-primary" [disabled]="!encuestaForm.valid" (click)="confirmarEncuesta()">{{'' | translate}}{{'' | translate}}Enviar Encuesta</button>
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('encuesta')">{{'cerrar' | translate}}</button>
+          <button type="button" class="btn btn-primary" [disabled]="!encuestaForm.valid" (click)="confirmarEncuesta()">{{'enviarEncuesta' | translate}} </button>
         </div>
       </div>
     </div>
@@ -87,24 +87,24 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalCalificacionLabel">{{'' | translate}}Calificar Atención</h5>
+          <h5 class="modal-title" id="modalCalificacionLabel">{{'calificarAtencion' | translate}}</h5>
           <button type="button" class="btn-close" (click)="cerrarModal('calificacion')" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="calificacionForm">
             <div class="mb-3">
-              <label for="calificacion" class="form-label">{{'' | translate}}Calificación (1-5)</label>
+              <label for="calificacion" class="form-label">{{'calificacion' | translate}}</label>
               <input type="number" id="calificacion" class="form-control" formControlName="calificacion" min="1" max="5">
             </div>
             <div class="mb-3">
-              <label for="comentarios" class="form-label">{{'' | translate}}Comentarios</label>
+              <label for="comentarios" class="form-label">{{'comentarios' | translate}}</label>
               <textarea id="comentarios" class="form-control" formControlName="comentarios" rows="3"></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="cerrarModal('calificacion')">{{'cerrar' | translate}}Cerrar</button>
-          <button type="button" class="btn btn-primary" [disabled]="!calificacionForm.valid" (click)="confirmarCalificacion()">Enviar Calificación</button>
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal('calificacion')">{{'cerrar' | translate}}</button>
+          <button type="button" class="btn btn-primary" [disabled]="!calificacionForm.valid" (click)="confirmarCalificacion()">{{'enviarCalificacion' | translate}}</button>
         </div>
       </div>
     </div>
@@ -114,14 +114,14 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{'' | translate}}Historia Clínica</h5>
+          <h5 class="modal-title">{{'historiaClinica' | translate}}</h5>
           <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
         </div>
         <div class="modal-body">
-          <p><strong>{{'' | translate}}Altura:</strong> {{ historiaClinica?.altura }}</p>
-          <p><strong>{{'' | translate}}Peso:</strong> {{ historiaClinica?.peso }}</p>
-          <p><strong>{{'' | translate}}Presión:</strong> {{ historiaClinica?.presion }}</p>
-          <p><strong>{{'' | translate}}Temperatura:</strong> {{ historiaClinica?.temperatura }}</p>
+          <p><strong>{{'altura' | translate}}:</strong> {{ historiaClinica?.altura }}</p>
+          <p><strong>{{'peso' | translate}}:</strong> {{ historiaClinica?.peso }}</p>
+          <p><strong>{{'presion' | translate}}:</strong> {{ historiaClinica?.presion }}</p>
+          <p><strong>{{'temperatura' | translate}}:</strong> {{ historiaClinica?.temperatura }}</p>
           <div *ngFor="let dato of historiaClinica?.datosDinamicos">
             <p><strong>{{ dato.clave }}:</strong> {{ dato.valor }}</p>
           </div>

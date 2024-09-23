@@ -1,30 +1,30 @@
 <body>
   <div class="container">
     <!-- Formulario para crear nuevo Administrador -->
-    <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+    <div class="btn-group btn-group-toggle mb-3"  data-toggle="buttons">
       <label class="btn btn-primary" (click)="toggleForm('admin')">
-        {{'crearAdministrador' | translate}}Crear Administrador
+        {{'crearAdministrador' | translate}}
       </label>
       <label class="btn btn-primary" (click)="toggleForm('paciente')">
-        {{'crearPaciente' | translate}}Crear Paciente
+        {{'crearPaciente' | translate}}
       </label>
       <label class="btn btn-primary" (click)="toggleForm('especialistasForm')">
-        {{'crearEspecialista' | translate}}Crear Especialista
+        {{'crearEspecialista' | translate}}
       </label>
       <label class="btn btn-primary" (click)="toggleForm('pacientesAdmins')">
-        {{'pacientesAdministradores' | translate}}Pacientes y Administradores
+        {{'pacientesAdministradores' | translate}}
       </label>
       <label class="btn btn-primary" (click)="toggleForm('especialistas')">
-        {{'especialistas' | translate}}Especialistas
+        {{'especialistas' | translate}}
       </label>
       <label class="btn btn-success" (click)="descargarDatosTodosPacientes()">
-        {{'descargarDatosPacientes' | translate}}Descargar datos PACIENTES
+        {{'descargarDatosPacientes' | translate}}
       </label>
       <label class="btn btn-success" (click)="descargarDatosTodosUsuarios()">
-        {{'descargarDatosUsuarios' | translate}}Descargar datos USUARIOS
+        {{'descargarDatosUsuarios' | translate}}
       </label>
       <label class="btn btn-success" (click)="descargarDatosTodosEspecialistas()">
-        {{'descargarDatosEspecialistas' | translate}}Descargar datos ESPECIALISTAS
+        {{'descargarDatosEspecialistas' | translate}}
       </label>
     </div>
 
@@ -33,41 +33,41 @@
       <!--<div class="form-container">-->
         <div class="card" style="background-color: #333333; margin-top: 10px; margin-right: 15px; color: #ffffff;">
           <div class="card-body">
-            <h5 class="card-title">{{'crearNuevoAdministrador' | translate}}Crear Nuevo Administrador</h5>
+            <h5 class="card-title">{{'crearNuevoAdministrador' | translate}}</h5>
             <form (ngSubmit)="registrarAdmin()" [formGroup]="adminFormGroup" #adminForm="ngForm">
               <div class="form-group" style="margin-bottom: 5px;">
-                <label for="nombre" style="font-size: 0.9em; color: #bbbbbb;">{{'nombre' | translate}}Nombre</label>
+                <label for="nombre" style="font-size: 0.9em; color: #bbbbbb;">{{'nombre' | translate}}</label>
                 <input type="text" id="nombre" class="form-control" name="nombre" formControlName="nombre" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
-                <small class="text-danger" *ngIf="adminFormGroup.controls['nombre']?.invalid && adminFormGroup.controls['nombre']?.touched" style="color: #ffffff;">{{'nombreRequerido' | translate}}Nombre es requerido</small>
+                <small class="text-danger" *ngIf="adminFormGroup.controls['nombre']?.invalid && adminFormGroup.controls['nombre']?.touched" style="color: #ffffff;">{{'nombreRequerido' | translate}}</small>
               </div>
               <div class="form-group" style="margin-bottom: 5px;">
-                <label for="apellido" style="font-size: 0.9em; color: #bbbbbb;">{{'apellido' | translate}}Apellido</label>
+                <label for="apellido" style="font-size: 0.9em; color: #bbbbbb;">{{'apellido' | translate}}</label>
                 <input type="text" id="apellido" class="form-control" name="apellido" formControlName="apellido" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
-                <small class="text-danger" *ngIf="adminFormGroup.controls['apellido']?.invalid && adminFormGroup.controls['apellido']?.touched" style="color: #ffffff;">{{'apellidoRequerido' | translate}}Apellido es requerido</small>
+                <small class="text-danger" *ngIf="adminFormGroup.controls['apellido']?.invalid && adminFormGroup.controls['apellido']?.touched" style="color: #ffffff;">{{'apellidoRequerido' | translate}}</small>
               </div>
               <div class="form-group" style="margin-bottom: 5px;">
-                <label for="edad" style="font-size: 0.9em; color: #bbbbbb;">{{'edad' | translate}}Edad</label>
+                <label for="edad" style="font-size: 0.9em; color: #bbbbbb;">{{'edad' | translate}}</label>
                 <input type="number" id="edad" class="form-control" name="edad" formControlName="edad" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
-                <small class="text-danger" *ngIf="adminFormGroup.controls['edad']?.invalid && adminFormGroup.controls['edad']?.touched" style="color: #ffffff;">{{'edadRequerida' | translate}}Edad es requerido</small>
+                <small class="text-danger" *ngIf="adminFormGroup.controls['edad']?.invalid && adminFormGroup.controls['edad']?.touched" style="color: #ffffff;">{{'edadRequerida' | translate}}</small>
               </div>
               <div class="form-group" style="margin-bottom: 5px;">
-                <label for="dni" style="font-size: 0.9em; color: #bbbbbb;">{{'dni' | translate}}DNI</label>
+                <label for="dni" style="font-size: 0.9em; color: #bbbbbb;">{{'dni' | translate}}</label>
                 <input type="number" id="dni" class="form-control" name="dni" formControlName="dni" required style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
-                <small class="text-danger" *ngIf="adminFormGroup.controls['dni']?.invalid && adminFormGroup.controls['dni']?.touched" style="color: #ffffff;">{{'dniRequerido' | translate}}DNI es requerido</small>
+                <small class="text-danger" *ngIf="adminFormGroup.controls['dni']?.invalid && adminFormGroup.controls['dni']?.touched" style="color: #ffffff;">{{'dniRequerido' | translate}}</small>
               </div>
               <div class="form-group" style="margin-bottom: 5px;">
-                <label for="email" style="font-size: 0.9em; color: #bbbbbb;">{{'email' | translate}}Email</label>
+                <label for="email" style="font-size: 0.9em; color: #bbbbbb;">{{'email' | translate}}</label>
                 <input type="email" id="email" class="form-control" name="email" formControlName="email" required email style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
-                <small class="text-danger" *ngIf="adminFormGroup.controls['email']?.invalid && adminFormGroup.controls['email']?.touched" style="color: #ffffff;">{{'emailRequerido' | translate}}Email válido es requerido</small>
+                <small class="text-danger" *ngIf="adminFormGroup.controls['email']?.invalid && adminFormGroup.controls['email']?.touched" style="color: #ffffff;">{{'emailRequerido' | translate}}</small>
               </div>
               <div class="form-group" style="margin-bottom: 5px;">
-                <label for="password" style="font-size: 0.9em; color: #bbbbbb;">{{'password' | translate}}Password</label>
+                <label for="password" style="font-size: 0.9em; color: #bbbbbb;">{{'password' | translate}}</label>
                 <input type="password" id="password" class="form-control" name="password" formControlName="password" required minlength="6" style="background-color: #444444; border: 1px solid #555555; color: #ffffff; height: 45px; padding: 10px; font-size: 1em; border-radius: 5px;">
-                <small class="text-danger" *ngIf="adminFormGroup.controls['password']?.invalid && adminFormGroup.controls['password']?.touched" style="color: #ffffff;">{{'passwordRequerida' | translate}}Password es requerido (mínimo 6 caracteres)</small>
+                <small class="text-danger" *ngIf="adminFormGroup.controls['password']?.invalid && adminFormGroup.controls['password']?.touched" style="color: #ffffff;">{{'passwordRequerida' | translate}}</small>
               </div>
               <input type="file" class="form-control" (change)="cargarImagen1($event,adminFormGroup)" accept="image/*" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('imagen1')?.errors?.['required'] && pacienteFormGroup.get('imagen1')?.touched">{{'imagenRequerida' | translate}}Imagen requerida</small>
-              <button type="submit" class="btn btn-outline-primary" style="border-color: #007bff; color: #007bff; margin-top: 10px;" [disabled]="adminFormGroup.invalid">{{'registrar' | translate}}Registrar</button>
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('imagen1')?.errors?.['required'] && pacienteFormGroup.get('imagen1')?.touched">{{'imagenRequerida' | translate}}</small>
+              <button type="submit" class="btn btn-outline-primary" style="border-color: #007bff; color: #007bff; margin-top: 10px;" [disabled]="adminFormGroup.invalid">{{'registrar' | translate}}</button>
             </form>
             <div [class.error-message]="mensajeAdmin !== ''">
               <p>{{mensajeAdmin}}</p>
@@ -80,39 +80,48 @@
       <!--<div class="form-container">-->
         <div class="card" style="background-color: #333333; margin-top: 10px; margin-right: 15px; color: #ffffff;">
           <div class="card-body">
-            <h3>{{'crearNuevoPaciente' | translate}}Crear Nuevo Paciente</h3>
+            <h3>{{'crearNuevoPaciente' | translate}}</h3>
             <form [formGroup]="pacienteFormGroup" (ngSubmit)="registrarPaciente()">
-              <input name="nombre" placeholder="Nombre" type="text" class="form-control" id="nombre" formControlName="nombre" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('nombre')?.errors?.['required'] && pacienteFormGroup.get('nombre')?.touched">{{'nombreRequerido' | translate}}Nombre requerido</small>
+              <label>{{'Nombre' | translate}}</label>
+              <input name="nombre"  type="text" class="form-control" id="nombre" formControlName="nombre" style="margin-bottom: 5px;">
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('nombre')?.errors?.['required'] && pacienteFormGroup.get('nombre')?.touched">{{'nombreRequerido' | translate}}</small>
 
-              <input name="apellido" placeholder="Apellido" type="text" class="form-control" id="apellido" formControlName="apellido" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('apellido')?.errors?.['required'] && pacienteFormGroup.get('apellido')?.touched">{{'apellidoRequerido' | translate}}Apellido requerido</small>
+              <label>{{'Apellido' | translate}}</label>
+              <input name="apellido" type="text" class="form-control" id="apellido" formControlName="apellido" style="margin-bottom: 5px;">
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('apellido')?.errors?.['required'] && pacienteFormGroup.get('apellido')?.touched">{{'apellidoRequerido' | translate}}</small>
 
-              <input name="email" placeholder="Email" type="text" class="form-control" id="email" formControlName="email" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('email')?.errors?.['required'] && pacienteFormGroup.get('email')?.touched">{{'emailRequerido' | translate}}Email requerido</small>
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('email')?.errors?.['email'] && pacienteFormGroup.get('email')?.touched">{{'formatoEmailNoValido' | translate}}Formato de email no válido</small>
+              <label>{{'Email' | translate}}</label>
+              <input name="email"  type="text" class="form-control" id="email" formControlName="email" style="margin-bottom: 5px;">
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('email')?.errors?.['required'] && pacienteFormGroup.get('email')?.touched">{{'emailRequerido' | translate}}</small>
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('email')?.errors?.['email'] && pacienteFormGroup.get('email')?.touched">{{'formatoEmailNoValido' | translate}}</small>
 
-              <input name="edad" placeholder="Edad" type="number" class="form-control" id="edad" formControlName="edad" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('edad')?.errors?.['required'] && pacienteFormGroup.get('edad')?.touched">{{'edadRequerida' | translate}}Edad requerida</small>
-              <small class="invalid" style="color: red;" *ngIf="(pacienteFormGroup.get('edad')?.errors?.['min'] || pacienteFormGroup.get('edad')?.errors?.['max']) && pacienteFormGroup.get('edad')?.touched">{{'edadEntre' | translate}}Edad entre 18 y 99 años</small>
+              <label>{{'Edad' | translate}}</label>
+              <input name="edad"  type="number" class="form-control" id="edad" formControlName="edad" style="margin-bottom: 5px;">
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('edad')?.errors?.['required'] && pacienteFormGroup.get('edad')?.touched">{{'edadRequerida' | translate}}</small>
+              <small class="invalid" style="color: red;" *ngIf="(pacienteFormGroup.get('edad')?.errors?.['min'] || pacienteFormGroup.get('edad')?.errors?.['max']) && pacienteFormGroup.get('edad')?.touched">{{'edadEntre' | translate}}</small>
 
-              <input name="dni" placeholder="DNI" type="number" class="form-control" id="dni" formControlName="dni" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="(pacienteFormGroup.get('dni')?.errors?.['minLength'] || pacienteFormGroup.get('dni')?.errors?.['maxLength']) && pacienteFormGroup.get('dni')?.touched">{{'dniIncorrecto' | translate}}DNI incorrecto</small>
+              <label>DNI</label>
+              <input name="dni"  type="number" class="form-control" id="dni" formControlName="dni" style="margin-bottom: 5px;">
+              <small class="invalid" style="color: red;" *ngIf="(pacienteFormGroup.get('dni')?.errors?.['minLength'] || pacienteFormGroup.get('dni')?.errors?.['maxLength']) && pacienteFormGroup.get('dni')?.touched">{{'dniIncorrecto' | translate}}</small>
 
-              <input name="obraSocial" placeholder="Obra Social" type="text" class="form-control" id="obraSocial" formControlName="obraSocial" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('obraSocial')?.errors?.['required'] && pacienteFormGroup.get('obraSocial')?.touched">{{'obraSocialRequerida' | translate}}Obra Social requerida</small>
+              <label>{{'ObraSocial' | translate}}</label>
+              <input name="obraSocial"  type="text" class="form-control" id="obraSocial" formControlName="obraSocial" style="margin-bottom: 5px;">
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('obraSocial')?.errors?.['required'] && pacienteFormGroup.get('obraSocial')?.touched">{{'obraSocialRequerida' | translate}}</small>
 
-              <input name="password" placeholder="Password" type="password" class="form-control" id="password" formControlName="password" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('password')?.errors?.['required'] && pacienteFormGroup.get('password')?.touched">{{'' | translate}}Password requerida</small>
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('password')?.errors?.['minlength'] && pacienteFormGroup.get('password')?.touched">{{'passwordMinLength' | translate}}Password debe tener mínimo 6 caracteres</small>
+              <label>{{'Password' | translate}}</label>
+              <input name="password"  type="password" class="form-control" id="password" formControlName="password" style="margin-bottom: 5px;">
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('password')?.errors?.['required'] && pacienteFormGroup.get('password')?.touched">{{'' | translate}}</small>
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('password')?.errors?.['minlength'] && pacienteFormGroup.get('password')?.touched">{{'passwordMinLength' | translate}}</small>
 
+              <label>{{'Imagen 1' | translate}}</label>
               <input type="file" class="form-control" (change)="cargarImagen1($event,pacienteFormGroup)" accept="image/*" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('imagen1')?.errors?.['required'] && pacienteFormGroup.get('imagen1')?.touched">{{'imagenRequerida' | translate}}Imagen requerida</small>
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('imagen1')?.errors?.['required'] && pacienteFormGroup.get('imagen1')?.touched">{{'imagenRequerida' | translate}}</small>
 
+              <label>{{'Imagen 2' | translate}}</label>
               <input type="file" class="form-control" (change)="cargarImagen2($event)" accept="image/*" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('imagen2')?.errors?.['required'] && pacienteFormGroup.get('imagen2')?.touched">{{'imagenRequerida' | translate}}Imagen requerida</small>
+              <small class="invalid" style="color: red;" *ngIf="pacienteFormGroup.get('imagen2')?.errors?.['required'] && pacienteFormGroup.get('imagen2')?.touched">{{'imagenRequerida' | translate}}</small>
 
-              <button type="submit" class="btn btn-primary" [disabled]="pacienteFormGroup.invalid">{{'' | translate}}Registrar</button>
+              <button type="submit" class="btn btn-primary" [disabled]="pacienteFormGroup.invalid">{{'Registrar' | translate}}</button>
             </form>
             </div>
           <div [class.error-message]="mensajePaciente !== ''">
@@ -125,48 +134,56 @@
     <div class="form-container" *ngIf="showEspecialistasForm">
       <div class="card" style="background-color: #333333; margin-top: 10px; margin-right: 15px; color: #ffffff;">
         <div class="card-body">
-          <h3>{{'' | translate}}Crear Nuevo Especialista</h3>
+          <h3>{{'crearNuevoEspecialista' | translate}}</h3>
           <form [formGroup]="especialistaFormGroup" (ngSubmit)="registrarEspecialista()">
-            <input name="nombre" placeholder="Nombre" type="text" class="form-control" id="nombre" formControlName="nombre" style="margin-bottom: 5px;">
-            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('nombre')?.errors?.['required'] && especialistaFormGroup.get('nombre')?.touched">{{'nombreRequerido' | translate}}Nombre requerido</small>
 
-            <input name="apellido" placeholder="Apellido" type="text" class="form-control" id="apellido" formControlName="apellido" style="margin-bottom: 5px;">
-            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('apellido')?.errors?.['required'] && especialistaFormGroup.get('apellido')?.touched">{{'apellidoRequerido' | translate}}Apellido requerido</small>
+            <label>{{'Nombre' | translate}}</label>
+            <input name="nombre"  type="text" class="form-control" id="nombre" formControlName="nombre" style="margin-bottom: 5px;">
+            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('nombre')?.errors?.['required'] && especialistaFormGroup.get('nombre')?.touched">{{'nombreRequerido' | translate}}</small>
 
-            <input name="email" placeholder="Email" type="text" class="form-control" id="email" formControlName="email" style="margin-bottom: 5px;">
-            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('email')?.errors?.['required'] && especialistaFormGroup.get('email')?.touched">{{'emailRequerido' | translate}}Email requerido</small>
-            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('email')?.errors?.['email'] && especialistaFormGroup.get('email')?.touched">{{'formatoEmailNoValido' | translate}}Formato de email no válido</small>
+            <label>{{'Apellido' | translate}}</label>
+            <input name="apellido" type="text" class="form-control" id="apellido" formControlName="apellido" style="margin-bottom: 5px;">
+            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('apellido')?.errors?.['required'] && especialistaFormGroup.get('apellido')?.touched">{{'apellidoRequerido' | translate}}</small>
 
-            <input name="edad" placeholder="Edad" type="number" class="form-control" id="edad" formControlName="edad" style="margin-bottom: 5px;">
-            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('edad')?.errors?.['required'] && especialistaFormGroup.get('edad')?.touched">{{'edadRequerida' | translate}}Edad requerida</small>
-            <small class="invalid" style="color: red;" *ngIf="(especialistaFormGroup.get('edad')?.errors?.['min'] || especialistaFormGroup.get('edad')?.errors?.['max']) && especialistaFormGroup.get('edad')?.touched">{{'edadEntre' | translate}}Edad entre 18 y 99 años</small>
+            <label>{{'Email' | translate}}</label>
+            <input name="email"  type="text" class="form-control" id="email" formControlName="email" style="margin-bottom: 5px;">
+            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('email')?.errors?.['required'] && especialistaFormGroup.get('email')?.touched">{{'emailRequerido' | translate}}</small>
+            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('email')?.errors?.['email'] && especialistaFormGroup.get('email')?.touched">{{'formatoEmailNoValido' | translate}}</small>
 
-            <input name="dni" placeholder="DNI" type="number" class="form-control" id="dni" formControlName="dni" style="margin-bottom: 5px;">
-            <small class="invalid" style="color: red;" *ngIf="(especialistaFormGroup.get('dni')?.errors?.['minLength'] || especialistaFormGroup.get('dni')?.errors?.['maxLength']) && especialistaFormGroup.get('dni')?.touched">{{'dniIncorrecto' | translate}}DNI incorrecto</small>
+            <label>{{'Edad' | translate}}</label>
+            <input name="edad"  type="number" class="form-control" id="edad" formControlName="edad" style="margin-bottom: 5px;">
+            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('edad')?.errors?.['required'] && especialistaFormGroup.get('edad')?.touched">{{'edadRequerida' | translate}}</small>
+            <small class="invalid" style="color: red;" *ngIf="(especialistaFormGroup.get('edad')?.errors?.['min'] || especialistaFormGroup.get('edad')?.errors?.['max']) && especialistaFormGroup.get('edad')?.touched">{{'edadEntre' | translate}}</small>
 
-            <label>Especialidad: </label>
+            <label>DNI</label>
+            <input name="dni" type="number" class="form-control" id="dni" formControlName="dni" style="margin-bottom: 5px;">
+            <small class="invalid" style="color: red;" *ngIf="(especialistaFormGroup.get('dni')?.errors?.['minLength'] || especialistaFormGroup.get('dni')?.errors?.['maxLength']) && especialistaFormGroup.get('dni')?.touched">{{'dniIncorrecto' | translate}}</small>
+
+            <label>{{'especialidad' | translate}}: </label>
             <select name="especialidad" id="especialidad" formControlName="especialidad" (change)="onEspecialidadChange($event)">
-              <option value="">Seleccione su especialidad</option>
+              <option value="">{{'seleccionarSuEspecialidad' | translate}}</option>
               <option *ngFor="let especialidad of especialidades" [value]='especialidad'>{{especialidad}}</option>
-              <option value="otro">Otro</option>
+              <option value="otro">{{'Otro' | translate}}</option>
             </select>
-            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('especialidad')?.errors?.['required'] && especialistaFormGroup.get('especialidad')?.touched">{{'' | translate}}Especialidad requerida</small>
+            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('especialidad')?.errors?.['required'] && especialistaFormGroup.get('especialidad')?.touched">{{'' | translate}}</small>
 
             <div *ngIf="especialistaFormGroup.get('especialidad')?.value == 'otro'">
-              <label class="custom-control-label" for="nuevaEspecialidad">Otra especialidad</label>
+              <label class="custom-control-label" for="nuevaEspecialidad">{{'OtraEspecialidad' | translate}}</label>
               <input name="nuevaEspecialidad" placeholder="Especialidad" type="text" class="form-control" id="nuevaEspecialidad" formControlName="nuevaEspecialidad" (input)="validateEspecialidad()">
-              <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('nuevaEspecialidad')?.errors?.['especialidadExistente'] && especialistaFormGroup.get('nuevaEspecialidad')?.touched">{{'' | translate}}La especialidad ya existe</small>
+              <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('nuevaEspecialidad')?.errors?.['especialidadExistente'] && especialistaFormGroup.get('nuevaEspecialidad')?.touched">{{'EspecialidadExiste' | translate}}</small>
             </div>
 
+            <label>{{'Imagen 1' | translate}}</label>
             <input type="file" class="form-control" (change)="cargarImagen1($event, especialistaFormGroup)" accept="image/*" style="margin-bottom: 5px;">
-            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('imagen1')?.errors?.['required'] && especialistaFormGroup.get('imagen1')?.touched">{{'imagenRequerida' | translate}}Imagen requerida</small>
+            <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('imagen1')?.errors?.['required'] && especialistaFormGroup.get('imagen1')?.touched">{{'imagenRequerida' | translate}}</small>
 
-            <input name="password" placeholder="Password" type="password" class="form-control" id="password" formControlName="password" style="margin-bottom: 5px;">
-              <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('password')?.errors?.['required'] && especialistaFormGroup.get('password')?.touched">{{'passwordRequerida' | translate}}Password requerida</small>
-              <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('password')?.errors?.['minlength'] && especialistaFormGroup.get('password')?.touched">{{'passwordRequerida' | translate}}Password debe tener mínimo 6 caracteres</small>
+            <label>{{'Password' | translate}}</label>
+            <input name="password"  type="password" class="form-control" id="password" formControlName="password" style="margin-bottom: 5px;">
+              <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('password')?.errors?.['required'] && especialistaFormGroup.get('password')?.touched">{{'passwordRequerida' | translate}}</small>
+              <small class="invalid" style="color: red;" *ngIf="especialistaFormGroup.get('password')?.errors?.['minlength'] && especialistaFormGroup.get('password')?.touched">{{'passwordRequerida' | translate}}</small>
 
 
-            <button type="submit" class="btn btn-primary" [disabled]="especialistaFormGroup.invalid">{{'registrar' | translate}}Registrar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="especialistaFormGroup.invalid">{{'registrar' | translate}}</button>
           </form>
         </div>
         <div [class.error-message]="mensajeAdmin !== ''">
@@ -187,9 +204,9 @@
             <th scope="col">{{'nombreYApellido' | translate}}</th>
             <th scope="col">{{'edad' | translate}}</th>
             <th scope="col">{{'Email' | translate}}</th>
-            <th scope="col">{{'dni' | translate}}DNI</th>
-            <th scope="col">{{'tipo' | translate}}Tipo</th>
-            <th scope="col">{{'Acciones' | translate}}Acciones</th>
+            <th scope="col">{{'dni' | translate}}</th>
+            <th scope="col">{{'tipo' | translate}}</th>
+            <th scope="col">{{'Acciones' | translate}}</th>
           </tr>
         </thead>
         <tbody>
@@ -211,7 +228,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="historiaClinicaModalLabel">{{'' | translate}} {{ pacienteSeleccionado?.pacienteNombre }} {{ pacienteSeleccionado?.pacienteApellido }}</h5>
+              <h5 class="modal-title" id="historiaClinicaModalLabel">{{'HistoriaClinicaDe' | translate}} {{ pacienteSeleccionado?.pacienteNombre }} {{ pacienteSeleccionado?.pacienteApellido }}</h5>
               <button type="button" class="btn-close" (click)="cerrarModal('historiaClinicaModal')" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -265,10 +282,10 @@
           <tr>
             <th scope="col">{{'nombreYApellido' | translate}}</th>
             <th scope="col">{{'Edad' | translate}}</th>
-            <th scope="col">{{'especialidad' | translate}}Especialidad</th>
+            <th scope="col">{{'especialidad' | translate}}</th>
             <th scope="col">{{'Email' | translate}}</th>
             <th scope="col">{{'dni' | translate}}</th>
-            <th scope="col">{{'aprobado' | translate}}Aprobado</th>
+            <th scope="col">{{'aprobado' | translate}}</th>
             <th scope="col">{{'Acciones' | translate}}</th>
           </tr>
         </thead>
